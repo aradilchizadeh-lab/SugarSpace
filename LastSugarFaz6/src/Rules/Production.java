@@ -2,7 +2,7 @@ package Rules;
 
 import Data.Config;
 import Interfaces.IAgent_Prodution;
-import Interfaces.IFactory_Agent;
+import Interfaces.IFactory;
 import Interfaces.IPatch_Production;
 import Interfaces.ISpaceProvider;
 import Models.Agent;
@@ -76,7 +76,7 @@ public class Production {
                     int bSpMetabolism = Math.round(agent.getSpiceMetabolism() / 2 + neighborAgent.getSpiceMetabolism() / 2);
                     int bVision = Math.round(agent.getVision() / 2 + neighborAgent.getVision() / 2);
                     //---[creating baby]---
-                    Agent baby = IFactory_Agent.childCreator(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism);
+                    Agent baby = IFactory.childCreator(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism);
                     agents.add(baby);
                     //---[parents status initializing]---
                     agent.setParent(true);

@@ -5,7 +5,7 @@ import Data.LoanInfoList;
 import GUI.Histogram;
 import GUI.Paint;
 import GUI.StdDraw;
-import Interfaces.IFactory_Space;
+import Interfaces.IFactory;
 import Models.Space;
 import Rules.*;
 
@@ -17,7 +17,7 @@ public class Controller{
 
     public static void controller() throws InterruptedException {
         //---[creating space]---
-        Space space = IFactory_Space.spaceCreator();
+        Space space = IFactory.spaceCreator();
         //---[creating paint space]---
         StdDraw.setCanvasSize(Config.CanvasSizeWidth,Config.CanvasSizeHeight);
         StdDraw.setXscale(0,Config.SpaceRow);
@@ -46,11 +46,6 @@ public class Controller{
             Aging.ageRule(space);
             Paint.rePaint(space);
             space.setTick();
-
-            for (int i = 0; i < LoanInfoList.loanInfos.size(); i++){
-                LoanInfoList.loanInfos.get(i).print();
-            }
-
 
         }
 

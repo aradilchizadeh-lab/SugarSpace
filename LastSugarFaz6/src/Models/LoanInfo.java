@@ -46,8 +46,4 @@ public class LoanInfo {
     public void setLoanTick(int loanTick) {
         LoanTick = loanTick;
     }
-
-    public void print(){
-        IO.println(String.valueOf(Borrower) + ' ' + String.valueOf(Lender) + ' ' + String.valueOf(ResourceType) + ' ' + String.valueOf(Amount) + ' ' + String.valueOf(LoanTick));
-    }
 }
