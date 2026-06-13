@@ -24,7 +24,7 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider {
             int x = (int)(Math.random() * Config.SpaceRow);
             int y = (int)(Math.random() * Config.SpaceCol);
             if(patches[x][y].getPAgent() == null){
-                Agent agent = IFactoryModels.agentCreator(x, y);
+                Agent agent = IFactoryModels.NormalAgentCreator(x,y);
                 agents.add(agent);
                 patches[x][y].setPAgent(agent);
                 i++;

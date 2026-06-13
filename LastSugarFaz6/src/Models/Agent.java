@@ -203,21 +203,26 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         return Behavior.needsSugar(this);
     }
 
-    public void emigration(ISpaceProvider space){
-        //emigration.emigrate(this, space);
+    public void emigration(ISpaceProvider space) {
+        if (Behavior.CanEmigrate())
+            emigration.emigrate(this, space);
     }
-    public void production(ISpaceProvider space){
-        //production.production(this, space);
+    public void production(ISpaceProvider space) {
+        if (Behavior.canProduce())
+            production.production(this, space);
     }
-    public void aging(ISpaceProvider space){
-        //Aging.ageRule(this, space);
+    public void aging(ISpaceProvider space) {
+        Aging.ageRule(this, space);
     }
-    public void loan(ISpaceWithTickProvider space){
-        //loan.loan(this, space);
+    public void loan(ISpaceWithTickProvider space) {
+        if (Behavior.canLoan())
+            loan.loan(this, space);
     }
-    public void trade(ISpaceProvider space){
-        //trade.trade(this, space);
+    public void trade(ISpaceProvider space) {
+        if (Behavior.canTrade())
+            trade.trade(this, space);
     }
+
 
 
 }

@@ -10,33 +10,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Trade {
-    public  void trade(ISpaceProvider space) {
-        ArrayList<Agent> agents = space.getAgents();
+    public  void trade(IAgent_Trade agent, ISpaceProvider space) {
         IPatch_Trade[][] patches = space.getPatches();
 
-        for (int k = space.getAgents().size() - 1; k >= 0; k--) {
-            if (agents.get(k) instanceof IAgent_Trade agent) {
-                ArrayList<IAgent_Trade> neighborAgents = new ArrayList<>();
-                addNeighbor(agent, patches, neighborAgents);
-                if (!neighborAgents.isEmpty())
-                    trading(agent, neighborAgents);
-            }
-        }
+        ArrayList<IAgent_Trade> neighborAgents = new ArrayList<>();
+        addNeighbor(agent, patches, neighborAgents);
+        if (!neighborAgents.isEmpty())
+            trading(agent, neighborAgents);
     }
 
-    private static void addNeighbor(IAgent_Trade a, IPatch_Trade[][] patchs, ArrayList<IAgent_Trade> neighbor) {
+    private static void addNeighbor(IAgent_Trade a, IPatch_Trade[][] patches, ArrayList<IAgent_Trade> neighbor) {
         int x = a.getX();
         int y = a.getY();
-        for (int i = x - 1; i <= x + 1; ++i)
-        {
+        for (int i = x - 1; i <= x + 1; ++i) {
             if (i < 0 || i > Config.SpaceRow - 1)
                 continue;
-            for(int j = y - 1; j <= y + 1; ++j) {
+            for (int j = y - 1; j <= y + 1; ++j) {
                 if (j < 0 || j > Config.SpaceCol - 1 || (i == x && j == y))
                     continue;
 
-                if (patchs[i][j].getPAgent() != null && patchs[i][j].getPAgent() instanceof IAgent_Trade && (i == x || j == y))
-                    neighbor.add((IAgent_Trade) patchs[i][j].getPAgent());
+                if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canTrade() && (i == x || j == y))
+                    neighbor.add((IAgent_Trade) patches[i][j].getPAgent());
             }
         }
     }

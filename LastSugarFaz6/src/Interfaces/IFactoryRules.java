@@ -1,10 +1,6 @@
 package Interfaces;
 
-import Rules.Aging;
-import Rules.Emigration;
-import Rules.Loan;
-import Rules.Production;
-import Rules.Trade;
+import Rules.*;
 
 public interface IFactoryRules{
 

@@ -13,21 +13,16 @@ import Models.*;
 import java.util.ArrayList;
 
 public class Loan {
-    public static void loan(ISpaceWithTickProvider space) {
+    public static void loan(IAgent_Loan agent, ISpaceWithTickProvider space) {
         IPatch_Loan[][] patches = space.getPatches();
-        ArrayList<Agent> agents = space.getAgents();
-        for (int i = agents.size() - 1; i >= 0; i--) {
-            if (agents.get(i) instanceof IAgent_Loan agent) {
-                debtPayment(space, agent);
-                if (agent.canBeLender()) {
-                    giveLoan(space, agent, patches);
-                }
-            }
+        debtPayment(space, agent);
+        if (agent.canBeLender()) {
+            giveLoan(space, agent, patches);
         }
     }
 
 
-    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_Loan[][] patchs) {
+    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_Loan[][] patches) {
         ArrayList<IAgent_Loan> neighbors = new ArrayList<>();
         int x = a.getX();
         int y = a.getY();
@@ -40,8 +35,8 @@ public class Loan {
                 if (j < 0 || j > Config.SpaceCol - 1 || (i == x && j == y))
                     continue;
                 //---[checking if we have valid patch]---
-                if (patchs[i][j].getPAgent() != null && patchs[i][j].getPAgent() instanceof IAgent_Loan && (i == x || j == y)) {
-                    IAgent_Loan neighbor = (IAgent_Loan) patchs[i][j].getPAgent();
+                if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canLoan() && (i == x || j == y)) {
+                    IAgent_Loan neighbor = (IAgent_Loan) patches[i][j].getPAgent();
                     //---[checking if neighbor needs loan]---
                     if (!neighbor.canBeLender() && (neighbor.needsSugar() || neighbor.needsSpice()))
                         neighbors.add(neighbor);
@@ -112,12 +107,11 @@ public class Loan {
 
                 int borrowerWealth = getResource(info.getBorrower(), info.getResourceType());
                 int lenderWealth = getResource(info.getLender(), info.getResourceType());
-                if(borrowerWealth > debtAmount) {
+                if (borrowerWealth > debtAmount) {
                     setResource(info.getBorrower(), info.getResourceType(), borrowerWealth - debtAmount);
                     setResource(info.getLender(), info.getResourceType(), lenderWealth + debtAmount);
                     LoanInfoList.loanInfos.remove(i);
-                }
-                else{
+                } else {
 
                     int halfWealth = borrowerWealth / 2;
                     setResource(info.getBorrower(), info.getResourceType(), halfWealth);
@@ -126,48 +120,22 @@ public class Loan {
                     info.setLoanTick(info.getLoanTick() + Config.NumberTickLoan);
                 }
 
-
-                //---[checking debt type]---
-//                if (LoanInfoList.loanInfos.get(i).getResourceType() == ResourceType.Spice) {
-                    //---[checking wealth status and doing the payment]---
-//                    if (agent.getASpice() > debtAmount) {
-//                        LoanInfoList.loanInfos.get(i).getBorrower().setASpice(LoanInfoList.loanInfos.get(i).getBorrower().getASpice() - debtAmount);
-//                        LoanInfoList.loanInfos.get(i).getLender().setASpice(LoanInfoList.loanInfos.get(i).getLender().getASpice() + debtAmount);
-//                        LoanInfoList.loanInfos.remove(i);
-//                    } else {
-//                        LoanInfoList.loanInfos.get(i).setAmount((debtAmount - LoanInfoList.loanInfos.get(i).getBorrower().getASpice() / 2) / (Config.Interest + 1));
-//                        LoanInfoList.loanInfos.get(i).getLender().setASpice(LoanInfoList.loanInfos.get(i).getLender().getASpice() + LoanInfoList.loanInfos.get(i).getBorrower().getASpice() / 2);
-//                        LoanInfoList.loanInfos.get(i).getBorrower().setASpice(LoanInfoList.loanInfos.get(i).getBorrower().getASpice() / 2);
-//                        LoanInfoList.loanInfos.get(i).setLoanTick(LoanInfoList.loanInfos.get(i).getLoanTick() + Config.NumberTickLoan);
-//                    }
-//                } else {
-//                    if (agent.getASugar() > debtAmount) {
-//                        LoanInfoList.loanInfos.get(i).getBorrower().setASugar(LoanInfoList.loanInfos.get(i).getBorrower().getASugar() - debtAmount);
-//                        LoanInfoList.loanInfos.get(i).getLender().setASugar(LoanInfoList.loanInfos.get(i).getLender().getASugar() + debtAmount);
-//                        LoanInfoList.loanInfos.remove(i);
-//                    } else {
-//                        LoanInfoList.loanInfos.get(i).setAmount((debtAmount - LoanInfoList.loanInfos.get(i).getBorrower().getASugar() / 2) / (Config.Interest + 1));
-//                        LoanInfoList.loanInfos.get(i).getLender().setASugar(LoanInfoList.loanInfos.get(i).getLender().getASugar() + LoanInfoList.loanInfos.get(i).getBorrower().getASugar() / 2);
-//                        LoanInfoList.loanInfos.get(i).getBorrower().setASugar(LoanInfoList.loanInfos.get(i).getBorrower().getASugar() / 2);
-//                        LoanInfoList.loanInfos.get(i).setLoanTick(LoanInfoList.loanInfos.get(i).getLoanTick() + Config.NumberTickLoan);
-//                    }
             }
         }
     }
-    public static int getResource(IAgent_Loan agent, ResourceType type){
-        if(ResourceType.Spice == type){
+
+    public static int getResource(IAgent_Loan agent, ResourceType type) {
+        if (ResourceType.Spice == type) {
             return agent.getASpice();
         }
         return agent.getASugar();
     }
 
-    public static void setResource(IAgent_Loan agent, ResourceType type, int value){
-        if(ResourceType.Spice == type){
+    public static void setResource(IAgent_Loan agent, ResourceType type, int value) {
+        if (ResourceType.Spice == type) {
             agent.setASpice(value);
-        }
-        else {
-         agent.setASugar(value);
+        } else {
+            agent.setASugar(value);
         }
     }
-
 }

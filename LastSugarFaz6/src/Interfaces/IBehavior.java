@@ -24,4 +24,20 @@ public interface IBehavior {
 
     public boolean needsSugar(Agent agent);
 
+    public boolean CanEmigrate();
+
+    public void setCanEmigrate(boolean canEmigrate);
+
+    public boolean canTrade();
+
+    public void setCanTrade(boolean canTrade);
+
+    public boolean canLoan();
+
+    public void setCanLoan(boolean canLoan);
+
+    public boolean canProduce();
+
+    public void setCanProduce(boolean canProduce);
+
 }

@@ -31,4 +31,5 @@ public interface IAgent_Emigration {
     public float getSpiceMetabolism();
 
     public void setParent(boolean IsParent);
+
 }

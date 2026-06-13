@@ -35,4 +35,5 @@ public interface IAgent_Loan {
     public boolean needsSugar();
 
     public boolean needsSpice();
+
 }
