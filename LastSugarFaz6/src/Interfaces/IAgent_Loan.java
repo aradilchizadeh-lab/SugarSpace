@@ -24,9 +24,9 @@ public interface IAgent_Loan {
 
     public int getInitSpice();
 
-    public int requireSpiceAmount();
+    public int requiredSpiceAmount();
 
-    public int requireSugarAmount();
+    public int requiredSugarAmount();
 
     public float getSugarMetabolism();
 

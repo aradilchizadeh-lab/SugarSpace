@@ -6,7 +6,7 @@ import Interfaces.IAgent_Emigration;
 import Interfaces.IPatch_Emigration;
 import Interfaces.ISpaceProvider;
 import Models.Agent;
-import Models.NormalAgent;
+import Models.NormalAgentBehavior;
 import Models.Space;
 
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class Emigration {
                 //---[patches status after emigration]---
                 patches[bestX][bestY].setPSugar(0);
                 patches[bestX][bestY].setPSpice(0);
-                patches[bestX][bestY].setPAgent((NormalAgent) agent);
+                patches[bestX][bestY].setPAgent((NormalAgentBehavior) agent);
                 patches[x][y].setPAgent(null);
                 //---[agent survival after emigration]---
                 agent.survival((Space) space);

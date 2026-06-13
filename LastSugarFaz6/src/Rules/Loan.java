@@ -80,7 +80,7 @@ public class Loan {
         //---[checking status of resource for the payment for both agent and neighbor]---
         if (a.getASpice() > a.getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getASpice() - a.getSpiceMetabolism() * 5, neighbor.requireSpiceAmount());
+            amount = (int) Math.min(a.getASpice() - a.getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
             //---[adding info to list]---
             LoanInfo l = IFactory.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick());
             LoanInfoList.loanInfos.add(l);
@@ -91,7 +91,7 @@ public class Loan {
         //---[checking status of resource for the payment for both agent and neighbor]---
         if (a.getASugar() > a.getSugarMetabolism() * 5 && neighbor.needsSugar()) {
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getASugar() - a.getSugarMetabolism() * 5, neighbor.requireSugarAmount());
+            amount = (int) Math.min(a.getASugar() - a.getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
             //---[adding info to list]---
             LoanInfo l = IFactory.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, space.getTick());
             LoanInfoList.loanInfos.add(l);
