@@ -1,7 +1,7 @@
 package Models;
 import java.util.ArrayList;
 import Data.Config;
-import Interfaces.IFactory;
+import Interfaces.IFactoryModels;
 import Interfaces.ISpaceProvider;
 import Interfaces.ISpaceWithTickProvider;
 
@@ -16,7 +16,7 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider {
         //-----------------------[creating Patches]--------------------------
         for (int i = 0; i < Config.SpaceRow; ++i) {
             for (int j = 0; j < Config.SpaceCol; ++j) {
-                patches[i][j] = IFactory.patchCreator(i, j);
+                patches[i][j] = IFactoryModels.patchCreator(i, j);
             }
         }
         //------------------------[creating agents]--------------------------
@@ -24,7 +24,7 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider {
             int x = (int)(Math.random() * Config.SpaceRow);
             int y = (int)(Math.random() * Config.SpaceCol);
             if(patches[x][y].getPAgent() == null){
-                Agent agent = IFactory.agentCreator(x, y);
+                Agent agent = IFactoryModels.agentCreator(x, y);
                 agents.add(agent);
                 patches[x][y].setPAgent(agent);
                 i++;

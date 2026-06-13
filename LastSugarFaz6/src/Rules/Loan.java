@@ -5,7 +5,7 @@ import Data.Config;
 import Data.LoanInfoList;
 import Data.ResourceType;
 import Interfaces.IAgent_Loan;
-import Interfaces.IFactory;
+import Interfaces.IFactoryModels;
 import Interfaces.IPatch_Loan;
 import Interfaces.ISpaceWithTickProvider;
 import Models.*;
@@ -82,7 +82,7 @@ public class Loan {
             //---[initializing amount by priority of need and can give]---
             amount = (int) Math.min(a.getASpice() - a.getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
             //---[adding info to list]---
-            LoanInfo l = IFactory.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick());
+            LoanInfo l = IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick());
             LoanInfoList.loanInfos.add(l);
             //---[payment]---
             neighbor.setASpice(neighbor.getASpice() + amount);
@@ -93,7 +93,7 @@ public class Loan {
             //---[initializing amount by priority of need and can give]---
             amount = (int) Math.min(a.getASugar() - a.getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
             //---[adding info to list]---
-            LoanInfo l = IFactory.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, space.getTick());
+            LoanInfo l = IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, space.getTick());
             LoanInfoList.loanInfos.add(l);
             //---[payment]---
             neighbor.setASugar(neighbor.getASugar() + amount);

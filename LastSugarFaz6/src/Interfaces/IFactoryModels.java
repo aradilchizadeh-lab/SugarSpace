@@ -2,18 +2,18 @@ package Interfaces;
 
 import Data.ResourceType;
 import Models.*;
-public interface IFactory {
+public interface IFactoryModels {
 
     public static Agent childCreator(int babyX, int babyY, int bSuger, int bSpice, int bVision, float bSuMetabolism, float bSpMetabolism){
-        NormalAgentBehavior baby = new NormalAgentBehavior(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism);
+        IBehavior behavior = new NormalAgentBehavior();
+        Agent baby = new Agent(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism, behavior);
         return baby;
     }
 
     public static Agent NormalAgentCreator(int x, int y){
-        //IBehavior behavior = new NormalBehavior();
+        IBehavior behavior = new NormalAgentBehavior();
         Agent agent = new Agent(x, y, (int)(Math.random() * 21) + 5, (int)(Math.random() * 21) + 5,
-                (int)(Math.random() * 10) + 1, (int)(Math.random() * 4) + 1, (int)(Math.random() * 4) + 1 /*,behavior */);
->>>>>>> 830668b (IBehavior is added to the class Agent, common methods)
+                (int)(Math.random() * 10) + 1, (int)(Math.random() * 4) + 1, (int)(Math.random() * 4) + 1,behavior );
         return agent;
     }
 

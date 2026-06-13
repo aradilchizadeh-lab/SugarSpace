@@ -1,35 +1,34 @@
 package Models;
 
 import Data.AgeType;
-import Interfaces.IAgent;
-import Interfaces.IAgent_Aging;
-import Interfaces.IAgent_Emigration;
-import Interfaces.IAgent_Histogram;
-import Interfaces.IAgent_Loan;
-import Interfaces.IAgent_Paint;
-import Interfaces.IAgent_Prodution;
-import Interfaces.IAgent_Trade;
-import Interfaces.ISpaceProvider;
 
-public abstract class Agent implements IAgent, IAgent_Aging {
-    protected int Ax;
-    protected int Ay;
-    protected final int InitSugar;
-    protected final int InitSpice;
-    protected int ASugar;
-    protected int ASpice;
-    protected final int Vision;
-    protected final float SugarMetabolism;
-    protected final float SpiceMetabolism;
-    protected final int Gender;
-    protected final int MaxAge;
-    protected int Age;
+import Interfaces.*;
+import Rules.*;
+
+public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, IAgent_Paint, IAgent_Prodution, IAgent_Trade,IAgent_Aging {
+    private int Ax;
+    private int Ay;
+    private final int InitSugar;
+    private final int InitSpice;
+    private int ASugar;
+    private int ASpice;
+    private final int Vision;
+    private final float SugarMetabolism;
+    private final float SpiceMetabolism;
+    private final int Gender;
+    private final int MaxAge;
+    private int Age;
     private final int[] FertileLimits;
     private boolean IsParent;
     private AgeType AgeType;
-    //private IBehavior Behavior;
+    private IBehavior Behavior;
+    private Emigration emigration;
+    private Production production;
+    private Trade trade;
+    private Loan loan;
+    private Aging aging;
     
-    public Agent(int x, int y, int initSugar, int initSpice, int vision, float sugarMetabolism, float spiceMetabolism, int maxAge, int gender /*,IBehavior behavior*/){
+    public Agent(int x, int y, int initSugar, int initSpice, int vision, float sugarMetabolism, float spiceMetabolism, IBehavior behavior){
         Ax = x;
         Ay = y;
         InitSugar = initSugar;
@@ -40,14 +39,19 @@ public abstract class Agent implements IAgent, IAgent_Aging {
         SugarMetabolism = sugarMetabolism;
         SpiceMetabolism = spiceMetabolism;
         Age = 0;
-        MaxAge = maxAge;
-        Gender = gender;
+        MaxAge = (int)(Math.random()*41) + 60;
+        Gender = (int)(Math.random()*2);
         IsParent = false;
         FertileLimits = new int[2];
         FertileLimits[0] = (int)(Math.random() * 16) + 45; //max
         FertileLimits[1] = (int)(Math.random() * 3) + 15; //min
         AgeType = AgeType.Child;
-        //Behavior = behavior
+        Behavior = behavior;
+        emigration = IFactoryRules.createEmigration();
+        production = IFactoryRules.createProduction();
+        loan = IFactoryRules.createLoan();
+        trade = IFactoryRules.createTrade();
+        aging = IFactoryRules.createAging();
     }
 
     
@@ -119,11 +123,11 @@ public abstract class Agent implements IAgent, IAgent_Aging {
         AgeType = ageType;
     }
      
-     public int getMinFertile(){
+     public int getFertileLimitMin(){
         return FertileLimits[1];
     }
 
-     public int getMaxFertile(){
+     public int getFertileLimitMax(){
         return FertileLimits[0];
     }
 
@@ -135,11 +139,11 @@ public abstract class Agent implements IAgent, IAgent_Aging {
         IsParent = parent;
     }
 
-    /*public IBehavior getBehavior(){
-    return Behavior;
-}*/
+    public IBehavior getBehavior(){
+        return Behavior;
+    }
     public void survival(ISpaceProvider space){
-        //Behavior.survival(this, space);
+        Behavior.survival(this, space);
     }
 
     public void changeAge(){
@@ -164,39 +168,55 @@ public abstract class Agent implements IAgent, IAgent_Aging {
     }
 
     public double getWelfare(double w1, double w2){
-        //return Behavior.getWelfare(this, w1, w2);
+        return Behavior.getWelfare(this, w1, w2);
     }
 
      public double getMRS(double w1, double w2){
-        //return Behavior.getMRS(this, w1, w2);
+        return Behavior.getMRS(this, w1, w2);
     }
 
     public void reproductionInherit(){
-        //Behavior.ReproductionInherit(this);
+        Behavior.reproductionInherit(this);
     }
 
     public boolean canBeParent(){
-        //return Behavior.canBeParent(this);
+        return Behavior.canBeParent(this);
     }
 
     public boolean canBeLender(){
-        //return Behavior.canBeLender(this);
+        return Behavior.canBeLender(this);
     }
 
-    public int requireSpiceAmount(){
-        //return Behavior.requireSpiceAmount(this);
+    public int requiredSpiceAmount(){
+        return Behavior.requiredSpiceAmount(this);
     }
 
-    public int requireSugarAmount(){
-        //return Behavior.requireSugarAmount(this);
+    public int requiredSugarAmount(){
+        return Behavior.requiredSpiceAmount(this);
     }
 
     public boolean needsSpice(){
-        //return Behavior.needsSpice(this);
+        return Behavior.needsSpice(this);
     }
 
     public boolean needsSugar() {
-        //return Behavior.needsSugar(this);
+        return Behavior.needsSugar(this);
+    }
+
+    public void emigration(ISpaceProvider space){
+        //emigration.emigrate(this, space);
+    }
+    public void production(ISpaceProvider space){
+        //production.production(this, space);
+    }
+    public void aging(ISpaceProvider space){
+        //Aging.ageRule(this, space);
+    }
+    public void loan(ISpaceWithTickProvider space){
+        //loan.loan(this, space);
+    }
+    public void trade(ISpaceProvider space){
+        //trade.trade(this, space);
     }
 
 

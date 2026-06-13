@@ -5,7 +5,7 @@ import Data.LoanInfoList;
 import GUI.Histogram;
 import GUI.Paint;
 import GUI.StdDraw;
-import Interfaces.IFactory;
+import Interfaces.IFactoryModels;
 import Models.Space;
 import Rules.*;
 
@@ -17,7 +17,7 @@ public class Controller{
 
     public static void controller() throws InterruptedException {
         //---[creating space]---
-        Space space = IFactory.spaceCreator();
+        Space space = IFactoryModels.spaceCreator();
         //---[creating paint space]---
         StdDraw.setCanvasSize(Config.CanvasSizeWidth,Config.CanvasSizeHeight);
         StdDraw.setXscale(0,Config.SpaceRow);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Trade {
-    public static void trade(ISpaceProvider space) {
+    public  void trade(ISpaceProvider space) {
         ArrayList<Agent> agents = space.getAgents();
         IPatch_Trade[][] patches = space.getPatches();
 

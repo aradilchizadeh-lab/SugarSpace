@@ -22,7 +22,7 @@ public interface IAgent_Emigration {
 
     public int getVision();
 
-    public void survival(Space space);
+    public void survival(ISpaceProvider space);
 
     public  double getWelfare(double w1, double w2);
 
