@@ -90,7 +90,7 @@ public class Histogram {
         for (int i = 0; i < n; i++) {
             double freq = bins[i];
 
-            StdDraw.setPenColor(StdDraw.CYAN);
+            StdDraw.setPenColor(StdDraw.MAGENTA);
             StdDraw.filledRectangle(i, freq / 2.0, 0.4, freq / 2.0);
 
             StdDraw.setPenColor(StdDraw.BLACK);

@@ -41,7 +41,7 @@ public class NormalAgentBehavior implements IBehavior {
     @Override
     public boolean canBeParent(Agent agent) {
         if (agent.getAge() > agent.getFertileLimitMin() && agent.getAge() < agent.getFertileLimitMax()
-                && agent.getASugar() >= agent.getInitSugar() && agent.getASpice() >= agent.getInitSpice() && !(agent.IsParent()))
+                && agent.getASugar() >= agent.getInitSugar() && agent.getASpice() >= agent.getInitSpice() && !(agent.isParent()))
             return true;
 
         return false;

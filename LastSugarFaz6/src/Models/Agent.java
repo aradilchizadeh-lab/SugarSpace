@@ -131,7 +131,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         return FertileLimits[0];
     }
 
-     public boolean IsParent(){
+     public boolean isParent(){
         return IsParent;
     }
 
