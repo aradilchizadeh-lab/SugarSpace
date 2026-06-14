@@ -8,4 +8,5 @@ public interface IAgent_Histogram {
     public int getASugar();
 
     public int getASpice();
+    
 }
