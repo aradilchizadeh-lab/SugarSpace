@@ -3,7 +3,7 @@ import Data.Config;
 import Interfaces.*;
 
 
-public class Patch implements IPatch_GrowBack, IPatch_Emigration, IPatch_Production, IPatch_Aging, IPatch_Paint, IPatch_Trade, IPatch_Loan {
+public class Patch implements IPatch_GrowBack, IPatch_Emigration, IPatch_Production, IPatch_Aging, IPatch_Paint, IPatch_Trade, IPatch_Loan, IPatch_Disease {
     private int PSugar;
     private int PSpice;
     private int MaxSugarCap;

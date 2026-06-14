@@ -75,7 +75,7 @@ public class Disease {
     }
 
     private void infectOthers(IAgent_Disease a, ISpace_Diseases space){ //F
-        IPatch_Disease[][] patches = (IPatch_Disease[][]) space.getPatches();
+        IPatch_Disease[][] patches = space.getPatches();
         ArrayList<IAgent_Disease> neighbor = new ArrayList<>();
         addNeighbor(a, patches, neighbor);
         if(neighbor.isEmpty() || InfectedDiseases.isEmpty())

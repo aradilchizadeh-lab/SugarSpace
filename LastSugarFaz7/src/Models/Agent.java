@@ -236,9 +236,9 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         if (Behavior.canTrade())
             trade.trade(this, space);
     }
-    public void disease(ISpaceProvider space) {
+    public void disease(ISpace_Diseases space) {
         if (Behavior.canBeInfected())
-            disease.disease(this, (ISpace_Diseases) space);
+            disease.disease(this, space);
     }
     
 

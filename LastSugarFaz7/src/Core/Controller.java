@@ -61,6 +61,10 @@ public class Controller{
                 agents.get(i).aging(space);
             }
 
+            for (int i = agents.size() - 1; i >= 0; i--) {
+                agents.get(i).disease(space);
+            }
+
             space.setTick();
             Paint.rePaint(space);
 

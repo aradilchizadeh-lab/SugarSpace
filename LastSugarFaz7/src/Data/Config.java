@@ -23,6 +23,7 @@ public class Config {
     public static int Tick = 600;
     public static int CanvasSizeWidth = 800;
     public static int CanvasSizeHeight = 800;
+    public static int diseaseNum = 10;
 
 
 }

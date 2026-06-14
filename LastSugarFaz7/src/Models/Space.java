@@ -4,9 +4,10 @@ import Data.Config;
 import Interfaces.IFactoryModels;
 import Interfaces.ISpaceProvider;
 import Interfaces.ISpaceWithTickProvider;
+import Interfaces.ISpace_Diseases;
 import Rules.Disease;
 
-public class Space implements ISpaceProvider, ISpaceWithTickProvider {
+public class Space implements ISpaceProvider, ISpaceWithTickProvider, ISpace_Diseases {
     Patch[][] patches = new Patch[Config.SpaceRow][Config.SpaceCol];
     ArrayList<Agent> agents = new ArrayList<Agent>();
     ArrayList<Integer> diseases = new ArrayList<>();
@@ -33,7 +34,7 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider {
             }
         }
 
-        for (int i = 0; i < 10; ++i){
+        for (int i = 0; i < Config.diseaseNum; ++i){
             int disease = (int) ((Math.random() * Math.pow(2, 9)) + Math.pow(2, 9));
             diseases.add(disease);
         }
