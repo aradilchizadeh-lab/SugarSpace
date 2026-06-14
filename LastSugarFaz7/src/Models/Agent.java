@@ -27,6 +27,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     private Trade trade;
     private Loan loan;
     private Aging aging;
+    private Disease disease;
     
     public Agent(int x, int y, int initSugar, int initSpice, int vision, float sugarMetabolism, float spiceMetabolism, IBehavior behavior){
         Ax = x;
@@ -52,6 +53,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         loan = IFactoryRules.createLoan();
         trade = IFactoryRules.createTrade();
         aging = IFactoryRules.createAging();
+        disease = IFactoryRules.createDisease();
     }
 
     
@@ -234,7 +236,11 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         if (Behavior.canTrade())
             trade.trade(this, space);
     }
-
+    public void disease(ISpaceProvider space) {
+        if (Behavior.canBeInfected())
+            disease.disease(this, (ISpace_Diseases) space);
+    }
+    
 
 
 }

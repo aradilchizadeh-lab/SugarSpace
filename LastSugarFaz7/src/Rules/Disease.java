@@ -1,9 +1,7 @@
 package Rules;
 
 import Interfaces.IAgent_Disease;
-import Interfaces.IAgent_Trade;
 import Interfaces.IPatch_Disease;
-import Interfaces.IPatch_Trade;
 import Interfaces.ISpace_Diseases;
 
 import java.util.ArrayList;
@@ -19,10 +17,13 @@ public class Disease {
         ImmuneSystem = (long) ((Math.random() * Math.pow(2, 49)) + Math.pow(2, 49)); //50 bit
     }
 
-    public static void disease(IAgent_Disease agent, ISpace_Diseases space) {
+    public void disease(IAgent_Disease agent, ISpace_Diseases space) {
         //add new immuneSystem Variable (Long) -> Long.parseLong(binary, 2)
-        //int randomDisease = Integer.parseInt(space.getDiseases().get((int)(Math.random()*11)))
-        //improveImmunity()
+        int randomDisease = space.getDiseases().get((int)(Math.random() * space.getDiseases().size()));
+        String newImmunity = improveImmunity(randomDisease);
+        ImmuneSystem = Long.parseLong(newImmunity, 2); //update immuneSystem
+        diseaseClassification(newImmunity, space);
+        infectOthers(agent, space);
     }
 
     private String improveImmunity(int Disease) { //random disease from the list
@@ -59,9 +60,6 @@ public class Disease {
         }
 
         return new String(newImmuneSystemChars);
-
-
-
     }
 
     private void diseaseClassification(String immuneSystem, ISpace_Diseases space) {
@@ -76,8 +74,15 @@ public class Disease {
         }
     }
 
-    private void infectOthers(){ //F
-
+    private void infectOthers(IAgent_Disease a, ISpace_Diseases space){ //F
+        IPatch_Disease[][] patches = (IPatch_Disease[][]) space.getPatches();
+        ArrayList<IAgent_Disease> neighbor = new ArrayList<>();
+        addNeighbor(a, patches, neighbor);
+        if(neighbor.isEmpty() || InfectedDiseases.isEmpty())
+            return;
+        for(int i = 0; i < neighbor.size(); i++){
+            //neighbor.get(i). = InfectedDiseases.get((int)(Math.random() * InfectedDiseases.size()));
+        }
     }
 
     private static void addNeighbor(IAgent_Disease a, IPatch_Disease[][] patches, ArrayList<IAgent_Disease> neighbor) {
@@ -90,7 +95,7 @@ public class Disease {
                 if (j < 0 || j > Config.SpaceCol - 1 || (i == x && j == y))
                     continue;
 
-                if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canTrade() && (i == x || j == y))
+                if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canBeInfected() && (i == x || j == y))
                     neighbor.add((IAgent_Disease) patches[i][j].getPAgent());
             }
         }
