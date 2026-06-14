@@ -4,10 +4,12 @@ import Data.Config;
 import Interfaces.IFactoryModels;
 import Interfaces.ISpaceProvider;
 import Interfaces.ISpaceWithTickProvider;
+import Rules.Disease;
 
 public class Space implements ISpaceProvider, ISpaceWithTickProvider {
     Patch[][] patches = new Patch[Config.SpaceRow][Config.SpaceCol];
     ArrayList<Agent> agents = new ArrayList<Agent>();
+    ArrayList<Short> diseases = new ArrayList<>();
     private int Tick;
 
 
@@ -30,6 +32,11 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider {
                 i++;
             }
         }
+
+        for (int i = 0; i < 10; ++i){
+            Short disease = (short) ((Math.random() * Math.pow(2, 9)) + Math.pow(2, 9));
+            diseases.add(disease);
+        }
     }
 
     public Patch[][] getPatches() {
@@ -49,6 +56,10 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider {
 
     public void setTick() {
         Tick++;
+    }
+
+    public ArrayList<Short> getDiseases(){
+        return diseases;
     }
 }
 

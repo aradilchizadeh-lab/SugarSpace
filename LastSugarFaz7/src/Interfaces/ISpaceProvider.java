@@ -10,5 +10,4 @@ public interface ISpaceProvider {
     public Patch[][] getPatches();
 
     public ArrayList<Agent> getAgents();
-
 }
