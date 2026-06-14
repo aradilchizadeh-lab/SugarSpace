@@ -9,7 +9,7 @@ import Rules.Disease;
 public class Space implements ISpaceProvider, ISpaceWithTickProvider {
     Patch[][] patches = new Patch[Config.SpaceRow][Config.SpaceCol];
     ArrayList<Agent> agents = new ArrayList<Agent>();
-    ArrayList<Short> diseases = new ArrayList<>();
+    ArrayList<Integer> diseases = new ArrayList<>();
     private int Tick;
 
 
@@ -34,7 +34,7 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider {
         }
 
         for (int i = 0; i < 10; ++i){
-            Short disease = (short) ((Math.random() * Math.pow(2, 9)) + Math.pow(2, 9));
+            int disease = (int) ((Math.random() * Math.pow(2, 9)) + Math.pow(2, 9));
             diseases.add(disease);
         }
     }
@@ -58,7 +58,7 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider {
         Tick++;
     }
 
-    public ArrayList<Short> getDiseases(){
+    public ArrayList<Integer> getDiseases(){
         return diseases;
     }
 }

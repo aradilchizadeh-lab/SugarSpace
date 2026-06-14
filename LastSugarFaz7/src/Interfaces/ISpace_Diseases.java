@@ -4,5 +4,5 @@ import java.util.ArrayList;
 
 public interface ISpace_Diseases extends ISpaceProvider{
 
-    public ArrayList<Short> getDiseases();
+    public ArrayList<Integer> getDiseases();
 }
