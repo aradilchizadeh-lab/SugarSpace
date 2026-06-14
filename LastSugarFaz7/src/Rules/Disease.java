@@ -1,7 +1,7 @@
 package Rules;
 
 import Interfaces.IAgent_Disease;
-import Interfaces.IPatch_Disease;
+import Interfaces.IPatch_AgentProvider;
 import Interfaces.ISpace_Diseases;
 
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class Disease {
     }
 
     private void infectOthers(IAgent_Disease a, ISpace_Diseases space){ //F
-        IPatch_Disease[][] patches = space.getPatches();
+        IPatch_AgentProvider[][] patches = space.getPatches();
         ArrayList<IAgent_Disease> neighbor = new ArrayList<>();
         addNeighbor(a, patches, neighbor);
         if(neighbor.isEmpty() || InfectedDiseases.isEmpty())
@@ -85,7 +85,7 @@ public class Disease {
         }
     }
 
-    private static void addNeighbor(IAgent_Disease a, IPatch_Disease[][] patches, ArrayList<IAgent_Disease> neighbor) {
+    private static void addNeighbor(IAgent_Disease a, IPatch_AgentProvider[][] patches, ArrayList<IAgent_Disease> neighbor) {
         int x = a.getX();
         int y = a.getY();
         for (int i = x - 1; i <= x + 1; ++i) {

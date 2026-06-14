@@ -2,7 +2,8 @@ package Rules;
 import Data.Config;
 
 import Interfaces.IAgent_Trade;
-import Interfaces.IPatch_Trade;
+import Interfaces.IPatch_AgentProvider;
+import Interfaces.IPatch_AgentProvider;
 import Interfaces.ISpaceProvider;
 import Models.Agent;
 
@@ -11,7 +12,7 @@ import java.util.Collections;
 
 public class Trade {
     public  void trade(IAgent_Trade agent, ISpaceProvider space) {
-        IPatch_Trade[][] patches = space.getPatches();
+        IPatch_AgentProvider[][] patches = space.getPatches();
 
         ArrayList<IAgent_Trade> neighborAgents = new ArrayList<>();
         addNeighbor(agent, patches, neighborAgents);
@@ -19,7 +20,7 @@ public class Trade {
             trading(agent, neighborAgents);
     }
 
-    private static void addNeighbor(IAgent_Trade a, IPatch_Trade[][] patches, ArrayList<IAgent_Trade> neighbor) {
+    private static void addNeighbor(IAgent_Trade a, IPatch_AgentProvider[][] patches, ArrayList<IAgent_Trade> neighbor) {
         int x = a.getX();
         int y = a.getY();
         for (int i = x - 1; i <= x + 1; ++i) {

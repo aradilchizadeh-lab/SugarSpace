@@ -6,7 +6,7 @@ import Data.LoanInfoList;
 import Data.ResourceType;
 import Interfaces.IAgent_Loan;
 import Interfaces.IFactoryModels;
-import Interfaces.IPatch_Loan;
+import Interfaces.IPatch_AgentProvider;
 import Interfaces.ISpaceWithTickProvider;
 import Models.*;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Loan {
     public static void loan(IAgent_Loan agent, ISpaceWithTickProvider space) {
-        IPatch_Loan[][] patches = space.getPatches();
+        IPatch_AgentProvider[][] patches = space.getPatches();
         debtPayment(space, agent);
         if (agent.canBeLender()) {
             giveLoan(space, agent, patches);
@@ -22,7 +22,7 @@ public class Loan {
     }
 
 
-    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_Loan[][] patches) {
+    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_AgentProvider[][] patches) {
         ArrayList<IAgent_Loan> neighbors = new ArrayList<>();
         int x = a.getX();
         int y = a.getY();
