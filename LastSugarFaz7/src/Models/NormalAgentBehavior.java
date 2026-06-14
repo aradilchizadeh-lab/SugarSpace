@@ -9,6 +9,7 @@ public class NormalAgentBehavior implements IBehavior {
     private boolean CanTrade = true;
     private boolean CanLoan = true;
     private boolean CanProduce = true;
+    private boolean CanBeInfected = true;
 
 
     @Override
@@ -138,6 +139,13 @@ public class NormalAgentBehavior implements IBehavior {
         CanEmigrate = canEmigrate;
     }
 
+    public boolean canBeInfected() {
+        return CanBeInfected;
+    }
+
+    public void setCanBeInfected(boolean canBeInfected) {
+        CanBeInfected = canBeInfected;
+    }
     public boolean canTrade() {
         return CanTrade;
     }

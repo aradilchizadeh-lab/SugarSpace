@@ -5,7 +5,7 @@ import Data.AgeType;
 import Interfaces.*;
 import Rules.*;
 
-public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, IAgent_Paint, IAgent_Prodution, IAgent_Trade,IAgent_Aging {
+public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, IAgent_Paint, IAgent_Prodution, IAgent_Trade,IAgent_Aging, IAgent_Disease {
     private int Ax;
     private int Ay;
     private final int InitSugar;
@@ -13,8 +13,8 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     private int ASugar;
     private int ASpice;
     private final int Vision;
-    private final float SugarMetabolism;
-    private final float SpiceMetabolism;
+    private float SugarMetabolism;
+    private float SpiceMetabolism;
     private final int Gender;
     private final int MaxAge;
     private int Age;
@@ -114,6 +114,14 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     public float getSpiceMetabolism(){
         return SpiceMetabolism;
     }
+    
+    public void setSugarMetabolism(int sugar){
+        SugarMetabolism = sugar;
+    }
+
+    public void setSpiceMetabolism(int spice){
+        SpiceMetabolism = spice;
+    }
 
     public AgeType getAgeType() {
          return AgeType;
@@ -181,6 +189,10 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
 
     public boolean canBeParent(){
         return Behavior.canBeParent(this);
+    }
+
+    public boolean canBeInfected(){
+        return Behavior.canBeInfected();
     }
 
     public boolean canBeLender(){

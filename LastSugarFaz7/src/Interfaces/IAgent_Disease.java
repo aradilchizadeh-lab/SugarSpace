@@ -7,11 +7,11 @@ public interface IAgent_Disease {
 
     public float getSugarMetabolism();
 
-    public float setSugarMetabolism();
+    public void setSugarMetabolism(int sugar);
 
     public float getSpiceMetabolism();
 
-    public float setSpiceMetabolism();
+    public void setSpiceMetabolism(int spice);
 
     public IBehavior getBehavior();
 }

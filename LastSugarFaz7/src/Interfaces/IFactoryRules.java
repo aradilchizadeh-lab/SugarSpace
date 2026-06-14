@@ -23,4 +23,8 @@ public interface IFactoryRules{
     public static Aging createAging(){
         return new Aging();
     }
+
+    public static Disease createDisease(){
+        return new Disease();
+    }
 }

@@ -1,24 +1,31 @@
 package Rules;
 
 import Interfaces.IAgent_Disease;
+import Interfaces.IAgent_Trade;
+import Interfaces.IPatch_Disease;
+import Interfaces.IPatch_Trade;
 import Interfaces.ISpace_Diseases;
 
 import java.util.ArrayList;
 
+import Data.Config;
+
 public class Disease {
     private long ImmuneSystem = 0;
-    private ArrayList<Integer> InfectedDisease = new ArrayList<>();
-    private ArrayList<Integer> PossibleDisease = new ArrayList<>();
+    private ArrayList<Integer> InfectedDiseases = new ArrayList<>();
+    private ArrayList<Integer> PossibleDiseases = new ArrayList<>();
 
     public Disease() {
-        ImmuneSystem = (long) ((Math.random() * Math.pow(2, 49)) + Math.pow(2, 49));
+        ImmuneSystem = (long) ((Math.random() * Math.pow(2, 49)) + Math.pow(2, 49)); //50 bit
     }
 
-    public void disease(IAgent_Disease agent, ISpace_Diseases space) {
+    public static void disease(IAgent_Disease agent, ISpace_Diseases space) {
         //add new immuneSystem Variable (Long) -> Long.parseLong(binary, 2)
+        //int randomDisease = Integer.parseInt(space.getDiseases().get((int)(Math.random()*11)))
+        //improveImmunity()
     }
 
-    private String improveImmunity(int Disease) {
+    private String improveImmunity(int Disease) { //random disease from the list
 
         String immuneSystem = Long.toBinaryString(ImmuneSystem);
         String disease = Integer.toBinaryString(Disease);
@@ -40,32 +47,53 @@ public class Disease {
                 break;
             }
         }
-        char[] immuneChars = immuneSystem.toCharArray();
+        char[] newImmuneSystemChars = immuneSystem.toCharArray();
         if (hamming != 0) {
-            InfectedDisease.add(Disease);
+            InfectedDiseases.add(Disease);
             for (int i = 0; i < 10; i++) {
-                if (immuneChars[i + startIndex] != disease.charAt(i)) {
-                    immuneChars[i + startIndex] = disease.charAt(i);
+                if (newImmuneSystemChars[i + startIndex] != disease.charAt(i)) {
+                    newImmuneSystemChars[i + startIndex] = disease.charAt(i);
                     break;
                 }
             }
         }
 
-        return new String(immuneChars);
+        return new String(newImmuneSystemChars);
 
 
 
     }
 
-    private void DiseaseClassification(String immuneSystem, ISpace_Diseases space) {
+    private void diseaseClassification(String immuneSystem, ISpace_Diseases space) {
         ArrayList<Integer> diseases = space.getDiseases();
         for (int i = 0; i < 10; i++) {
             String disease = Integer.toBinaryString(diseases.get(i));
-            PossibleDisease.clear();
+            PossibleDiseases.clear();
             if (immuneSystem.contains(disease)) {
-                InfectedDisease.remove(Integer.valueOf(disease));
+                InfectedDiseases.remove(Integer.valueOf(disease));
             }
-            else PossibleDisease.add(Integer.valueOf(disease));
+            else PossibleDiseases.add(Integer.valueOf(disease));
         }
     }
+
+    private void infectOthers(){ //F
+
+    }
+
+    private static void addNeighbor(IAgent_Disease a, IPatch_Disease[][] patches, ArrayList<IAgent_Disease> neighbor) {
+        int x = a.getX();
+        int y = a.getY();
+        for (int i = x - 1; i <= x + 1; ++i) {
+            if (i < 0 || i > Config.SpaceRow - 1)
+                continue;
+            for (int j = y - 1; j <= y + 1; ++j) {
+                if (j < 0 || j > Config.SpaceCol - 1 || (i == x && j == y))
+                    continue;
+
+                if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canTrade() && (i == x || j == y))
+                    neighbor.add((IAgent_Disease) patches[i][j].getPAgent());
+            }
+        }
+    }
+
 }

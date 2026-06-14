@@ -40,4 +40,8 @@ public interface IBehavior {
 
     public void setCanProduce(boolean canProduce);
 
+    public boolean canBeInfected();
+
+    public void setCanBeInfected(boolean canBeInfected);
+
 }
