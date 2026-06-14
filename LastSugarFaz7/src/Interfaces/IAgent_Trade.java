@@ -1,0 +1,21 @@
+package Interfaces;
+
+public interface IAgent_Trade {
+
+    public int getX();
+
+    public int getY();
+
+    public void setASugar(int ASugar);
+
+    public void setASpice(int ASpice);
+
+    public int getASugar();
+
+    public int getASpice();
+
+    public  double getWelfare(double w1, double w2);
+
+    public  double getMRS(double w1, double w2);
+
+}
