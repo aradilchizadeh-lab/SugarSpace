@@ -1,5 +1,9 @@
 package Interfaces;
 
+import java.util.ArrayList;
+
+import Data.AgeType;
+
 public interface IAgent_Disease {
     public int getX();
 
@@ -7,11 +11,17 @@ public interface IAgent_Disease {
 
     public float getSugarMetabolism();
 
-    public void setSugarMetabolism(int sugar);
+    public void setSugarMetabolism(float sugar);
 
     public float getSpiceMetabolism();
 
-    public void setSpiceMetabolism(int spice);
+    public void setSpiceMetabolism(float spice);
+
+    public ArrayList<Integer> getInfectedDiseases();
+
+    public ArrayList<Integer> getPossibleDiseases();
 
     public IBehavior getBehavior();
+
+      public AgeType getAgeType();
 }

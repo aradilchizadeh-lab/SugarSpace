@@ -6,6 +6,7 @@ import Interfaces.ISpace_Diseases;
 
 import java.util.ArrayList;
 
+import Data.AgeType;
 import Data.Config;
 
 public class Disease {
@@ -20,13 +21,15 @@ public class Disease {
     public void disease(IAgent_Disease agent, ISpace_Diseases space) {
         //add new immuneSystem Variable (Long) -> Long.parseLong(binary, 2)
         int randomDisease = space.getDiseases().get((int)(Math.random() * space.getDiseases().size()));
-        String newImmunity = improveImmunity(randomDisease);
-        ImmuneSystem = Long.parseLong(newImmunity, 2); //update immuneSystem
-        diseaseClassification(newImmunity, space);
+        if (agent.getInfectedDiseases().size() == 0){
+            String newImmunity = improveImmunity(randomDisease, agent );
+            ImmuneSystem = Long.parseLong(newImmunity, 2); //update immuneSystem
+            diseaseClassification(newImmunity, space);
+        }
         infectOthers(agent, space);
     }
 
-    private String improveImmunity(int Disease) { //random disease from the list
+    private String improveImmunity(int Disease ,IAgent_Disease agent) { //random disease from the list
 
         String immuneSystem = Long.toBinaryString(ImmuneSystem);
         String disease = Integer.toBinaryString(Disease);
@@ -51,6 +54,7 @@ public class Disease {
         char[] newImmuneSystemChars = immuneSystem.toCharArray();
         if (hamming != 0) {
             InfectedDiseases.add(Disease);
+            diseaseSideEffects(agent);
             for (int i = 0; i < 10; i++) {
                 if (newImmuneSystemChars[i + startIndex] != disease.charAt(i)) {
                     newImmuneSystemChars[i + startIndex] = disease.charAt(i);
@@ -60,6 +64,14 @@ public class Disease {
         }
 
         return new String(newImmuneSystemChars);
+    }
+
+    public void diseaseSideEffects(IAgent_Disease agent){
+        if(agent.getAgeType() == AgeType.Child) return;
+        int increaseSugar = (int)(Math.random() * 3) + 1;
+        int increaseSpice = (int)(Math.random() * 3) + 1;
+        agent.setSugarMetabolism(agent.getSugarMetabolism() + increaseSugar);
+        agent.setSpiceMetabolism(agent.getSpiceMetabolism() + increaseSpice);
     }
 
     private void diseaseClassification(String immuneSystem, ISpace_Diseases space) {
@@ -74,14 +86,22 @@ public class Disease {
         }
     }
 
-    private void infectOthers(IAgent_Disease a, ISpace_Diseases space){ //F
+    private void infectOthers(IAgent_Disease agent, ISpace_Diseases space){ //F
         IPatch_AgentProvider[][] patches = space.getPatches();
-        ArrayList<IAgent_Disease> neighbor = new ArrayList<>();
-        addNeighbor(a, patches, neighbor);
-        if(neighbor.isEmpty() || InfectedDiseases.isEmpty())
+        ArrayList<IAgent_Disease> neighbors = new ArrayList<>();
+        addNeighbor(agent, patches, neighbors);
+        if(neighbors.isEmpty() || InfectedDiseases.isEmpty())
             return;
-        for(int i = 0; i < neighbor.size(); i++){
-            //neighbor.get(i). = InfectedDiseases.get((int)(Math.random() * InfectedDiseases.size()));
+        
+        for(int i = 0; i < neighbors.size(); i++){
+            int randomDisease = (int)(Math.random() * InfectedDiseases.size());
+             if(neighbors.get(i).getPossibleDiseases().contains(agent.getInfectedDiseases().get(randomDisease)) 
+                && !neighbors.get(i).getInfectedDiseases().contains(agent.getInfectedDiseases().get(randomDisease))
+                && neighbors.get(i).getInfectedDiseases().size() == 0)
+            {
+                neighbors.get(i).getInfectedDiseases().add(agent.getInfectedDiseases().get(randomDisease));
+                diseaseSideEffects(neighbors.get(i));
+             }
         }
     }
 
@@ -99,6 +119,14 @@ public class Disease {
                     neighbor.add((IAgent_Disease) patches[i][j].getPAgent());
             }
         }
+    }
+
+    public ArrayList<Integer> getPossibleDiseases(){
+        return PossibleDiseases;
+    }
+
+    public ArrayList<Integer> getInfectedDiseases(){
+        return InfectedDiseases;
     }
 
 }

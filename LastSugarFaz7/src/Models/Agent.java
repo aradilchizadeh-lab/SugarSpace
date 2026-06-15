@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.ArrayList;
+
 import Data.AgeType;
 
 import Interfaces.*;
@@ -117,11 +119,11 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         return SpiceMetabolism;
     }
     
-    public void setSugarMetabolism(int sugar){
+    public void setSugarMetabolism(float sugar){
         SugarMetabolism = sugar;
     }
 
-    public void setSpiceMetabolism(int spice){
+    public void setSpiceMetabolism(float spice){
         SpiceMetabolism = spice;
     }
 
@@ -163,6 +165,14 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     
     public int getAge(){
         return Age;
+    }
+
+    public ArrayList<Integer> getPossibleDiseases(){
+        return disease.getPossibleDiseases();
+    }
+
+    public ArrayList<Integer> getInfectedDiseases(){
+        return disease.getInfectedDiseases();
     }
     
     private void updateAgeType() {
@@ -206,7 +216,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     }
 
     public int requiredSugarAmount(){
-        return Behavior.requiredSpiceAmount(this);
+        return Behavior.requiredSugarAmount(this);
     }
 
     public boolean needsSpice(){

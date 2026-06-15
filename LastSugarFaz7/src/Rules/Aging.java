@@ -11,7 +11,7 @@ public class Aging {
     public static void ageRule(IAgent_Aging agent, ISpaceProvider space) {
         IPatch_Aging[][] patches = space.getPatches();
         ArrayList<Agent> agents = space.getAgents();
-
+            
         agent.changeAge();
         //---[reset parent status and checking age status]---
         if (agent.getAge() < agent.getMaxAge()) {
