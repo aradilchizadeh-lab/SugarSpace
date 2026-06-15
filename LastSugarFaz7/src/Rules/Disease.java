@@ -1,12 +1,12 @@
 package Rules;
 
+import Data.AgeType;
 import Interfaces.IAgent_Disease;
 import Interfaces.IPatch_AgentProvider;
 import Interfaces.ISpace_Diseases;
 
 import java.util.ArrayList;
 
-import Data.AgeType;
 import Data.Config;
 
 public class Disease {
@@ -20,16 +20,17 @@ public class Disease {
 
     public void disease(IAgent_Disease agent, ISpace_Diseases space) {
         //add new immuneSystem Variable (Long) -> Long.parseLong(binary, 2)
-        int randomDisease = space.getDiseases().get((int)(Math.random() * space.getDiseases().size()));
-        if (agent.getInfectedDiseases().size() == 0){
-            String newImmunity = improveImmunity(randomDisease, agent );
+        ArrayList<Integer> Diseases = new ArrayList<>(space.getDiseases().keySet());
+        int randomDisease = Diseases.get((int)(Math.random() * Diseases.size()));
+       // if (agent.getInfectedDiseases().size() == 0){
+            String newImmunity = improveImmunity(randomDisease, agent, space );
             ImmuneSystem = Long.parseLong(newImmunity, 2); //update immuneSystem
-            diseaseClassification(newImmunity, space);
-        }
+            diseaseClassification(newImmunity, space, agent);
+       // }
         infectOthers(agent, space);
     }
 
-    private String improveImmunity(int Disease ,IAgent_Disease agent) { //random disease from the list
+    private String improveImmunity(int Disease ,IAgent_Disease agent, ISpace_Diseases space) { //random disease from the list
 
         String immuneSystem = Long.toBinaryString(ImmuneSystem);
         String disease = Integer.toBinaryString(Disease);
@@ -38,6 +39,8 @@ public class Disease {
         int startIndex = 0;
         for (int i = 0; i < 41; i++) {
             String test = immuneSystem.substring(i, i + 10);
+            hamming = Integer.MAX_VALUE;
+            diff = 0;
             for (int j = 0; j < disease.length(); j++) {
                 if (disease.charAt(j) != test.charAt(j)) {
                     diff++;
@@ -53,36 +56,46 @@ public class Disease {
         }
         char[] newImmuneSystemChars = immuneSystem.toCharArray();
         if (hamming != 0) {
+            if(!InfectedDiseases.contains(Disease)){
             InfectedDiseases.add(Disease);
-            diseaseSideEffects(agent);
+            if(agent.getAgeType() != AgeType.Child) {
+                agent.setSugarMetabolism(agent.getSugarMetabolism() + space.getDiseases().get(Disease));
+                agent.setSpiceMetabolism(agent.getSpiceMetabolism() + space.getDiseases().get(Disease));
+            }
             for (int i = 0; i < 10; i++) {
                 if (newImmuneSystemChars[i + startIndex] != disease.charAt(i)) {
                     newImmuneSystemChars[i + startIndex] = disease.charAt(i);
                     break;
                 }
             }
+            }
         }
 
         return new String(newImmuneSystemChars);
     }
 
-    public void diseaseSideEffects(IAgent_Disease agent){
+    /*public void diseaseSideEffects(IAgent_Disease agent, ISpace){
         if(agent.getAgeType() == AgeType.Child) return;
-        int increaseSugar = (int)(Math.random() * 3) + 1;
+        int increaseSugar = space.;
         int increaseSpice = (int)(Math.random() * 3) + 1;
         agent.setSugarMetabolism(agent.getSugarMetabolism() + increaseSugar);
         agent.setSpiceMetabolism(agent.getSpiceMetabolism() + increaseSpice);
-    }
+    }*/
 
-    private void diseaseClassification(String immuneSystem, ISpace_Diseases space) {
-        ArrayList<Integer> diseases = space.getDiseases();
+    private void diseaseClassification(String immuneSystem, ISpace_Diseases space ,IAgent_Disease agent) {
+        ArrayList<Integer> diseases = new ArrayList<>(space.getDiseases().keySet());
+        PossibleDiseases.clear();
         for (int i = 0; i < 10; i++) {
-            String disease = Integer.toBinaryString(diseases.get(i));
-            PossibleDiseases.clear();
-            if (immuneSystem.contains(disease)) {
+            int disease = diseases.get(i);
+            String diseaseTemp = Integer.toBinaryString(disease);
+            if (immuneSystem.contains(diseaseTemp)) {
                 InfectedDiseases.remove(Integer.valueOf(disease));
+                if(agent.getAgeType() != AgeType.Child) {
+                    agent.setSugarMetabolism(Math.max(agent.getSugarMetabolism() - space.getDiseases().get(disease), 1));
+                    agent.setSpiceMetabolism(Math.max(agent.getSpiceMetabolism() - space.getDiseases().get(disease), 1));
+                }
             }
-            else PossibleDiseases.add(Integer.valueOf(disease));
+            else PossibleDiseases.add(disease);
         }
     }
 
@@ -96,11 +109,14 @@ public class Disease {
         for(int i = 0; i < neighbors.size(); i++){
             int randomDisease = (int)(Math.random() * InfectedDiseases.size());
              if(neighbors.get(i).getPossibleDiseases().contains(agent.getInfectedDiseases().get(randomDisease)) 
-                && !neighbors.get(i).getInfectedDiseases().contains(agent.getInfectedDiseases().get(randomDisease))
-                && neighbors.get(i).getInfectedDiseases().size() == 0)
-            {
-                neighbors.get(i).getInfectedDiseases().add(agent.getInfectedDiseases().get(randomDisease));
-                diseaseSideEffects(neighbors.get(i));
+                && !neighbors.get(i).getInfectedDiseases().contains(agent.getInfectedDiseases().get(randomDisease)))
+                //&& neighbors.get(i).getInfectedDiseases().size() == 0)
+             {
+                 neighbors.get(i).getInfectedDiseases().add(agent.getInfectedDiseases().get(randomDisease));
+                 if (agent.getAgeType() != AgeType.Child) {
+                     neighbors.get(i).setSugarMetabolism(neighbors.get(i).getSugarMetabolism() + space.getDiseases().get(agent.getInfectedDiseases().get(randomDisease)));
+                     neighbors.get(i).setSpiceMetabolism(neighbors.get(i).getSpiceMetabolism() + space.getDiseases().get(agent.getInfectedDiseases().get(randomDisease)));
+                 }
              }
         }
     }
