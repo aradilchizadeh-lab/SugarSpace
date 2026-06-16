@@ -25,7 +25,6 @@ public class Config {
     public static int CanvasSizeHeight = 800;
     public static int diseaseNum = 10;
     public static int diseaseLength = 10;
-    public static int ImmuneSystemSubsCount = 41;
-
-
+    public static int ImmuneSystemLength = 50;
+    public static int ImmuneSystemSubsCount = ImmuneSystemLength - diseaseLength + 1;
 }

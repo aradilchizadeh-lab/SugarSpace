@@ -67,5 +67,3 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider, ISpace_Dis
         return diseases;
     }
 }
-
-

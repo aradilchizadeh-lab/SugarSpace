@@ -35,8 +35,9 @@ public class NormalAgentBehavior implements IBehavior {
     //except gender
     @Override
     public boolean canBeParent(Agent agent) {
+        int randomNum = (int) ((Math.random() * 31) + 30);
         if (agent.getIdentity().getAge() > agent.getIdentity().getFertileLimitMin() && agent.getIdentity().getAge() < agent.getIdentity().getFertileLimitMax()
-                && agent.getWallet().getASugar() >= agent.getWallet().getInitSugar() && agent.getWallet().getASpice() >= agent.getWallet().getInitSpice() && !(agent.getIdentity().isParent()))
+                && agent.getWallet().getASugar() + agent.getWallet().getASpice() >=  randomNum && !(agent.getIdentity().isParent()))
             return true;
 
         return false;

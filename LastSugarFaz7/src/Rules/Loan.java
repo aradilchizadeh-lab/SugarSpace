@@ -74,7 +74,7 @@ public class Loan {
         //---[checking status of resource for the payment for both agent and neighbor]---
         if (a.getWallet().getASpice() > a.getWallet().getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getWallet().getASugar() - a.getWallet().getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
+            amount = (int) Math.min(a.getWallet().getASpice() - a.getWallet().getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
             //---[adding info to list]---
             a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick()));
             //---[payment]---
