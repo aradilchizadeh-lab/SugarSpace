@@ -21,10 +21,10 @@ public class Loan {
     }
 
 
-    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_AgentProvider[][] patches) {
+    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan agent, IPatch_AgentProvider[][] patches) {
         ArrayList<IAgent_Loan> neighbors = new ArrayList<>();
-        int x = a.getIdentity().getX();
-        int y = a.getIdentity().getY();
+        int x = agent.getIdentity().getX();
+        int y = agent.getIdentity().getY();
         //---[adding neighbors]---
         for (int i = x - 1; i <= x + 1; ++i) {
             //---[checking if we are in the space]---
@@ -72,24 +72,24 @@ public class Loan {
         IAgent_Loan neighbor = sameCondition.get(index);
 
         //---[checking status of resource for the payment for both agent and neighbor]---
-        if (a.getWallet().getASpice() > a.getWallet().getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
+        if (agent.getWallet().getASpice() > agent.getWallet().getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getWallet().getASpice() - a.getWallet().getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
+            amount = (int) Math.min(agent.getWallet().getASpice() - agent.getWallet().getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
             //---[adding info to list]---
-            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick()));
+            agent.getLoanInfos().add(IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Spice, amount, space.getTick()));
             //---[payment]---
             neighbor.getWallet().setASpice(neighbor.getWallet().getASpice() + amount);
-            a.getWallet().setASpice(a.getWallet().getASpice() - amount);
+            agent.getWallet().setASpice(agent.getWallet().getASpice() - amount);
         }
         //---[checking status of resource for the payment for both agent and neighbor]---
-        if (a.getWallet().getASugar() > a.getWallet().getSugarMetabolism() * 5 && neighbor.needsSugar()) {
+        if (agent.getWallet().getASugar() > agent.getWallet().getSugarMetabolism() * 5 && neighbor.needsSugar()) {
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getWallet().getASugar() - a.getWallet().getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
+            amount = (int) Math.min(agent.getWallet().getASugar() - agent.getWallet().getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
             //---[adding info to list]---
-            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, space.getTick()));
+            agent.getLoanInfos().add(IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Sugar, amount, space.getTick()));
             //---[payment]---
             neighbor.getWallet().setASugar(neighbor.getWallet().getASugar() + amount);
-            a.getWallet().setASugar(a.getWallet().getASugar() - amount);
+            agent.getWallet().setASugar(agent.getWallet().getASugar() - amount);
         }
     }
 

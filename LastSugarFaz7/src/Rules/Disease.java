@@ -126,9 +126,9 @@ public class Disease {
         }
     }
 
-    private static void addNeighbor(IAgent_Disease a, IPatch_AgentProvider[][] patches, ArrayList<IAgent_Disease> neighbor) {
-        int x = a.getIdentity().getX();
-        int y = a.getIdentity().getY();
+    private static void addNeighbor(IAgent_Disease agent, IPatch_AgentProvider[][] patches, ArrayList<IAgent_Disease> neighbor) {
+        int x = agent.getIdentity().getX();
+        int y = agent.getIdentity().getY();
         for (int i = x - 1; i <= x + 1; ++i) {
             if (i < 0 || i > Config.SpaceRow - 1)
                 continue;

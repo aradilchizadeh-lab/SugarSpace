@@ -20,9 +20,9 @@ public class Trade {
             trading(agent, neighborAgents);
     }
 
-    private static void addNeighbor(IAgent_Trade a, IPatch_AgentProvider[][] patches, ArrayList<IAgent_Trade> neighbor) {
-        int x = a.getIdentity().getX();
-        int y = a.getIdentity().getY();
+    private static void addNeighbor(IAgent_Trade agent, IPatch_AgentProvider[][] patches, ArrayList<IAgent_Trade> neighbor) {
+        int x = agent.getIdentity().getX();
+        int y = agent.getIdentity().getY();
         for (int i = x - 1; i <= x + 1; ++i) {
             if (i < 0 || i > Config.SpaceRow - 1)
                 continue;

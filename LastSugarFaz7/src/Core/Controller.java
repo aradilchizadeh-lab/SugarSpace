@@ -1,6 +1,7 @@
 package Core;
 
 import Data.Config;
+import GUI.Ending;
 import GUI.Histogram;
 import GUI.Paint;
 import GUI.StdDraw;
@@ -74,5 +75,8 @@ public class Controller{
         Histogram.saveFileWealth(space);
         Histogram.processAndDraw();
         StdDraw.show();
+        //StdDraw.pause();
+
+        Ending.ending();
     }
 }
