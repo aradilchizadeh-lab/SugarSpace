@@ -31,7 +31,7 @@ public class Trade {
                     continue;
 
                 if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canTrade() && (i == x || j == y))
-                    neighbor.add((IAgent_Trade) patches[i][j].getPAgent());
+                    neighbor.add(patches[i][j].getPAgent());
             }
         }
     }

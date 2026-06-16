@@ -35,7 +35,7 @@ public class Loan {
                     continue;
                 //---[checking if we have valid patch]---
                 if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canLoan() && (i == x || j == y)) {
-                    IAgent_Loan neighbor = (IAgent_Loan) patches[i][j].getPAgent();
+                    IAgent_Loan neighbor = patches[i][j].getPAgent();
                     //---[checking if neighbor needs loan]---
                     if (!neighbor.canBeLender() && (neighbor.needsSugar() || neighbor.needsSpice()))
                         neighbors.add(neighbor);

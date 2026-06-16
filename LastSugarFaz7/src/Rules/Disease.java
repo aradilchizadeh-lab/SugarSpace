@@ -140,7 +140,7 @@ public class Disease {
                     continue;
 
                 if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canBeInfected() && (i == x || j == y))
-                    neighbor.add((IAgent_Disease) patches[i][j].getPAgent());
+                    neighbor.add(patches[i][j].getPAgent());
             }
         }
     }
