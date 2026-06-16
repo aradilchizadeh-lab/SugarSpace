@@ -1,6 +1,6 @@
 package Interfaces;
 
-public interface IWallet_Histogram {
+public interface IWallet_ResourceProvider {
 
     public int getASugar();
 

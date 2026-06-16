@@ -68,9 +68,6 @@ public class Controller{
             Paint.rePaint(space);
             if (agents.size() == 0) System.out.println(tick);
         }
-        for (int i = 0; i < agents.size(); i++) {
-            agents.get(i).print();
-        }
 
         //---[drawing histogram]---
         StdDraw.clear(StdDraw.BLACK);

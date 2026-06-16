@@ -11,4 +11,8 @@ public interface IIdentity_Production {
     public void setParent(boolean IsParent);
 
     public int getGender();
+
+    public boolean canProduce();
+
+    public void setCanProduce(boolean canProduce);
 }

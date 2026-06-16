@@ -8,4 +8,8 @@ public interface IAgent_Emigration {
 
     public  double getWelfare(double w1, double w2);
 
+    public IWallet_Emigration getWallet();
+
+    public IIdentity_Emigration getIdentity();
+
 }

@@ -11,4 +11,9 @@ public interface IIdentity_Disease {
     public AgeType getAgeType();
 
     public int getAge();
+
+    public boolean canBeInfected();
+
+    public void setCanBeInfected(boolean canBeInfected);
+
 }

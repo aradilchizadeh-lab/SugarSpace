@@ -1,6 +1,8 @@
 package Models;
 
-public class Wallet {
+import Interfaces.*;
+
+public class Wallet implements IWallet_Disease, IWallet_Emigration, IWallet_ResourceProvider, IWallet_Loan, IWallet_Production, IWallet_Trade {
     private final int InitSugar;
     private final int InitSpice;
     private int ASugar;

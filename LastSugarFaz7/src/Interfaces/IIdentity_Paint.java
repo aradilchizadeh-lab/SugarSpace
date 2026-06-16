@@ -8,4 +8,6 @@ public interface IIdentity_Paint {
 
     public int getGender();
 
+    public int getMaxAge();
+
 }

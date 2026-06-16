@@ -7,7 +7,7 @@ import Data.AgeType;
 import Interfaces.*;
 import Rules.*;
 
-public class Agent {
+public class Agent implements IAgent_Histogram, IAgent_Emigration, IAgent_Trade, IAgent_Production, IAgent_Loan, IAgent_Disease, IAgent_Aging, IAgent_Paint{
     private Wallet Wallet;
     private Identity Identity;
     private IBehavior Behavior;
@@ -36,9 +36,9 @@ public class Agent {
         return Behavior;
     }
 
-    public void upgradeBehavior(IBehavior behavior) {
+    /*public void upgradeBehavior(IBehavior behavior) {
         Behavior = behavior;
-    }
+    }*/
 
     public double getWelfare(double w1, double w2) {
         return Behavior.getWelfare(this, w1, w2);
@@ -56,13 +56,10 @@ public class Agent {
         return Behavior.canBeParent(this);
     }
 
-    public boolean canBeInfected() {
-        return Behavior.canBeInfected();
-    }
-
     public boolean canBeLender() {
         return Behavior.canBeLender(this);
     }
+
 
     public int requiredSpiceAmount() {
         return Behavior.requiredSpiceAmount(this);
@@ -81,32 +78,32 @@ public class Agent {
     }
 
     public void emigration(ISpaceProvider space) {
-        if (Behavior.CanEmigrate())
-            Emigration.emigrate(this, space);
+        if (Identity.canEmigrate())
+            Emigration.emigrate((IAgent_Emigration) this, space);
     }
 
     public void production(ISpaceProvider space) {
-        if (Behavior.canProduce())
-            Production.production(this, space);
+        if (Identity.canProduce())
+            Production.production((IAgent_Production) this, space);
     }
 
     public void aging(ISpaceProvider space) {
-        aging.ageRule(this, space);
+        aging.ageRule((IAgent_Aging) this, space);
     }
 
     public void loan(ISpaceWithTickProvider space) {
-        if (Behavior.canLoan())
-            Loan.loan(this, space);
+        if (Identity.canLoan())
+            Loan.loan((IAgent_Loan) this, space);
     }
 
     public void trade(ISpaceProvider space) {
-        if (Behavior.canTrade())
-            Trade.trade(this, space);
+        if (Identity.canTrade())
+            Trade.trade((IAgent_Trade) this, space);
     }
 
     public void disease(ISpace_Diseases space) {
-        if (Behavior.canBeInfected())
-            Disease.disease(this, space);
+        if (Identity.canBeInfected())
+            Disease.disease((IAgent_Disease) this, space);
     }
 
 
@@ -117,13 +114,6 @@ public class Agent {
     public ArrayList<LoanInfo> getLoanInfos() {
         return LoanInfos;
     }
-
-    /*public void print() {
-        for (int i = 0; i < LoanInfos.size(); i++) {
-            LoanInfo loanInfo = getLoanInfos().get(i);
-            System.out.println(loanInfo.getLender() + " " + loanInfo.getBorrower() + " " + String.valueOf(loanInfo.getAmount()) + " " + String.valueOf(loanInfo.getResourceType()) + " " + String.valueOf(loanInfo.getLoanTick()));
-        }
-    }*/
 
     public void survival(ISpaceProvider space) {
         Behavior.survival(this, space);

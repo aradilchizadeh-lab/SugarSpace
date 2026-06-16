@@ -1,7 +1,6 @@
 package Rules;
 
 import Data.Config;
-import Interfaces.IAgent_Prodcution;
 import Interfaces.IAgent_Production;
 import Interfaces.IFactoryModels;
 import Interfaces.IPatch_Production;
@@ -17,8 +16,8 @@ public class Production {
         if (!agent.canBeParent())
             return;
 
-        int agentX = agent.getX();
-        int agentY = agent.getY();
+        int agentX = agent.getIdentity().getX();
+        int agentY = agent.getIdentity().getY();
 
         ArrayList<IPatch_Production> selectedPatches = new ArrayList<>();
         //---[all patches around agent]---
@@ -49,9 +48,9 @@ public class Production {
                 babyPatch = randomPatch;
                 emptyPatchFlag = true;
             } else if (randomPatch.getPAgent() != null && !neghiborFlag) {
-                if (randomPatch.getPAgent().getBehavior().canProduce()) {
-                    IAgent_Production neighbor = randomPatch.getPAgent();
-                    if (neighbor.canBeParent() && randomPatch.getPAgent().getGender() != agent.getGender()) {
+                if (randomPatch.getPAgent().getIdentity().canProduce()) {
+                    IAgent_Production neighbor = (IAgent_Production) randomPatch.getPAgent();
+                    if (neighbor.canBeParent() && randomPatch.getPAgent().getIdentity().getGender() != agent.getIdentity().getGender()) {
                         neighborAgent = neighbor;
                         neghiborFlag = true;
                     }
@@ -66,17 +65,17 @@ public class Production {
             int babyX = babyPatch.getPx();
             int babyY = babyPatch.getPy();
 
-            int bSuger = Math.round(agent.getInitSugar() / 2 + neighborAgent.getInitSugar() / 2);
-            int bSpice = Math.round(agent.getInitSpice() / 2 + neighborAgent.getInitSpice() / 2);
-            int bSuMetabolism = Math.round(agent.getSugarMetabolism() / 2 + neighborAgent.getSugarMetabolism() / 2);
-            int bSpMetabolism = Math.round(agent.getSpiceMetabolism() / 2 + neighborAgent.getSpiceMetabolism() / 2);
-            int bVision = Math.round(agent.getVision() / 2 + neighborAgent.getVision() / 2);
+            int bSuger = Math.round(agent.getWallet().getInitSugar() / 2 + neighborAgent.getWallet().getInitSugar() / 2);
+            int bSpice = Math.round(agent.getWallet().getInitSpice() / 2 + neighborAgent.getWallet().getInitSpice() / 2);
+            int bSuMetabolism = Math.round(agent.getWallet().getSugarMetabolism() / 2 + neighborAgent.getWallet().getSugarMetabolism() / 2);
+            int bSpMetabolism = Math.round(agent.getWallet().getSpiceMetabolism() / 2 + neighborAgent.getWallet().getSpiceMetabolism() / 2);
+            int bVision = Math.round(agent.getIdentity().getVision() / 2 + neighborAgent.getIdentity().getVision() / 2);
             //---[creating baby]---
             Agent baby = IFactoryModels.childCreator(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism);
             agents.add(baby);
             //---[parents status initializing]---
-            agent.setParent(true);
-            neighborAgent.setParent(true);
+            agent.getIdentity().setParent(true);
+            neighborAgent.getIdentity().setParent(true);
             agent.reproductionInherit();
             neighborAgent.reproductionInherit();
             babyPatch.setPAgent(baby);

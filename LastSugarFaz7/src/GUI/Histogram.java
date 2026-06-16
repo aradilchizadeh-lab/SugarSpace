@@ -18,7 +18,7 @@ public class Histogram {
             FileWriter myfile = new FileWriter("wealth.txt");
             for (Agent a : space.getAgents()) {
                 IAgent_Histogram a1 = (IAgent_Histogram)a;
-                myfile.write(a1.getMRS(a1.getASugar(), a1.getASpice()) + "\n");
+                myfile.write(a1.getMRS(a1.getWallet().getASugar(), a1.getWallet().getASpice()) + "\n");
             }
             myfile.close();
         } catch (Exception e) {

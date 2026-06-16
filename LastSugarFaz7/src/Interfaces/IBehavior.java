@@ -10,9 +10,9 @@ public interface IBehavior {
 
     public boolean canBeParent(Agent agent);
 
-    public  double getWelfare(Agent agent, double w1, double w2);
+    public double getWelfare(Agent agent, double w1, double w2);
 
-    public  double getMRS(Agent agent, double w1, double w2);
+    public double getMRS(Agent agent, double w1, double w2);
 
     public boolean canBeLender(Agent agent);
 
@@ -23,25 +23,4 @@ public interface IBehavior {
     public boolean needsSpice(Agent agent);
 
     public boolean needsSugar(Agent agent);
-
-    public boolean CanEmigrate();
-
-    public void setCanEmigrate(boolean canEmigrate);
-
-    public boolean canTrade();
-
-    public void setCanTrade(boolean canTrade);
-
-    public boolean canLoan();
-
-    public void setCanLoan(boolean canLoan);
-
-    public boolean canProduce();
-
-    public void setCanProduce(boolean canProduce);
-
-    public boolean canBeInfected();
-
-    public void setCanBeInfected(boolean canBeInfected);
-
 }

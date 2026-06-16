@@ -23,8 +23,8 @@ public class Loan {
 
     private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_AgentProvider[][] patches) {
         ArrayList<IAgent_Loan> neighbors = new ArrayList<>();
-        int x = a.getX();
-        int y = a.getY();
+        int x = a.getIdentity().getX();
+        int y = a.getIdentity().getY();
         //---[adding neighbors]---
         for (int i = x - 1; i <= x + 1; ++i) {
             //---[checking if we are in the space]---
@@ -34,8 +34,8 @@ public class Loan {
                 if (j < 0 || j > Config.SpaceCol - 1 || (i == x && j == y))
                     continue;
                 //---[checking if we have valid patch]---
-                if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getBehavior().canLoan() && (i == x || j == y)) {
-                    IAgent_Loan neighbor = patches[i][j].getPAgent();
+                if (patches[i][j].getPAgent() != null && patches[i][j].getPAgent().getIdentity().canLoan() && (i == x || j == y)) {
+                    IAgent_Loan neighbor = (IAgent_Loan) patches[i][j].getPAgent();
                     //---[checking if neighbor needs loan]---
                     if (!neighbor.canBeLender() && (neighbor.needsSugar() || neighbor.needsSpice()))
                         neighbors.add(neighbor);
@@ -51,7 +51,7 @@ public class Loan {
         if (neighbors.isEmpty()) return;
         while (true) {
             for (int k = 0; k < neighbors.size(); k++) {
-                if (neighbors.get(k).getAgeType() == type) {
+                if (neighbors.get(k).getIdentity().getAgeType() == type) {
                     sameCondition.add(neighbors.get(k));
                 }
             }
@@ -72,24 +72,24 @@ public class Loan {
         IAgent_Loan neighbor = sameCondition.get(index);
 
         //---[checking status of resource for the payment for both agent and neighbor]---
-        if (a.getASpice() > a.getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
+        if (a.getWallet().getASpice() > a.getWallet().getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getASpice() - a.getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
+            amount = (int) Math.min(a.getWallet().getASugar() - a.getWallet().getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
             //---[adding info to list]---
             a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick()));
             //---[payment]---
-            neighbor.setASpice(neighbor.getASpice() + amount);
-            a.setASpice(a.getASpice() - amount);
+            neighbor.getWallet().setASpice(neighbor.getWallet().getASpice() + amount);
+            a.getWallet().setASpice(a.getWallet().getASpice() - amount);
         }
         //---[checking status of resource for the payment for both agent and neighbor]---
-        if (a.getASugar() > a.getSugarMetabolism() * 5 && neighbor.needsSugar()) {
+        if (a.getWallet().getASugar() > a.getWallet().getSugarMetabolism() * 5 && neighbor.needsSugar()) {
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getASugar() - a.getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
+            amount = (int) Math.min(a.getWallet().getASugar() - a.getWallet().getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
             //---[adding info to list]---
             a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, space.getTick()));
             //---[payment]---
-            neighbor.setASugar(neighbor.getASugar() + amount);
-            a.setASugar(a.getASugar() - amount);
+            neighbor.getWallet().setASugar(neighbor.getWallet().getASugar() + amount);
+            a.getWallet().setASugar(a.getWallet().getASugar() - amount);
         }
     }
 
@@ -123,16 +123,16 @@ public class Loan {
 
     public static int getResource(IAgent_Loan agent, ResourceType type) {
         if (ResourceType.Spice == type) {
-            return agent.getASpice();
+            return agent.getWallet().getASpice();
         }
-        return agent.getASugar();
+        return agent.getWallet().getASugar();
     }
 
     public static void setResource(IAgent_Loan agent, ResourceType type, int value) {
         if (ResourceType.Spice == type) {
-            agent.setASpice(value);
+            agent.getWallet().setASpice(value);
         } else {
-            agent.setASugar(value);
+            agent.getWallet().setASugar(value);
         }
     }
 }

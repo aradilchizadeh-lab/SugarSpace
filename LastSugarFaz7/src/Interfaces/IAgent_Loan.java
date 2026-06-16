@@ -19,4 +19,8 @@ public interface IAgent_Loan {
 
     public ArrayList<LoanInfo> getLoanInfos();
 
+    public IWallet_Loan getWallet();
+
+    public IIdentity_Loan getIdentity();
+
 }

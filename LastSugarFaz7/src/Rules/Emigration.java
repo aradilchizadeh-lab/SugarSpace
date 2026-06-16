@@ -12,8 +12,8 @@ public class Emigration {
     public void emigrate(IAgent_Emigration agent, ISpaceProvider space) {
         IPatch_Emigration[][] patches = space.getPatches();
 
-        int x = agent.getX();
-        int y = agent.getY();
+        int x = agent.getIdentity().getX();
+        int y = agent.getIdentity().getY();
         //---[creating vars]--
         double welfare, w1, w2;
         double maxWelfare = Double.NEGATIVE_INFINITY;
@@ -22,11 +22,11 @@ public class Emigration {
         ArrayList<IPatch_Emigration> sameCondition = new ArrayList<>();
         int distance = Integer.MAX_VALUE;
 
-        for (int i = x - agent.getVision(); i <= x + agent.getVision(); i++) {
+        for (int i = x - agent.getIdentity().getVision(); i <= x + agent.getIdentity().getVision(); i++) {
             if (i >= 0 && i < Config.SpaceRow && (patches[i][y].getPAgent() == null)) {
                 //---[initializing vars]---
-                w1 = agent.getASugar() + patches[i][y].getPSugar() - agent.getSugarMetabolism();
-                w2 = agent.getASpice() + patches[i][y].getPSpice() - agent.getSpiceMetabolism();
+                w1 = agent.getWallet().getASugar() + patches[i][y].getPSugar() - agent.getWallet().getSugarMetabolism();
+                w2 = agent.getWallet().getASpice() + patches[i][y].getPSpice() - agent.getWallet().getSpiceMetabolism();
                 welfare = agent.getWelfare(w1, w2);
                 //---[finding best patch]---
                 if (welfare > maxWelfare) {
@@ -50,11 +50,11 @@ public class Emigration {
             }
         }
 
-        for (int j = y - agent.getVision(); j <= y + agent.getVision(); j++) {
+        for (int j = y - agent.getIdentity().getVision(); j <= y + agent.getIdentity().getVision(); j++) {
             if (j >= 0 && j < patches.length && (patches[x][j].getPAgent() == null)) {
                 //---[initializing vars]---
-                w1 = agent.getASugar() + patches[x][j].getPSugar() - agent.getSugarMetabolism();
-                w2 = agent.getASpice() + patches[x][j].getPSpice() - agent.getSpiceMetabolism();
+                w1 = agent.getWallet().getASugar() + patches[x][j].getPSugar() - agent.getWallet().getSugarMetabolism();
+                w2 = agent.getWallet().getASpice() + patches[x][j].getPSpice() - agent.getWallet().getSpiceMetabolism();
                 welfare = agent.getWelfare(w1, w2);
                 //---[finding best patch]---
                 if (welfare > maxWelfare) {
@@ -90,10 +90,10 @@ public class Emigration {
             bestY = patch.getPy();
         }
         //---[agent status after emigration]---
-        agent.setX(bestX);
-        agent.setY(bestY);
-        agent.setASugar(patches[bestX][bestY].getPSugar() + agent.getASugar());
-        agent.setASpice(patches[bestX][bestY].getPSpice() + agent.getASpice());
+        agent.getIdentity().setX(bestX);
+        agent.getIdentity().setY(bestY);
+        agent.getWallet().setASugar(patches[bestX][bestY].getPSugar() + agent.getWallet().getASugar());
+        agent.getWallet().setASpice(patches[bestX][bestY].getPSpice() + agent.getWallet().getASpice());
         //---[patches status after emigration]---
         patches[bestX][bestY].setPSugar(0);
         patches[bestX][bestY].setPSpice(0);

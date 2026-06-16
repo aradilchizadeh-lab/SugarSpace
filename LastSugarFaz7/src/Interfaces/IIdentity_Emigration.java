@@ -14,4 +14,8 @@ public interface IIdentity_Emigration {
 
     public void setParent(boolean IsParent);
 
+    public boolean canEmigrate();
+
+    public void setCanEmigrate(boolean canEmigrate);
+
 }
