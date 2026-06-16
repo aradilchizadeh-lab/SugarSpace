@@ -12,8 +12,9 @@ public interface IFactoryModels {
 
     public static Agent NormalAgentCreator(int x, int y, int disease){
         IBehavior behavior = new NormalAgentBehavior();
-        Agent agent = new Agent(x, y, (int)(Math.random() * 21) + 5, (int)(Math.random() * 21) + 5,
-                (int)(Math.random() * 10) + 1, (int)(Math.random() * 4) + 1, (int)(Math.random() * 4) + 1,behavior );
+        Wallet wallet = new Wallet();
+        Identity identity = new Identity(x, y);
+        Agent agent = new Agent(wallet, identity, behavior);
         agent.addInfectedDiseases(disease);
         return agent;
     }
