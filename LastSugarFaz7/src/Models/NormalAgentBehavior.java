@@ -1,6 +1,5 @@
 package Models;
 import Data.AgeType;
-import Data.LoanInfoList;
 import Interfaces.*;
 
 
@@ -19,11 +18,11 @@ public class NormalAgentBehavior implements IBehavior {
         agent.setASpice((int) (agent.getASpice() - agent.getSpiceMetabolism()));
 
         if (agent.getASugar() <= 0 || agent.getASpice() <= 0) {
-            for (int i = LoanInfoList.loanInfos.size() - 1; i >= 0; i--) {
-                if (LoanInfoList.loanInfos.get(i).getLender() == this) {
-                    LoanInfoList.loanInfos.remove(i);
-                } else if (LoanInfoList.loanInfos.get(i).getBorrower() == this) {
-                    LoanInfoList.loanInfos.remove(i);
+            for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
+                if (agent.getLoanInfos().get(i).getLender() == this) {
+                    agent.getLoanInfos().remove(i);
+                } else if (agent.getLoanInfos().get(i).getBorrower() == this) {
+                    agent.getLoanInfos().remove(i);
                 }
             }
             space.getAgents().remove(agent);

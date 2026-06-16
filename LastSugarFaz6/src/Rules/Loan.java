@@ -2,7 +2,6 @@ package Rules;
 
 import Data.AgeType;
 import Data.Config;
-import Data.LoanInfoList;
 import Data.ResourceType;
 import Interfaces.IAgent_Loan;
 import Interfaces.IFactoryModels;

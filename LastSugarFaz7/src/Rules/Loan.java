@@ -2,7 +2,6 @@ package Rules;
 
 import Data.AgeType;
 import Data.Config;
-import Data.LoanInfoList;
 import Data.ResourceType;
 import Interfaces.IAgent_Loan;
 import Interfaces.IFactoryModels;
@@ -77,8 +76,7 @@ public class Loan {
             //---[initializing amount by priority of need and can give]---
             amount = (int) Math.min(a.getASpice() - a.getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
             //---[adding info to list]---
-            LoanInfo l = IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick());
-            LoanInfoList.loanInfos.add(l);
+            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick()));
             //---[payment]---
             neighbor.setASpice(neighbor.getASpice() + amount);
             a.setASpice(a.getASpice() - amount);
@@ -88,8 +86,7 @@ public class Loan {
             //---[initializing amount by priority of need and can give]---
             amount = (int) Math.min(a.getASugar() - a.getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
             //---[adding info to list]---
-            LoanInfo l = IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, space.getTick());
-            LoanInfoList.loanInfos.add(l);
+            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, space.getTick()));
             //---[payment]---
             neighbor.setASugar(neighbor.getASugar() + amount);
             a.setASugar(a.getASugar() - amount);
@@ -98,10 +95,10 @@ public class Loan {
 
     public static void debtPayment(ISpaceWithTickProvider space, IAgent_Loan agent) {
         int debtAmount = 0;
-        for (int i = LoanInfoList.loanInfos.size() - 1; i >= 0; i--) {
+        for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
             //---[checking if our agent is in the borrowers and if we are in the payment tick]---
-            if (LoanInfoList.loanInfos.get(i).getBorrower() == agent && LoanInfoList.loanInfos.get(i).getLoanTick() + Config.NumberTickLoan == space.getTick()) {
-                LoanInfo info = LoanInfoList.loanInfos.get(i);
+            if (agent.getLoanInfos().get(i).getBorrower() == agent && agent.getLoanInfos().get(i).getLoanTick() + Config.NumberTickLoan == space.getTick()) {
+                LoanInfo info = agent.getLoanInfos().get(i);
                 //---[initializing debt amount]---
                 debtAmount = info.getAmount();
 
@@ -110,7 +107,7 @@ public class Loan {
                 if (borrowerWealth > debtAmount) {
                     setResource(info.getBorrower(), info.getResourceType(), borrowerWealth - debtAmount);
                     setResource(info.getLender(), info.getResourceType(), lenderWealth + debtAmount);
-                    LoanInfoList.loanInfos.remove(i);
+                    agent.getLoanInfos().remove(i);
                 } else {
 
                     int halfWealth = borrowerWealth / 2;

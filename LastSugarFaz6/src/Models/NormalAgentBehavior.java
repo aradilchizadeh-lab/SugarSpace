@@ -1,6 +1,5 @@
 package Models;
 import Data.AgeType;
-import Data.LoanInfoList;
 import Interfaces.*;
 
 

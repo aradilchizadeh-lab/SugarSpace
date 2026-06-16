@@ -1,7 +1,6 @@
 package Core;
 
 import Data.Config;
-import Data.LoanInfoList;
 import GUI.Histogram;
 import GUI.Paint;
 import GUI.StdDraw;
@@ -22,13 +21,13 @@ public class Controller{
         Space space = IFactoryModels.spaceCreator();
         ArrayList<Agent> agents = space.getAgents();
         //---[creating paint space]---
-        StdDraw.setCanvasSize(Config.CanvasSizeWidth,Config.CanvasSizeHeight);
-        StdDraw.setXscale(0,Config.SpaceRow);
-        StdDraw.setYscale(0,Config.SpaceCol + 2);
+        StdDraw.setCanvasSize(Config.CanvasSizeWidth, Config.CanvasSizeHeight);
+        StdDraw.setXscale(0, Config.SpaceRow);
+        StdDraw.setYscale(0, Config.SpaceCol + 2);
         StdDraw.enableDoubleBuffering();
 
         int tick = 0;
-        while(tick < Config.Tick) {
+        while (tick < 600) {
             ++tick;
             int finalTick = tick;
             //---[grow back with threads]---
@@ -67,7 +66,10 @@ public class Controller{
 
             space.setTick();
             Paint.rePaint(space);
-            if(agents.size() == 0) System.out.println(tick)  ;
+            if (agents.size() == 0) System.out.println(tick);
+        }
+        for (int i = 0; i < agents.size(); i++) {
+            agents.get(i).print();
         }
 
         //---[drawing histogram]---

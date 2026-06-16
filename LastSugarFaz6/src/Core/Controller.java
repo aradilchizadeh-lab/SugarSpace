@@ -1,7 +1,6 @@
 package Core;
 
 import Data.Config;
-import Data.LoanInfoList;
 import GUI.Histogram;
 import GUI.Paint;
 import GUI.StdDraw;

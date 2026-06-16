@@ -30,6 +30,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     private Loan Loan;
     private Aging aging;
     private Disease Disease;
+    private ArrayList<LoanInfo> LoanInfos;
     
     public Agent(int x, int y, int initSugar, int initSpice, int vision, float sugarMetabolism, float spiceMetabolism, IBehavior behavior){
         Ax = x;
@@ -56,6 +57,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         Trade = IFactoryRules.createTrade();
         aging = IFactoryRules.createAging();
         Disease = IFactoryRules.createDisease();
+        LoanInfos = new ArrayList<>();
     }
 
     
@@ -255,7 +257,17 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     public void addInfectedDiseases(int disease){
         Disease.addInfectedDiseases(disease * 10);
     }
-    
+
+    public ArrayList<LoanInfo> getLoanInfos(){
+        return LoanInfos;
+    }
+
+    public void print() {
+        for (int i = 0; i < LoanInfos.size(); i++) {
+            LoanInfo loanInfo = getLoanInfos().get(i);
+            System.out.println(loanInfo.getLender() + " " + loanInfo.getBorrower() + " " + String.valueOf(loanInfo.getAmount()) + " " + String.valueOf(loanInfo.getResourceType()) + " " + String.valueOf(loanInfo.getLoanTick()));
+        }
+    }
 
 
 }

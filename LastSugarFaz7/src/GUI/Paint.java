@@ -74,7 +74,7 @@ public class Paint {
         StdDraw.text(17.5, Config.SpaceRow + 1, agents);
 
         StdDraw.show();
-        StdDraw.pause(10);
+        StdDraw.pause(1);
 
 
     }
