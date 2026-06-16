@@ -10,10 +10,11 @@ public interface IFactoryModels {
         return baby;
     }
 
-    public static Agent NormalAgentCreator(int x, int y){
+    public static Agent NormalAgentCreator(int x, int y, int disease){
         IBehavior behavior = new NormalAgentBehavior();
         Agent agent = new Agent(x, y, (int)(Math.random() * 21) + 5, (int)(Math.random() * 21) + 5,
                 (int)(Math.random() * 10) + 1, (int)(Math.random() * 4) + 1, (int)(Math.random() * 4) + 1,behavior );
+        agent.addInfectedDiseases(disease);
         return agent;
     }
 

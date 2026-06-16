@@ -24,12 +24,12 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     private boolean IsParent;
     private AgeType ageType;
     private IBehavior Behavior;
-    private Emigration emigration;
-    private Production production;
-    private Trade trade;
-    private Loan loan;
+    private Emigration Emigration;
+    private Production Production;
+    private Trade Trade;
+    private Loan Loan;
     private Aging aging;
-    private Disease disease;
+    private Disease Disease;
     
     public Agent(int x, int y, int initSugar, int initSpice, int vision, float sugarMetabolism, float spiceMetabolism, IBehavior behavior){
         Ax = x;
@@ -50,12 +50,12 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         FertileLimits[1] = (int)(Math.random() * 3) + 15; //min
         ageType = AgeType.Child;
         Behavior = behavior;
-        emigration = IFactoryRules.createEmigration();
-        production = IFactoryRules.createProduction();
-        loan = IFactoryRules.createLoan();
-        trade = IFactoryRules.createTrade();
+        Emigration = IFactoryRules.createEmigration();
+        Production = IFactoryRules.createProduction();
+        Loan = IFactoryRules.createLoan();
+        Trade = IFactoryRules.createTrade();
         aging = IFactoryRules.createAging();
-        disease = IFactoryRules.createDisease();
+        Disease = IFactoryRules.createDisease();
     }
 
     
@@ -168,11 +168,11 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     }
 
     public ArrayList<Integer> getPossibleDiseases(){
-        return disease.getPossibleDiseases();
+        return Disease.getPossibleDiseases();
     }
 
     public ArrayList<Integer> getInfectedDiseases(){
-        return disease.getInfectedDiseases();
+        return Disease.getInfectedDiseases();
     }
     
     private void updateAgeType() {
@@ -229,26 +229,31 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
 
     public void emigration(ISpaceProvider space) {
         if (Behavior.CanEmigrate())
-            emigration.emigrate(this, space);
+            Emigration.emigrate(this, space);
     }
     public void production(ISpaceProvider space) {
         if (Behavior.canProduce())
-            production.production(this, space);
+            Production.production(this, space);
     }
     public void aging(ISpaceProvider space) {
         aging.ageRule(this, space);
     }
     public void loan(ISpaceWithTickProvider space) {
         if (Behavior.canLoan())
-            loan.loan(this, space);
+            Loan.loan(this, space);
     }
     public void trade(ISpaceProvider space) {
         if (Behavior.canTrade())
-            trade.trade(this, space);
+            Trade.trade(this, space);
     }
     public void disease(ISpace_Diseases space) {
         if (Behavior.canBeInfected())
-            disease.disease(this, space);
+            Disease.disease(this, space);
+    }
+
+
+    public void addInfectedDiseases(int disease){
+        Disease.addInfectedDiseases(disease * 10);
     }
     
 

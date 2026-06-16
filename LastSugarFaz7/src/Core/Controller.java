@@ -71,7 +71,7 @@ public class Controller{
         }
 
         //---[drawing histogram]---
-        StdDraw.clear();
+        StdDraw.clear(StdDraw.BLACK);
         Histogram.saveFileWealth(space);
         Histogram.processAndDraw();
         StdDraw.show();

@@ -22,23 +22,23 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider, ISpace_Dis
                 patches[i][j] = IFactoryModels.patchCreator(i, j);
             }
         }
-        //------------------------[creating agents]--------------------------
-        for(int i = 0; i < Config.InitializeAgentNum;){
-            int x = (int)(Math.random() * Config.SpaceRow);
-            int y = (int)(Math.random() * Config.SpaceCol);
-            if(patches[x][y].getPAgent() == null){
-                Agent agent = IFactoryModels.NormalAgentCreator(x, y);
-                agents.add(agent);
-                patches[x][y].setPAgent(agent);
+        //------------------------[creating diseases]--------------------------
+        for (int i = 0; i < Config.diseaseNum; ) {
+            int disease = (int) ((Math.random() * Math.pow(2, 9)) + Math.pow(2, 9));
+            if (!diseases.contains(disease)) {
+                diseases.add(disease);
                 i++;
             }
         }
-
-        for (int i = 0; i < Config.diseaseNum;){
-            int disease = (int) ((Math.random() * Math.pow(2, 9)) + Math.pow(2, 9));
-            if (!diseases.contains(disease))
-            {
-                diseases.add(disease);
+        //------------------------[creating agents]--------------------------
+        for (int i = 0; i < Config.InitializeAgentNum; ) {
+            int x = (int) (Math.random() * Config.SpaceRow);
+            int y = (int) (Math.random() * Config.SpaceCol);
+            if (patches[x][y].getPAgent() == null) {
+                int randomIndex = (int) (Math.random() * diseases.size());
+                Agent agent = IFactoryModels.NormalAgentCreator(x, y, diseases.get(randomIndex));
+                agents.add(agent);
+                patches[x][y].setPAgent(agent);
                 i++;
             }
         }

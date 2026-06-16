@@ -4,6 +4,7 @@ import Interfaces.IAgent_Histogram;
 import Models.Agent;
 import Models.Space;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -54,7 +55,14 @@ public class Histogram {
             }
         }
         if (cleanData.isEmpty()) {
-            System.out.println("داده‌ای برای رسم وجود ندارد!");
+            //System.out.println("داده‌ای برای رسم وجود ندارد!");
+            StdDraw.setCanvasSize(800,800);
+            Color color = StdDraw.BLACK;
+            StdDraw.clear(color);
+            StdDraw.setFont(new Font("Impact",Font.PLAIN,50));
+            String text = "this is the end!";
+            StdDraw.setPenColor(StdDraw.WHITE);
+            StdDraw.text(0.5 , 0.5, text);
             return;
         }
 

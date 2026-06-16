@@ -26,10 +26,10 @@ public class Disease {
     }
 
     public void disease(IAgent_Disease agent, ISpace_Diseases space) {
-        
+
         improveImmunity(agent, space);
-        //if (!InfectedDiseases.isEmpty())
-            //infectOthers(agent, space);
+        if (!InfectedDiseases.isEmpty())
+            infectOthers(agent, space);
     }
 
     private void improveImmunity(IAgent_Disease agent, ISpace_Diseases space) {
@@ -56,13 +56,13 @@ public class Disease {
             int firstDifferentBit = (xor & -xor);
             SubImmuneSystem[subIndex] ^= firstDifferentBit;
     
-            int increaseMetabolism = (int)(Math.random() * 3) + 1;
+            /*int increaseMetabolism = (int)(Math.random() * 3) + 1;
             if (agent.getAgeType() == AgeType.Child)
                 increaseMetabolism = 0;
             randomDisease = randomDisease * 10 + increaseMetabolism;
             InfectedDiseases.add(randomDisease);
             if (agent.getAgeType() != AgeType.Child)
-                diseaseSideEffects(agent, increaseMetabolism);
+                diseaseSideEffects(agent, increaseMetabolism);*/
         }
 
         boolean isImmune;
@@ -151,6 +151,10 @@ public class Disease {
 
     public ArrayList<Integer> getInfectedDiseases(){
         return InfectedDiseases;
+    }
+
+    public void addInfectedDiseases(int disease){
+        InfectedDiseases.add(disease);
     }
 
 }
