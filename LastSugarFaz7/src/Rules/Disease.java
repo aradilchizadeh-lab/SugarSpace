@@ -10,16 +10,16 @@ import Data.AgeType;
 import Data.Config;
 
 public class Disease {
-    private int[] SubImmuneSystem = new int[41];
+    private int[] SubImmuneSystem = new int[Config.ImmuneSystemSubsCount];
     private ArrayList<Integer> InfectedDiseases = new ArrayList<>();
     private ArrayList<Integer> PossibleDiseases = new ArrayList<>();
 
     public Disease() {
         long immuneSystem = (long) ((Math.random() * Math.pow(2, 49)) + Math.pow(2, 49)); //50 bit
-        int length = 10;
+        int length = Config.diseaseLength;
         int mask = (1 << length) -1;
 
-        for (int i = 0; i < 41; ++i){
+        for (int i = 0; i < Config.ImmuneSystemSubsCount; ++i){
             int sub = (int)((immuneSystem >> i) & mask);
             SubImmuneSystem[i] = sub;
         }
@@ -39,7 +39,7 @@ public class Disease {
         int hamming = Integer.MAX_VALUE;
         int diff;
         int subIndex = 0;
-        for (int i = 0; i < 41; ++i){
+        for (int i = 0; i < Config.ImmuneSystemSubsCount; ++i){
             diff = 0;
             diff = Integer.bitCount(SubImmuneSystem[i] ^ randomDisease);
             if (diff < hamming)
@@ -69,7 +69,7 @@ public class Disease {
         PossibleDiseases.clear();
         for (int i = 0; i < Diseases.size(); ++i){
             isImmune = false;
-            for (int j = 0; j < 41; ++j){
+            for (int j = 0; j < Config.ImmuneSystemSubsCount; ++j){
 
                 if (Diseases.get(i) == SubImmuneSystem[j])
                 {

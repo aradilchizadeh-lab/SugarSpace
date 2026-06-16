@@ -27,7 +27,7 @@ public class Controller{
         StdDraw.enableDoubleBuffering();
 
         int tick = 0;
-        while (tick < 600) {
+        while (tick < Config.Tick) {
             ++tick;
             int finalTick = tick;
             //---[grow back with threads]---
@@ -78,6 +78,4 @@ public class Controller{
         Histogram.processAndDraw();
         StdDraw.show();
     }
-
-
 }
