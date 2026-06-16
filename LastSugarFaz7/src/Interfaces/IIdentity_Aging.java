@@ -1,6 +1,6 @@
 package Interfaces;
 
-public interface IAgent_Aging {
+public interface IIdentity_Aging {
 
     public int getX();
 

@@ -2,7 +2,7 @@ package GUI;
 
 
 import Data.Config;
-import Interfaces.IAgent_Paint;
+import Interfaces.IIdentity_Paint;
 import Interfaces.IPatch_Paint;
 import Interfaces.ISpaceWithTickProvider;
 
@@ -11,7 +11,7 @@ public class Paint {
     public static void rePaint(ISpaceWithTickProvider space)
     {
         IPatch_Paint[][] patches = space.getPatches();
-        IAgent_Paint patchAgent;
+        IIdentity_Paint patchAgent;
         StdDraw.clear();
         
         for (int i = 0; i < Config.SpaceRow; ++i)
@@ -37,7 +37,7 @@ public class Paint {
                 StdDraw.setPenColor(red, grean, blue);
                 StdDraw.filledRectangle(i + 0.75 , j + 0.5, 0.25, 0.5);
                 
-                patchAgent = (IAgent_Paint) patches[i][j].getPAgent();
+                patchAgent = (IIdentity_Paint) patches[i][j].getPAgent();
 
                 if (patches[i][j].getPAgent() != null)
                 {

@@ -16,10 +16,10 @@ public class Identity {
     private boolean IsParent;
     private AgeType ageType;
 
-    public Identity(int x, int y){
+    public Identity(int x, int y, int vision){
         Ax = x;
         Ay = y;
-        Vision = (int)(Math.random() * 10) + 1;
+        Vision = vision;
         Age = 0;
         MaxAge = (int)(Math.random()*41) + 60;
         Gender = (int)(Math.random()*2);

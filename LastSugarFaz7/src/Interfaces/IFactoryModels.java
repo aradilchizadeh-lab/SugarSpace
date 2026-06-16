@@ -6,14 +6,16 @@ public interface IFactoryModels {
 
     public static Agent childCreator(int babyX, int babyY, int bSuger, int bSpice, int bVision, float bSuMetabolism, float bSpMetabolism){
         IBehavior behavior = new NormalAgentBehavior();
-        Agent baby = new Agent(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism, behavior);
+        Wallet wallet = new Wallet(bSuger, bSpice, bSuMetabolism, bSpMetabolism);
+        Identity identity = new Identity(babyX, babyY, bVision);
+        Agent baby = new Agent(wallet,identity, behavior);
         return baby;
     }
 
     public static Agent NormalAgentCreator(int x, int y, int disease){
         IBehavior behavior = new NormalAgentBehavior();
-        Wallet wallet = new Wallet();
-        Identity identity = new Identity(x, y);
+        Wallet wallet = new Wallet((int)(Math.random() * 21) + 5, (int)(Math.random() * 21) + 5, (int)(Math.random() * 4) + 1, (int)(Math.random() * 4) + 1);
+        Identity identity = new Identity(x, y, (int)(Math.random() * 10) + 1);
         Agent agent = new Agent(wallet, identity, behavior);
         agent.addInfectedDiseases(disease);
         return agent;

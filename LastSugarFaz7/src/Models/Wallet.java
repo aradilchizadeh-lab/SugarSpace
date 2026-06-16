@@ -8,13 +8,13 @@ public class Wallet {
     private float SugarMetabolism;
     private float SpiceMetabolism;
 
-    public Wallet() {
-        InitSugar = (int)(Math.random() * 21) + 5;
-        InitSpice = (int)(Math.random() * 21) + 5;
+    public Wallet(int initSugar, int initSpice, float sugarMetabolism, float spiceMetabolism) {
+        InitSugar = initSugar;
+        InitSpice = initSpice;
         this.ASugar = InitSugar;
         this.ASpice = InitSpice;
-        SugarMetabolism = (int)(Math.random() * 4) + 1;
-        SpiceMetabolism = (int)(Math.random() * 4) + 1;
+        SugarMetabolism = sugarMetabolism;
+        SpiceMetabolism = spiceMetabolism;
     }
 
     public void setASugar(int ASugar) {

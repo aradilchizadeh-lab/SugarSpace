@@ -1,7 +1,8 @@
 package Rules;
 
 import Data.Config;
-import Interfaces.IAgent_Prodution;
+import Interfaces.IAgent_Prodcution;
+import Interfaces.IAgent_Production;
 import Interfaces.IFactoryModels;
 import Interfaces.IPatch_Production;
 import Interfaces.ISpaceProvider;
@@ -10,7 +11,7 @@ import Models.Agent;
 import java.util.ArrayList;
 
 public class Production {
-    public void production(IAgent_Prodution agent, ISpaceProvider space) {
+    public void production(IAgent_Production agent, ISpaceProvider space) {
         IPatch_Production[][] patches = space.getPatches();
         ArrayList<Agent> agents = space.getAgents();
         if (!agent.canBeParent())
@@ -34,7 +35,7 @@ public class Production {
         boolean neghiborFlag = false;
         boolean emptyPatchFlag = false;
         IPatch_Production babyPatch = null;
-        IAgent_Prodution neighborAgent = null;
+        IAgent_Production neighborAgent = null;
 
         while (!selectedPatches.isEmpty()) {
             //---[break when we found neighbor and free patch]---
@@ -49,7 +50,7 @@ public class Production {
                 emptyPatchFlag = true;
             } else if (randomPatch.getPAgent() != null && !neghiborFlag) {
                 if (randomPatch.getPAgent().getBehavior().canProduce()) {
-                    IAgent_Prodution neighbor = randomPatch.getPAgent();
+                    IAgent_Production neighbor = randomPatch.getPAgent();
                     if (neighbor.canBeParent() && randomPatch.getPAgent().getGender() != agent.getGender()) {
                         neighborAgent = neighbor;
                         neghiborFlag = true;
