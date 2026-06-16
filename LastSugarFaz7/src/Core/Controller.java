@@ -58,11 +58,11 @@ public class Controller{
             }
 
             for (int i = agents.size() - 1; i >= 0; i--) {
-                agents.get(i).aging(space);
+                agents.get(i).disease(space);
             }
 
             for (int i = agents.size() - 1; i >= 0; i--) {
-                agents.get(i).disease(space);
+                agents.get(i).aging(space);
             }
 
             space.setTick();

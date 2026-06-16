@@ -8,7 +8,7 @@ import Models.Agent;
 import java.util.ArrayList;
 
 public class Aging {
-    public static void ageRule(IAgent_Aging agent, ISpaceProvider space) {
+    public void ageRule(IAgent_Aging agent, ISpaceProvider space) {
         IPatch_Aging[][] patches = space.getPatches();
         ArrayList<Agent> agents = space.getAgents();
             

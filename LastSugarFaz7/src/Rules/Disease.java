@@ -1,123 +1,131 @@
 package Rules;
 
-import Data.AgeType;
 import Interfaces.IAgent_Disease;
 import Interfaces.IPatch_AgentProvider;
 import Interfaces.ISpace_Diseases;
 
 import java.util.ArrayList;
 
+import Data.AgeType;
 import Data.Config;
 
 public class Disease {
-    private long ImmuneSystem = 0;
+    private int[] SubImmuneSystem = new int[41];
     private ArrayList<Integer> InfectedDiseases = new ArrayList<>();
     private ArrayList<Integer> PossibleDiseases = new ArrayList<>();
 
     public Disease() {
-        ImmuneSystem = (long) ((Math.random() * Math.pow(2, 49)) + Math.pow(2, 49)); //50 bit
+        long immuneSystem = (long) ((Math.random() * Math.pow(2, 49)) + Math.pow(2, 49)); //50 bit
+        int length = 10;
+        int mask = (1 << length) -1;
+
+        for (int i = 0; i < 41; ++i){
+            int sub = (int)((immuneSystem >> i) & mask);
+            SubImmuneSystem[i] = sub;
+        }
     }
 
     public void disease(IAgent_Disease agent, ISpace_Diseases space) {
-        //add new immuneSystem Variable (Long) -> Long.parseLong(binary, 2)
-        ArrayList<Integer> Diseases = new ArrayList<>(space.getDiseases().keySet());
+        
+        improveImmunity(agent, space);
+        //if (!InfectedDiseases.isEmpty())
+            //infectOthers(agent, space);
+    }
+
+    private void improveImmunity(IAgent_Disease agent, ISpace_Diseases space) {
+        ArrayList<Integer> Diseases = space.getDiseases();
         int randomDisease = Diseases.get((int)(Math.random() * Diseases.size()));
-       // if (agent.getInfectedDiseases().size() == 0){
-            String newImmunity = improveImmunity(randomDisease, agent, space );
-            ImmuneSystem = Long.parseLong(newImmunity, 2); //update immuneSystem
-            diseaseClassification(newImmunity, space, agent);
-       // }
-        infectOthers(agent, space);
-    }
 
-    private String improveImmunity(int Disease ,IAgent_Disease agent, ISpace_Diseases space) { //random disease from the list
-
-        String immuneSystem = Long.toBinaryString(ImmuneSystem);
-        String disease = Integer.toBinaryString(Disease);
         int hamming = Integer.MAX_VALUE;
-        int diff = 0;
-        int startIndex = 0;
-        for (int i = 0; i < 41; i++) {
-            String test = immuneSystem.substring(i, i + 10);
-            hamming = Integer.MAX_VALUE;
+        int diff;
+        int subIndex = 0;
+        for (int i = 0; i < 41; ++i){
             diff = 0;
-            for (int j = 0; j < disease.length(); j++) {
-                if (disease.charAt(j) != test.charAt(j)) {
-                    diff++;
-                }
-            }
-            if (diff < hamming) {
+            diff = Integer.bitCount(SubImmuneSystem[i] ^ randomDisease);
+            if (diff < hamming)
+            {
                 hamming = diff;
-                startIndex = i;
+                subIndex = i;
             }
-            if (hamming == 0) {
+            if (hamming == 0)
                 break;
-            }
         }
-        char[] newImmuneSystemChars = immuneSystem.toCharArray();
-        if (hamming != 0) {
-            if(!InfectedDiseases.contains(Disease)){
-            InfectedDiseases.add(Disease);
-            if(agent.getAgeType() != AgeType.Child) {
-                agent.setSugarMetabolism(agent.getSugarMetabolism() + space.getDiseases().get(Disease));
-                agent.setSpiceMetabolism(agent.getSpiceMetabolism() + space.getDiseases().get(Disease));
-            }
-            for (int i = 0; i < 10; i++) {
-                if (newImmuneSystemChars[i + startIndex] != disease.charAt(i)) {
-                    newImmuneSystemChars[i + startIndex] = disease.charAt(i);
-                    break;
-                }
-            }
-            }
+        if (hamming != 0)
+        {
+            int xor = SubImmuneSystem[subIndex] ^ randomDisease;
+            int firstDifferentBit = (xor & -xor);
+            SubImmuneSystem[subIndex] ^= firstDifferentBit;
+    
+            int increaseMetabolism = (int)(Math.random() * 3) + 1;
+            if (agent.getAgeType() == AgeType.Child)
+                increaseMetabolism = 0;
+            randomDisease = randomDisease * 10 + increaseMetabolism;
+            InfectedDiseases.add(randomDisease);
+            if (agent.getAgeType() != AgeType.Child)
+                diseaseSideEffects(agent, increaseMetabolism);
         }
 
-        return new String(newImmuneSystemChars);
-    }
-
-    /*public void diseaseSideEffects(IAgent_Disease agent, ISpace){
-        if(agent.getAgeType() == AgeType.Child) return;
-        int increaseSugar = space.;
-        int increaseSpice = (int)(Math.random() * 3) + 1;
-        agent.setSugarMetabolism(agent.getSugarMetabolism() + increaseSugar);
-        agent.setSpiceMetabolism(agent.getSpiceMetabolism() + increaseSpice);
-    }*/
-
-    private void diseaseClassification(String immuneSystem, ISpace_Diseases space ,IAgent_Disease agent) {
-        ArrayList<Integer> diseases = new ArrayList<>(space.getDiseases().keySet());
+        boolean isImmune;
         PossibleDiseases.clear();
-        for (int i = 0; i < 10; i++) {
-            int disease = diseases.get(i);
-            String diseaseTemp = Integer.toBinaryString(disease);
-            if (immuneSystem.contains(diseaseTemp)) {
-                InfectedDiseases.remove(Integer.valueOf(disease));
-                if(agent.getAgeType() != AgeType.Child) {
-                    agent.setSugarMetabolism(Math.max(agent.getSugarMetabolism() - space.getDiseases().get(disease), 1));
-                    agent.setSpiceMetabolism(Math.max(agent.getSpiceMetabolism() - space.getDiseases().get(disease), 1));
+        for (int i = 0; i < Diseases.size(); ++i){
+            isImmune = false;
+            for (int j = 0; j < 41; ++j){
+
+                if (Diseases.get(i) == SubImmuneSystem[j])
+                {
+                    isImmune = true;
+                    break;
+                }   
+            }
+            //removing diseases from infected list that agent is ammune against them
+            if (isImmune){
+                for(int k = InfectedDiseases.size() - 1; k >= 0; --k){
+                    if (InfectedDiseases.get(k) / 10 == Diseases.get(i)){
+
+                        int effect = InfectedDiseases.get(k) % 10;
+                        diseaseSideEffects(agent, -effect);
+                        InfectedDiseases.remove(k);
+                        break;
+                    }
                 }
             }
-            else PossibleDiseases.add(disease);
+            else {
+                PossibleDiseases.add(Diseases.get(i));
+            }
         }
     }
 
-    private void infectOthers(IAgent_Disease agent, ISpace_Diseases space){ //F
+    public void diseaseSideEffects(IAgent_Disease agent, int effect){
+        agent.setSpiceMetabolism(agent.getSpiceMetabolism() + effect);
+        agent.setSugarMetabolism(agent.getSugarMetabolism() + effect);
+    }
+
+
+    private void infectOthers(IAgent_Disease agent, ISpace_Diseases space){
         IPatch_AgentProvider[][] patches = space.getPatches();
         ArrayList<IAgent_Disease> neighbors = new ArrayList<>();
         addNeighbor(agent, patches, neighbors);
-        if(neighbors.isEmpty() || InfectedDiseases.isEmpty())
+        if(neighbors.isEmpty())
             return;
         
         for(int i = 0; i < neighbors.size(); i++){
-            int randomDisease = (int)(Math.random() * InfectedDiseases.size());
-             if(neighbors.get(i).getPossibleDiseases().contains(agent.getInfectedDiseases().get(randomDisease)) 
-                && !neighbors.get(i).getInfectedDiseases().contains(agent.getInfectedDiseases().get(randomDisease)))
-                //&& neighbors.get(i).getInfectedDiseases().size() == 0)
-             {
-                 neighbors.get(i).getInfectedDiseases().add(agent.getInfectedDiseases().get(randomDisease));
-                 if (agent.getAgeType() != AgeType.Child) {
-                     neighbors.get(i).setSugarMetabolism(neighbors.get(i).getSugarMetabolism() + space.getDiseases().get(agent.getInfectedDiseases().get(randomDisease)));
-                     neighbors.get(i).setSpiceMetabolism(neighbors.get(i).getSpiceMetabolism() + space.getDiseases().get(agent.getInfectedDiseases().get(randomDisease)));
-                 }
-             }
+
+            int diseaseIndex = (int)(Math.random() * InfectedDiseases.size());
+            IAgent_Disease neighbor  = neighbors.get(i);
+            int agentDisease = agent.getInfectedDiseases().get(diseaseIndex) / 10;
+
+            if(neighbor.getPossibleDiseases().contains(agentDisease) && !neighbor.getInfectedDiseases().contains(agentDisease)){
+                
+                int increaseMetabolism = (int)(Math.random() * 3) + 1;
+                if (neighbor.getAgeType() == AgeType.Child)
+                    increaseMetabolism = 0;
+                agentDisease = agentDisease * 10 + increaseMetabolism;
+                neighbor.getInfectedDiseases().add(agentDisease);
+
+                if (neighbor.getAgeType() != AgeType.Child)
+                    diseaseSideEffects(neighbor, increaseMetabolism);
+                
+            }
         }
     }
 

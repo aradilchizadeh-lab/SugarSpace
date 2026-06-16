@@ -10,7 +10,7 @@ import Models.Agent;
 import java.util.ArrayList;
 
 public class Production {
-    public static void production(IAgent_Prodution agent, ISpaceProvider space) {
+    public void production(IAgent_Prodution agent, ISpaceProvider space) {
         IPatch_Production[][] patches = space.getPatches();
         ArrayList<Agent> agents = space.getAgents();
         if (!agent.canBeParent())

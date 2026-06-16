@@ -9,7 +9,7 @@ import Models.Space;
 import java.util.ArrayList;
 
 public class Emigration {
-    public static void emigrate(IAgent_Emigration agent, ISpaceProvider space) {
+    public void emigrate(IAgent_Emigration agent, ISpaceProvider space) {
         IPatch_Emigration[][] patches = space.getPatches();
 
         int x = agent.getX();

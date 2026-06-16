@@ -23,5 +23,7 @@ public interface IAgent_Disease {
 
     public IBehavior getBehavior();
 
-      public AgeType getAgeType();
+    public AgeType getAgeType();
+
+    public int getAge();
 }

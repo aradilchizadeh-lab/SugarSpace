@@ -22,7 +22,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     private int Age;
     private final int[] FertileLimits;
     private boolean IsParent;
-    private AgeType AgeType;
+    private AgeType ageType;
     private IBehavior Behavior;
     private Emigration emigration;
     private Production production;
@@ -48,7 +48,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         FertileLimits = new int[2];
         FertileLimits[0] = (int)(Math.random() * 16) + 45; //max
         FertileLimits[1] = (int)(Math.random() * 3) + 15; //min
-        AgeType = AgeType.Child;
+        ageType = AgeType.Child;
         Behavior = behavior;
         emigration = IFactoryRules.createEmigration();
         production = IFactoryRules.createProduction();
@@ -128,11 +128,11 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     }
 
     public AgeType getAgeType() {
-         return AgeType;
+         return ageType;
     }
 
      public void setAgeType(AgeType ageType){
-        AgeType = ageType;
+        this.ageType = ageType;
     }
      
      public int getFertileLimitMin(){
@@ -177,13 +177,13 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     
     private void updateAgeType() {
         if ((Age >= FertileLimits[1]) && (Age < FertileLimits[0])) {
-            AgeType = AgeType.ReproductiveAdult;
+            ageType = AgeType.ReproductiveAdult;
 
         } else if (Age >= FertileLimits[0]) {
-            AgeType = AgeType.Elderly;}
+            ageType = AgeType.Elderly;}
 
         else {
-             AgeType = AgeType.Child;
+             ageType = AgeType.Child;
         }
     }
 
@@ -236,7 +236,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
             production.production(this, space);
     }
     public void aging(ISpaceProvider space) {
-        Aging.ageRule(this, space);
+        aging.ageRule(this, space);
     }
     public void loan(ISpaceWithTickProvider space) {
         if (Behavior.canLoan())

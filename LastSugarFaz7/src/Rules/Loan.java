@@ -13,7 +13,7 @@ import Models.*;
 import java.util.ArrayList;
 
 public class Loan {
-    public static void loan(IAgent_Loan agent, ISpaceWithTickProvider space) {
+    public void loan(IAgent_Loan agent, ISpaceWithTickProvider space) {
         IPatch_AgentProvider[][] patches = space.getPatches();
         debtPayment(space, agent);
         if (agent.canBeLender()) {

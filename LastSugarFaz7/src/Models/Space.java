@@ -1,19 +1,16 @@
 package Models;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import Data.Config;
 import Interfaces.IFactoryModels;
 import Interfaces.ISpaceProvider;
 import Interfaces.ISpaceWithTickProvider;
 import Interfaces.ISpace_Diseases;
-import Rules.Disease;
 
 public class Space implements ISpaceProvider, ISpaceWithTickProvider, ISpace_Diseases {
     Patch[][] patches = new Patch[Config.SpaceRow][Config.SpaceCol];
     ArrayList<Agent> agents = new ArrayList<Agent>();
-    Map<Integer, Integer> diseases = new HashMap<>();
+    ArrayList<Integer> diseases = new ArrayList<>();
     private int Tick;
 
 
@@ -39,8 +36,9 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider, ISpace_Dis
 
         for (int i = 0; i < Config.diseaseNum;){
             int disease = (int) ((Math.random() * Math.pow(2, 9)) + Math.pow(2, 9));
-            if(!diseases.containsKey(disease)) {
-                diseases.put(disease, (int) (Math.random() * 3 + 1));
+            if (!diseases.contains(disease))
+            {
+                diseases.add(disease);
                 i++;
             }
         }
@@ -65,7 +63,7 @@ public class Space implements ISpaceProvider, ISpaceWithTickProvider, ISpace_Dis
         Tick++;
     }
 
-    public Map<Integer, Integer> getDiseases(){
+    public ArrayList<Integer> getDiseases(){
         return diseases;
     }
 }
