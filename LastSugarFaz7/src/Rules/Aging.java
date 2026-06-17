@@ -17,7 +17,7 @@ public class Aging {
         if (agent.getAge() < agent.getMaxAge()) {
             agent.setParent(false);
         } else {
-            agents.remove(agent);
+            agents.remove((Agent)agent);
             patches[agent.getX()][agent.getY()].setPAgent(null);
         }
     }

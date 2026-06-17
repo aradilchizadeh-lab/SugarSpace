@@ -1,10 +1,8 @@
 package Interfaces;
 
-import Models.Agent;
-
 public interface IPatch_Paint {
 
-    public Agent getPAgent();
+    public IAgent_Paint getPAgent();
 
     public int getPSugar();
 

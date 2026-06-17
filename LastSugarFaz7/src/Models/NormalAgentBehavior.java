@@ -3,7 +3,7 @@ import Data.AgeType;
 import Interfaces.*;
 
 
-public class NormalAgentBehavior implements IBehavior {
+public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     private boolean CanEmigrate = true;
     private boolean CanTrade = true;
     private boolean CanLoan = true;
@@ -40,8 +40,9 @@ public class NormalAgentBehavior implements IBehavior {
     //except gender
     @Override
     public boolean canBeParent(Agent agent) {
+        int randomNum = (int) ((Math.random() * 31) + 30);
         if (agent.getAge() > agent.getFertileLimitMin() && agent.getAge() < agent.getFertileLimitMax()
-                && agent.getASugar() >= agent.getInitSugar() && agent.getASpice() >= agent.getInitSpice() && !(agent.isParent()))
+                && agent.getASugar() + agent.getASpice() >= randomNum && !(agent.isParent()))
             return true;
 
         return false;
@@ -145,6 +146,7 @@ public class NormalAgentBehavior implements IBehavior {
     public void setCanBeInfected(boolean canBeInfected) {
         CanBeInfected = canBeInfected;
     }
+
     public boolean canTrade() {
         return CanTrade;
     }

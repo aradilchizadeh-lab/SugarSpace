@@ -4,7 +4,7 @@ import Models.Agent;
 
 public interface IPatch_Production {
 
-    public Agent getPAgent();
+    public IAgent_Prodution getPAgent();
 
     public void setPAgent(Agent PAgent);
 

@@ -12,7 +12,7 @@ public interface IPatch_Emigration {
 
     public void setPSpice(int PSpice);
 
-    public Agent getPAgent();
+    public IAgent_Emigration getPAgent();
 
     public void setPAgent(Agent PAgent);
 

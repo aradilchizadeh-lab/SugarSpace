@@ -3,17 +3,14 @@ package Rules;
 import Data.AgeType;
 import Data.Config;
 import Data.ResourceType;
-import Interfaces.IAgent_Loan;
-import Interfaces.IFactoryModels;
-import Interfaces.IPatch_AgentProvider;
-import Interfaces.ISpaceWithTickProvider;
+import Interfaces.*;
 import Models.*;
 
 import java.util.ArrayList;
 
 public class Loan {
     public void loan(IAgent_Loan agent, ISpaceWithTickProvider space) {
-        IPatch_AgentProvider[][] patches = space.getPatches();
+        IPatch_Loan[][] patches = space.getPatches();
         debtPayment(space, agent);
         if (agent.canBeLender()) {
             giveLoan(space, agent, patches);
@@ -21,7 +18,7 @@ public class Loan {
     }
 
 
-    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_AgentProvider[][] patches) {
+    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_Loan[][] patches) {
         ArrayList<IAgent_Loan> neighbors = new ArrayList<>();
         int x = a.getX();
         int y = a.getY();

@@ -41,4 +41,6 @@ public interface IAgent_Loan {
 
     public ArrayList<LoanInfo> getLoanInfos();
 
+    public IBehavior_Ability getBehavior();
+
 }

@@ -21,7 +21,7 @@ public interface IAgent_Disease {
 
     public ArrayList<Integer> getPossibleDiseases();
 
-    public IBehavior getBehavior();
+    public IBehavior_Ability getBehavior();
 
     public AgeType getAgeType();
 

@@ -55,14 +55,7 @@ public class Histogram {
             }
         }
         if (cleanData.isEmpty()) {
-            //System.out.println("داده‌ای برای رسم وجود ندارد!");
-            StdDraw.setCanvasSize(800,800);
-            Color color = StdDraw.BLACK;
-            StdDraw.clear(color);
-            StdDraw.setFont(new Font("Impact",Font.PLAIN,50));
-            String text = "this is the end!";
-            StdDraw.setPenColor(StdDraw.WHITE);
-            StdDraw.text(0.5 , 0.5, text);
+            System.out.println("داده‌ای برای رسم وجود ندارد!");
             return;
         }
 
@@ -98,7 +91,7 @@ public class Histogram {
         for (int i = 0; i < n; i++) {
             double freq = bins[i];
 
-            StdDraw.setPenColor(StdDraw.MAGENTA);
+            StdDraw.setPenColor(StdDraw.ORANGE);
             StdDraw.filledRectangle(i, freq / 2.0, 0.4, freq / 2.0);
 
             StdDraw.setPenColor(StdDraw.BLACK);

@@ -31,14 +31,14 @@ public class Production {
             }
         }
         //---[bools to check if we have found neighbor and free patch for reproduction]---
-        boolean neghiborFlag = false;
+        boolean neighborFlag = false;
         boolean emptyPatchFlag = false;
         IPatch_Production babyPatch = null;
         IAgent_Prodution neighborAgent = null;
 
         while (!selectedPatches.isEmpty()) {
             //---[break when we found neighbor and free patch]---
-            if (neghiborFlag && emptyPatchFlag)
+            if (neighborFlag && emptyPatchFlag)
                 break;
             //---[getting random patch]---
             int index = (int) (Math.random() * selectedPatches.size());
@@ -47,12 +47,12 @@ public class Production {
             if (randomPatch.getPAgent() == null && !emptyPatchFlag) {
                 babyPatch = randomPatch;
                 emptyPatchFlag = true;
-            } else if (randomPatch.getPAgent() != null && !neghiborFlag) {
+            } else if (randomPatch.getPAgent() != null && !neighborFlag) {
                 if (randomPatch.getPAgent().getBehavior().canProduce()) {
                     IAgent_Prodution neighbor = randomPatch.getPAgent();
                     if (neighbor.canBeParent() && randomPatch.getPAgent().getGender() != agent.getGender()) {
                         neighborAgent = neighbor;
-                        neghiborFlag = true;
+                        neighborFlag = true;
                     }
                 }
             }
@@ -60,7 +60,7 @@ public class Production {
         }//end while
 
         //---[checking if we have baby condition]---
-        if (neghiborFlag && emptyPatchFlag) {
+        if (neighborFlag && emptyPatchFlag) {
             //---[initializing baby values]---
             int babyX = babyPatch.getPx();
             int babyY = babyPatch.getPy();

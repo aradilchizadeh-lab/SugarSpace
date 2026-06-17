@@ -4,9 +4,9 @@ import Data.ResourceType;
 import Models.*;
 public interface IFactoryModels {
 
-    public static Agent childCreator(int babyX, int babyY, int bSuger, int bSpice, int bVision, float bSuMetabolism, float bSpMetabolism){
+    public static Agent childCreator(int babyX, int babyY, int bSugar, int bSpice, int bVision, float bSuMetabolism, float bSpMetabolism){
         IBehavior behavior = new NormalAgentBehavior();
-        Agent baby = new Agent(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism, behavior);
+        Agent baby = new Agent(babyX, babyY, bSugar, bSpice, bVision, bSuMetabolism, bSpMetabolism, behavior);
         return baby;
     }
 

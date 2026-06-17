@@ -22,4 +22,6 @@ public interface IAgent_Prodution {
     public float getSpiceMetabolism();
 
     public void setParent(boolean IsParent);
+
+    public IBehavior_Ability getBehavior();
 }
