@@ -1,5 +1,6 @@
 package Interfaces;
 
+import Core.SpaceManager;
 import Data.ResourceType;
 import Models.*;
 public interface IFactoryModels {
@@ -24,6 +25,10 @@ public interface IFactoryModels {
 
     public static Space spaceCreator(){
         return new Space();
+    }
+
+    public static SpaceManager spaceManagerCreator(){
+        return new SpaceManager();
     }
 
     public static LoanInfo loanInfoCreator(IAgent_Loan lender, IAgent_Loan borrower, ResourceType type, int amount, int tick){

@@ -19,66 +19,23 @@ public class Controller{
 
     public static void controller() throws InterruptedException {
         //---[creating space]---
-        Space space = IFactoryModels.spaceCreator();
-        ArrayList<Agent> agents = space.getAgents();
+        SpaceManager spaceManager = IFactoryModels.spaceManagerCreator();
         //---[creating paint space]---
         StdDraw.setCanvasSize(Config.CanvasSizeWidth, Config.CanvasSizeHeight);
         StdDraw.setXscale(0, Config.SpaceRow);
         StdDraw.setYscale(0, Config.SpaceCol + 2);
         StdDraw.enableDoubleBuffering();
 
-        int tick = 0;
-        while (tick < Config.Tick) {
-            ++tick;
-            int finalTick = tick;
-            //---[grow back with threads]---
-            ExecutorService executor = Executors.newFixedThreadPool(4);
-            executor.submit(() -> GrowBack.growBack(space, 0, 13, finalTick));
-            executor.submit(() -> GrowBack.growBack(space, 13, 26, finalTick));
-            executor.submit(() -> GrowBack.growBack(space, 26, 39, finalTick));
-            executor.submit(() -> GrowBack.growBack(space, 39, 51, finalTick));
-
-            executor.shutdown();
-            executor.awaitTermination(1, TimeUnit.SECONDS);
-
-            for (int i = agents.size() - 1; i >= 0; i--) {
-                agents.get(i).emigration(space);
-            }
-
-            for (int i = agents.size() - 1; i >= 0; i--) {
-                agents.get(i).production(space);
-            }
-
-            for (int i = agents.size() - 1; i >= 0; i--) {
-                agents.get(i).trade(space);
-            }
-
-            for (int i = agents.size() - 1; i >= 0; i--) {
-                agents.get(i).loan(space);
-            }
-
-            for (int i = agents.size() - 1; i >= 0; i--) {
-                agents.get(i).disease(space);
-            }
-
-            for (int i = agents.size() - 1; i >= 0; i--) {
-                agents.get(i).aging(space);
-            }
-
-            space.setTick();
-            Paint.rePaint(space);
-            if (agents.size() == 0) System.out.println(tick);
-        }
-        for (int i = 0; i < agents.size(); i++) {
-            agents.get(i).print();
-        }
+        //---[call the main Simulation loop ]---
+        spaceManager.runSimulation();
 
         //---[drawing histogram]---
         StdDraw.clear(StdDraw.BLACK);
-        Histogram.saveFileWealth(space);
+        Histogram.saveFileWealth(spaceManager.getSpace());
         Histogram.processAndDraw();
         StdDraw.show();
 
+        //---[Show ending]---
         Ending.ending();
     }
 }
