@@ -31,6 +31,6 @@ public interface IAgent_Emigration {
 
     public float getSpiceMetabolism();
 
-    void survival(ArrayList<Agent> agents, IPatch_Emigration[][] patches );
+    void survival(ArrayList<Agent> agents, Patch[][] patches );
 
 }

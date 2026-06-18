@@ -157,7 +157,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         return Behavior;
     }
 
-    public void survival(ArrayList<Agent> agents, IPatch_Emigration[][] patches){
+    public void survival(ArrayList<Agent> agents, Patch[][] patches){
         Behavior.survival(this, agents, patches);
     }
 

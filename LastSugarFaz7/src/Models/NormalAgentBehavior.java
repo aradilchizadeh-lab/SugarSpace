@@ -14,7 +14,7 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
 
 
     @Override
-    public void survival(Agent agent, ArrayList<Agent> agents, IPatch_Emigration[][] patches) {
+    public void survival(Agent agent, ArrayList<Agent> agents, Patch[][] patches) {
 
         agent.setASugar((int) (agent.getASugar() - agent.getSugarMetabolism()));
         agent.setASpice((int) (agent.getASpice() - agent.getSpiceMetabolism()));

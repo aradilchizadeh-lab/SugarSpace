@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public interface IBehavior extends IBehavior_Ability{
 
-    public void survival(Agent agent, ArrayList<Agent> agents, IPatch_Emigration[][] patches);
+    public void survival(Agent agent, ArrayList<Agent> agents, Patch[][] patches);
 
     public void reproductionInherit(Agent agent);
 

@@ -77,7 +77,7 @@ public class Emigration {
         }
         //---[if agent doesn't emigrate]---
         if ((bestX == x && bestY == y) || maxWelfare <= 0) {
-            agent.survival(agents, patches);
+            agent.survival(agents, (Patch[][]) patches);
             return;
         }
         //---[if we have same condition patches]---
@@ -98,7 +98,7 @@ public class Emigration {
         patches[bestX][bestY].setPAgent((Agent) agent);
         patches[x][y].setPAgent(null);
         //---[agent survival after emigration]---
-        agent.survival(agents, patches);
+        agent.survival(agents, (Patch[][]) patches);
 
     }
 

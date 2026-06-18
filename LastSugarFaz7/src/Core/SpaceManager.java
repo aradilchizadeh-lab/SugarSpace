@@ -2,7 +2,6 @@ package Core;
 
 import Data.Config;
 import GUI.Paint;
-import Interfaces.IAgent_Prodution;
 import Interfaces.IFactoryModels;
 import Models.Agent;
 import Models.Patch;
@@ -93,30 +92,51 @@ public class SpaceManager {
     }
 
     private void runAgentsRules() {
-        for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).emigration(patches, agents);
-        }
 
-        for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).production(patches, agents);
-        }
+        ArrayList<Agent> updatedAgents;
 
-        for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).trade(patches);
+        updatedAgents = new ArrayList<>(agents);
+        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
+            updatedAgents.get(i).emigration(patches, updatedAgents);
         }
+        agents = updatedAgents;
 
-        for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).loan(patches, tick);
-        }
 
-        for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).disease(patches, diseases);
+        updatedAgents = new ArrayList<>(agents);
+        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
+            updatedAgents.get(i).production(patches, updatedAgents);
         }
+        agents = updatedAgents;
 
-        for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).aging(patches, agents);
+
+        updatedAgents = new ArrayList<>(agents);
+        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
+            updatedAgents.get(i).trade(patches);
         }
+        agents = updatedAgents;
+
+
+        updatedAgents = new ArrayList<>(agents);
+        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
+            updatedAgents.get(i).loan(patches, tick);
+        }
+        agents = updatedAgents;
+
+
+        updatedAgents = new ArrayList<>(agents);
+        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
+            updatedAgents.get(i).disease(patches, diseases);
+        }
+        agents = updatedAgents;
+
+
+        updatedAgents = new ArrayList<>(agents);
+        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
+            updatedAgents.get(i).aging(patches, updatedAgents);
+        }
+        agents = updatedAgents;
     }
+
 
     public Patch[][] getPatches() {
         return patches;
@@ -124,10 +144,6 @@ public class SpaceManager {
 
     public ArrayList<Agent> getAgents() {
         return agents;
-    }
-
-    public ArrayList<Integer> getDiseases() {
-        return diseases;
     }
 
     public int getTick() {
