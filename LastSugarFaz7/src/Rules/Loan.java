@@ -50,7 +50,7 @@ public class Loan implements ILoan{
         if (neighbors.isEmpty()) return;
         while (true) {
             for (int k = 0; k < neighbors.size(); k++) {
-                if (neighbors.get(k).getAgeType() == type) {
+                if (neighbors.get(k).getPhysiology().getAgeType() == type) {
                     sameCondition.add(neighbors.get(k));
                 }
             }
@@ -71,10 +71,10 @@ public class Loan implements ILoan{
         IAgent_Loan neighbor = sameCondition.get(index);
 
         //---[checking status of resource for the payment for both agent and neighbor]---
-        if (agent.getWallet().getASpice() > agent.getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
+        if (agent.getWallet().getASpice() > agent.getPhysiology().getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
 
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(agent.getWallet().getASpice() - agent.getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
+            amount = (int) Math.min(agent.getWallet().getASpice() - agent.getPhysiology().getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
 
             //---[adding info to list]---
             agent.getLoanInfos().add(IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Spice, amount,tick));
@@ -84,10 +84,10 @@ public class Loan implements ILoan{
             agent.getWallet().setASpice(agent.getWallet().getASpice() - amount);
         }
         //---[checking status of resource for the payment for both agent and neighbor]---
-        if (agent.getWallet().getASugar() > agent.getSugarMetabolism() * 5 && neighbor.needsSugar()) {
+        if (agent.getWallet().getASugar() > agent.getPhysiology().getSugarMetabolism() * 5 && neighbor.needsSugar()) {
 
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(agent.getWallet().getASugar() - agent.getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
+            amount = (int) Math.min(agent.getWallet().getASugar() - agent.getPhysiology().getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
 
             //---[adding info to list]---
             agent.getLoanInfos().add(IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Sugar, amount, tick));

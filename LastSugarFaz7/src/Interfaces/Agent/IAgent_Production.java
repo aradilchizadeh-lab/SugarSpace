@@ -2,7 +2,7 @@ package Interfaces.Agent;
 
 import Interfaces.IPositionView;
 
-public interface IAgent_Production extends IBioView, IParentageUpdate{
+public interface IAgent_Production{
 
     public IPositionView getPosition();
 
@@ -13,4 +13,8 @@ public interface IAgent_Production extends IBioView, IParentageUpdate{
     public boolean canBeParent();
 
     public IBehavior_Ability getBehavior();
+
+    public IPhysiologyView getPhysiology();
+
+    public IParentageUpdate getFertilityInfo();
 }

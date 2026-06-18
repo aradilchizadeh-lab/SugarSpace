@@ -84,8 +84,8 @@ public class Disease implements IDisease{
     }
 
     public void diseaseSideEffects(IAgent_Disease agent, int effect) {
-        agent.setSpiceMetabolism(agent.getSpiceMetabolism() + effect);
-        agent.setSugarMetabolism(agent.getSugarMetabolism() + effect);
+        agent.getPhysiology().setSpiceMetabolism(agent.getPhysiology().getSpiceMetabolism() + effect);
+        agent.getPhysiology().setSugarMetabolism(agent.getPhysiology().getSugarMetabolism() + effect);
     }
 
 
@@ -113,12 +113,12 @@ public class Disease implements IDisease{
             if (neighbor.getPossibleDiseases().contains(agentDisease) && !alreadyInfected) {
 
                 int increaseMetabolism = (int) (Math.random() * 3) + 1;
-                if (neighbor.getAgeType() == AgeType.Child)
+                if (neighbor.getPhysiology().getAgeType() == AgeType.Child)
                     increaseMetabolism = 0;
                 agentDisease = agentDisease * 10 + increaseMetabolism;
                 neighbor.getInfectedDiseases().add(agentDisease);
 
-                if (neighbor.getAgeType() != AgeType.Child)
+                if (neighbor.getPhysiology().getAgeType() != AgeType.Child)
                     diseaseSideEffects(neighbor, increaseMetabolism);
 
             }

@@ -1,6 +1,6 @@
 package Interfaces.Agent;
 
-public interface IMetabolismUpdate extends IBioView{
+public interface IMetabolismUpdate extends IPhysiologyView {
 
     public void setSugarMetabolism(float sugar);
 

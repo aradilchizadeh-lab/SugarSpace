@@ -42,19 +42,19 @@ public class Paint {
 
                 if (patches[i][j].getPAgent() != null)
                 {
-                    if (patchAgent.getAge() >= patchAgent.getFertileLimitMax())
+                    if (patchAgent.getPhysiology().getAge() >= patchAgent.getFertilityInfo().getFertileLimitMax())
                     {
                         StdDraw.setPenColor(StdDraw.BLACK);
                         StdDraw.setPenRadius(0.015);
                         StdDraw.point(i + 0.5, j + 0.5);
                     }
-                    else if(patchAgent.getGender() == 0)
+                    else if(patchAgent.getFertilityInfo().getGender() == 0)
                     {
                         StdDraw.setPenColor(StdDraw.RED);
                         StdDraw.setPenRadius(0.015);
                         StdDraw.point(i + 0.5, j + 0.5);
                     }
-                    else if (patchAgent.getGender() == 1)
+                    else if (patchAgent.getFertilityInfo().getGender() == 1)
                     {
                         StdDraw.setPenColor(StdDraw.BLUE);
                         StdDraw.setPenRadius(0.015);

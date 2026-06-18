@@ -49,7 +49,7 @@ public class Production implements IProduction{
             } else if (randomPatch.getPAgent() != null && !neighborFlag) {
                 if (randomPatch.getPAgent().getBehavior().canProduce()) {
                     IAgent_Production neighbor = randomPatch.getPAgent();
-                    if (neighbor.canBeParent() && randomPatch.getPAgent().getGender() != agent.getGender()) {
+                    if (neighbor.canBeParent() && randomPatch.getPAgent().getFertilityInfo().getGender() != agent.getFertilityInfo().getGender()) {
                         neighborAgent = neighbor;
                         neighborFlag = true;
                     }
@@ -66,15 +66,15 @@ public class Production implements IProduction{
 
             int bSuger = Math.round(agent.getWallet().getInitSugar() / 2 + neighborAgent.getWallet().getInitSugar() / 2);
             int bSpice = Math.round(agent.getWallet().getInitSpice() / 2 + neighborAgent.getWallet().getInitSpice() / 2);
-            int bSuMetabolism = Math.round(agent.getSugarMetabolism() / 2 + neighborAgent.getSugarMetabolism() / 2);
-            int bSpMetabolism = Math.round(agent.getSpiceMetabolism() / 2 + neighborAgent.getSpiceMetabolism() / 2);
-            int bVision = Math.round(agent.getVision() / 2 + neighborAgent.getVision() / 2);
+            int bSuMetabolism = Math.round(agent.getPhysiology().getSugarMetabolism() / 2 + neighborAgent.getPhysiology().getSugarMetabolism() / 2);
+            int bSpMetabolism = Math.round(agent.getPhysiology().getSpiceMetabolism() / 2 + neighborAgent.getPhysiology().getSpiceMetabolism() / 2);
+            int bVision = Math.round(agent.getPhysiology().getVision() / 2 + neighborAgent.getPhysiology().getVision() / 2);
             //---[creating baby]---
             Agent baby = IFactoryModels.childCreator(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism);
             agents.add(baby);
             //---[parents status initializing]---
-            agent.setParent(true);
-            neighborAgent.setParent(true);
+            agent.getFertilityInfo().setParent(true);
+            neighborAgent.getFertilityInfo().setParent(true);
             agent.reproductionInherit();
             neighborAgent.reproductionInherit();
             babyPatch.setPAgent(baby);
