@@ -2,36 +2,46 @@ package Interfaces;
 
 import Core.SpaceManager;
 import Data.ResourceType;
+import Interfaces.Agent.IAgent_Loan;
+import Interfaces.Agent.IBehavior;
 import Models.*;
 public interface IFactoryModels {
 
     public static Agent childCreator(int babyX, int babyY, int bSugar, int bSpice, int bVision, float bSuMetabolism, float bSpMetabolism){
+        
         IBehavior behavior = new NormalAgentBehavior();
-        Agent baby = new Agent(babyX, babyY, bSugar, bSpice, bVision, bSuMetabolism, bSpMetabolism, behavior);
+        Wallet wallet = new Wallet(bSugar, bSpice);
+        Position position = new Position(babyX, babyY);
+
+        Agent baby = new Agent(position, wallet, bVision, bSuMetabolism, bSpMetabolism, behavior);
         return baby;
     }
-
+//---------------------------------------------------------------------------------------
     public static Agent NormalAgentCreator(int x, int y, int disease){
+        
         IBehavior behavior = new NormalAgentBehavior();
-        Agent agent = new Agent(x, y, (int)(Math.random() * 21) + 5, (int)(Math.random() * 21) + 5,
+        Wallet wallet = new Wallet((int)(Math.random() * 21) + 5, (int)(Math.random() * 21) + 5);
+        Position position = new Position(x, y);
+
+        Agent agent = new Agent(position, wallet,
                 (int)(Math.random() * 10) + 1, (int)(Math.random() * 4) + 1, (int)(Math.random() * 4) + 1,behavior );
         agent.addInfectedDiseases(disease);
         return agent;
     }
-
+//-------------------------------------------------------------------------------------------
     public static Patch patchCreator(int x, int y){
-        PatchPosition p = new PatchPosition(x, y);
-        return new Patch(p);
+        Position position = new Position(x, y);
+        return new Patch(position);
     }
-
+//----------------------------------------------------------------------------------------------
     public static PatchResources patchResourcesCreator(int maxSug, int maxSpi){
         return new PatchResources(maxSug, maxSpi);
     }
-
+//----------------------------------------------------------------------------------------------
     public static SpaceManager spaceManagerCreator(){
         return new SpaceManager();
     }
-
+//-------------------------------------------------------------------------------------------------
     public static LoanInfo loanInfoCreator(IAgent_Loan lender, IAgent_Loan borrower, ResourceType type, int amount, int tick){
         return new LoanInfo(lender, borrower, type, amount, tick);
     }

@@ -1,12 +1,13 @@
 package Rules;
 
-import Interfaces.IAgent_Aging;
-import Interfaces.IPatch_Aging;
+import Interfaces.Agent.IAgent_Aging;
+import Interfaces.Patch.IPatch_Aging;
+import Interfaces.Rules.IAging;
 import Models.Agent;
 
 import java.util.ArrayList;
 
-public class Aging {
+public class Aging implements IAging{
     public void ageRule(IAgent_Aging agent, IPatch_Aging[][] patches, ArrayList<Agent> agents) {
         agent.changeAge();
         //---[reset parent status and checking age status]---
@@ -14,7 +15,7 @@ public class Aging {
             agent.setParent(false);
         } else {
             agents.remove((Agent)agent);
-            patches[agent.getX()][agent.getY()].setPAgent(null);
+            patches[agent.getPosition().getX()][agent.getPosition().getY()].setPAgent(null);
         }
     }
 }

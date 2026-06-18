@@ -1,4 +1,6 @@
-package Interfaces;
+package Interfaces.Agent;
+
+import Interfaces.IFertilityView;
 
 public interface IParentageUpdate extends IFertilityView{
 

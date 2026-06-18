@@ -1,4 +1,4 @@
-package Interfaces;
+package Interfaces.Agent;
 
 import Models.Agent;
 import Models.Patch;

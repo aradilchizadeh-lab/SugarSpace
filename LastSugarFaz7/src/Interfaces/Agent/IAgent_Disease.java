@@ -1,10 +1,12 @@
-package Interfaces;
+package Interfaces.Agent;
 
 import java.util.ArrayList;
 
-import Data.AgeType;
+import Interfaces.IPositionView;
 
-public interface IAgent_Disease extends IPositionView, IMetabolismUpdate{
+public interface IAgent_Disease extends IMetabolismUpdate{
+
+    public IPositionView getPosition();
 
     public ArrayList<Integer> getInfectedDiseases();
 

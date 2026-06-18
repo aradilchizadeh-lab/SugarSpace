@@ -2,8 +2,8 @@ package GUI;
 
 
 import Data.Config;
-import Interfaces.IAgent_Paint;
-import Interfaces.IPatch_Paint;
+import Interfaces.Agent.IAgent_Paint;
+import Interfaces.Patch.IPatch_Paint;
 import Models.Agent;
 
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ public class Paint {
         {
             for (int j = 0; j < Config.SpaceCol; ++j)
             {
-                int sugar = patches[i][j].getPSugar();
-                int spice = patches[i][j].getPSpice();
+                int sugar = patches[i][j].getResource().getPSugar();
+                int spice = patches[i][j].getResource().getPSpice();
                 float ratio = (float)(sugar / Config.MaxCap);
                 float ratio2 = (float)(spice / Config.MaxCap);
 

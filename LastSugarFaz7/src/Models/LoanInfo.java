@@ -2,7 +2,7 @@ package Models;
 
 import Data.Config;
 import Data.ResourceType;
-import Interfaces.IAgent_Loan;
+import Interfaces.Agent.IAgent_Loan;
 
 public class LoanInfo {
  private IAgent_Loan Lender;

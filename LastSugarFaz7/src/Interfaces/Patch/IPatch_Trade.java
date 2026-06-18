@@ -1,5 +1,6 @@
-package Interfaces;
+package Interfaces.Patch;
 
+import Interfaces.Agent.IAgent_Trade;
 
 public interface IPatch_Trade {
     

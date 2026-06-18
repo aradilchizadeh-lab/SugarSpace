@@ -1,13 +1,13 @@
 package Rules;
 import Data.Config;
-
-import Interfaces.IAgent_Trade;
-import Interfaces.IPatch_Trade;
+import Interfaces.Agent.IAgent_Trade;
+import Interfaces.Patch.IPatch_Trade;
+import Interfaces.Rules.ITrade;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Trade {
+public class Trade implements ITrade{
     public  void trade(IAgent_Trade agent, IPatch_Trade[][] patches) {
 
         ArrayList<IAgent_Trade> neighborAgents = new ArrayList<>();
@@ -16,9 +16,9 @@ public class Trade {
             trading(agent, neighborAgents);
     }
 
-    private static void addNeighbor(IAgent_Trade a, IPatch_Trade[][] patches, ArrayList<IAgent_Trade> neighbor) {
-        int x = a.getX();
-        int y = a.getY();
+    private static void addNeighbor(IAgent_Trade agent, IPatch_Trade[][] patches, ArrayList<IAgent_Trade> neighbor) {
+        int x = agent.getPosition().getX();
+        int y = agent.getPosition().getY();
         for (int i = x - 1; i <= x + 1; ++i) {
             if (i < 0 || i > Config.SpaceRow - 1)
                 continue;
@@ -48,8 +48,8 @@ public class Trade {
             for (IAgent_Trade neighborAgent : neighbors) {
                 boolean valid = false;
 
-                MRS_Agent = agent.getMRS(agent.getASugar(), agent.getASpice());
-                MRS_Neighbor = neighborAgent.getMRS(neighborAgent.getASugar(), neighborAgent.getASpice());
+                MRS_Agent = agent.getMRS(agent.getWallet().getASugar(), agent.getWallet().getASpice());
+                MRS_Neighbor = neighborAgent.getMRS(neighborAgent.getWallet().getASugar(), neighborAgent.getWallet().getASpice());
 
                 if (Math.abs(MRS_Agent - MRS_Neighbor) <= 1e-6) {
                     continue;
@@ -66,10 +66,10 @@ public class Trade {
                 }
                 //---[status of P]---
                 if (P >= 1) {
-                    newSugarAgentHigh = AgentMRS_High.getASugar() + 1;
-                    newSpiceAgentHigh = AgentMRS_High.getASpice() - P;
-                    newSugarAgentLow = AgentMRS_Low.getASugar() - 1;
-                    newSpiceAgentLow = AgentMRS_Low.getASpice() + P;
+                    newSugarAgentHigh = AgentMRS_High.getWallet().getASugar() + 1;
+                    newSpiceAgentHigh = AgentMRS_High.getWallet().getASpice() - P;
+                    newSugarAgentLow = AgentMRS_Low.getWallet().getASugar() - 1;
+                    newSpiceAgentLow = AgentMRS_Low.getWallet().getASpice() + P;
 
                     valid = isValid(
                             AgentMRS_High, AgentMRS_Low,
@@ -77,10 +77,10 @@ public class Trade {
                             newSpiceAgentHigh, newSpiceAgentLow
                     );
                 } else if (P > 0) {
-                    newSugarAgentHigh = AgentMRS_High.getASugar() + 1 / P;
-                    newSpiceAgentHigh = AgentMRS_High.getASpice() - 1;
-                    newSugarAgentLow = AgentMRS_Low.getASugar() - 1 / P;
-                    newSpiceAgentLow = AgentMRS_Low.getASpice() + 1;
+                    newSugarAgentHigh = AgentMRS_High.getWallet().getASugar() + 1 / P;
+                    newSpiceAgentHigh = AgentMRS_High.getWallet().getASpice() - 1;
+                    newSugarAgentLow = AgentMRS_Low.getWallet().getASugar() - 1 / P;
+                    newSpiceAgentLow = AgentMRS_Low.getWallet().getASpice() + 1;
 
                     valid = isValid(
                             AgentMRS_High, AgentMRS_Low,
@@ -90,10 +90,10 @@ public class Trade {
                 }
                 //---[trading if the trade is valid]---
                 if (valid) {
-                    AgentMRS_High.setASugar((int) newSugarAgentHigh);
-                    AgentMRS_Low.setASugar((int) newSugarAgentLow);
-                    AgentMRS_High.setASpice((int) newSpiceAgentHigh);
-                    AgentMRS_Low.setASpice((int) newSpiceAgentLow);
+                    AgentMRS_High.getWallet().setASugar((int) newSugarAgentHigh);
+                    AgentMRS_Low.getWallet().setASugar((int) newSugarAgentLow);
+                    AgentMRS_High.getWallet().setASpice((int) newSpiceAgentHigh);
+                    AgentMRS_Low.getWallet().setASpice((int) newSpiceAgentLow);
 
                     tradeOccurred = true;
                 }
@@ -105,8 +105,8 @@ public class Trade {
     private static boolean isValid(IAgent_Trade AgentMRS_High, IAgent_Trade AgentMRS_Low, double newSugarAgentHigh, double newSugarAgentLow, double newSpiceAgentHigh, double newSpiceAgentLow){
         double WelfareAgentHigh_Old, WelfareAgentHigh_New, WelfareAgentLow_Old, WelfareAgentLow_New ,AgentHigh_NewMRS, AgentLow_NewMRS;
 
-        WelfareAgentHigh_Old = AgentMRS_High.getWelfare(AgentMRS_High.getASugar(), AgentMRS_High.getASpice());
-        WelfareAgentLow_Old = AgentMRS_Low.getWelfare(AgentMRS_Low.getASugar(), AgentMRS_Low.getASpice());
+        WelfareAgentHigh_Old = AgentMRS_High.getWelfare(AgentMRS_High.getWallet().getASugar(), AgentMRS_High.getWallet().getASpice());
+        WelfareAgentLow_Old = AgentMRS_Low.getWelfare(AgentMRS_Low.getWallet().getASugar(), AgentMRS_Low.getWallet().getASpice());
         WelfareAgentHigh_New = AgentMRS_High.getWelfare(newSugarAgentHigh, newSpiceAgentHigh);
         WelfareAgentLow_New = AgentMRS_Low.getWelfare(newSugarAgentLow, newSpiceAgentLow);
 

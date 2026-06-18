@@ -1,10 +1,9 @@
 package Models;
 
-import javax.swing.text.Position;
-import Data.Config;
-import Interfaces.IPatch_Resources;
+import Interfaces.Patch.IPatch_ResourceUpdate;
 
-public class PatchResources implements IPatch_Resources{
+
+public class PatchResources implements IPatch_ResourceUpdate{
     private int PSugar;
     private int PSpice;
     private int MaxSugarCap;

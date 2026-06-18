@@ -1,4 +1,4 @@
-package Interfaces;
+package Interfaces.Agent;
 
 public interface IWalletView {
 

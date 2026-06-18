@@ -5,15 +5,20 @@ import java.util.ArrayList;
 import Data.AgeType;
 
 import Interfaces.*;
-import Rules.*;
+import Interfaces.Agent.*;
+import Interfaces.Patch.IPatch_Aging;
+import Interfaces.Patch.IPatch_Disease;
+import Interfaces.Patch.IPatch_Emigration;
+import Interfaces.Patch.IPatch_Loan;
+import Interfaces.Patch.IPatch_Production;
+import Interfaces.Patch.IPatch_Trade;
+import Interfaces.Rules.*;
 
-public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, IAgent_Paint, IAgent_Production, IAgent_Trade,IAgent_Aging, IAgent_Disease {
-    private int Ax;
-    private int Ay;
-    private final int InitSugar;
-    private final int InitSpice;
-    private int ASugar;
-    private int ASpice;
+
+public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAgent_Production, IAgent_Trade, IAgent_Aging, IAgent_Disease {
+    
+    private Position Aposition;
+    private Wallet Awallet;
     private final int Vision;
     private float SugarMetabolism;
     private float SpiceMetabolism;
@@ -24,21 +29,18 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     private boolean IsParent;
     private AgeType ageType;
     private IBehavior Behavior;
-    private Emigration Emigration;
-    private Production Production;
-    private Trade Trade;
-    private Loan Loan;
-    private Aging aging;
-    private Disease Disease;
+    private IEmigration Emigration;
+    private IProduction Production;
+    private ITrade Trade;
+    private ILoan Loan;
+    private IAging aging;
+    private IDisease Disease;
     private ArrayList<LoanInfo> LoanInfos;
     
-    public Agent(int x, int y, int initSugar, int initSpice, int vision, float sugarMetabolism, float spiceMetabolism, IBehavior behavior){
-        Ax = x;
-        Ay = y;
-        InitSugar = initSugar;
-        ASugar = InitSugar;
-        InitSpice = initSpice;
-        ASpice = InitSpice;
+    public Agent(Position position, Wallet wallet, int vision, float sugarMetabolism, float spiceMetabolism, IBehavior behavior){
+        
+        Aposition = position;
+        Awallet = wallet;
         Vision = vision;
         SugarMetabolism = sugarMetabolism;
         SpiceMetabolism = spiceMetabolism;
@@ -60,47 +62,14 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         LoanInfos = new ArrayList<>();
     }
 
+    public Wallet getWallet(){
+        return Awallet;
+    }
+
+    public Position getPosition(){
+        return Aposition;
+    }
     
-     public void setX(int x){
-         Ax = x;
-     }
-
-     public void setY(int y){
-         Ay = y;
-     }
-
-    public int getX(){
-        return Ax;
-    }
-
-    public int getY(){
-        return Ay;
-    }
-
-    public void setASugar(int ASugar){
-        this.ASugar = ASugar;
-    }
-
-    public void setASpice(int ASpice){
-        this.ASpice = ASpice;
-    }
-
-    public int getASugar(){
-        return ASugar;
-    }
-
-    public int getASpice(){
-        return ASpice;
-    }
-
-    public int getInitSugar(){
-        return InitSugar;
-    }
-
-    public int getInitSpice(){
-        return InitSpice;
-    }
-
     public int getVision(){
         return Vision;
     }

@@ -1,20 +1,22 @@
 package Rules;
 
 import Data.Config;
-import Interfaces.IAgent_Production;
 import Interfaces.IFactoryModels;
-import Interfaces.IPatch_Production;
+import Interfaces.Agent.IAgent_Production;
+import Interfaces.Patch.IPatch_Production;
+import Interfaces.Rules.IProduction;
 import Models.Agent;
 
 import java.util.ArrayList;
 
-public class Production {
+public class Production implements IProduction{
+
     public void production(IAgent_Production agent, IPatch_Production[][] patches, ArrayList<Agent> agents ) {
         if (!agent.canBeParent())
             return;
 
-        int agentX = agent.getX();
-        int agentY = agent.getY();
+        int agentX = agent.getPosition().getX();
+        int agentY = agent.getPosition().getY();
 
         ArrayList<IPatch_Production> selectedPatches = new ArrayList<>();
         //---[all patches around agent]---
@@ -59,11 +61,11 @@ public class Production {
         //---[checking if we have baby condition]---
         if (neighborFlag && emptyPatchFlag) {
             //---[initializing baby values]---
-            int babyX = babyPatch.getPx();
-            int babyY = babyPatch.getPy();
+            int babyX = babyPatch.getPosition().getX();
+            int babyY = babyPatch.getPosition().getY();
 
-            int bSuger = Math.round(agent.getInitSugar() / 2 + neighborAgent.getInitSugar() / 2);
-            int bSpice = Math.round(agent.getInitSpice() / 2 + neighborAgent.getInitSpice() / 2);
+            int bSuger = Math.round(agent.getWallet().getInitSugar() / 2 + neighborAgent.getWallet().getInitSugar() / 2);
+            int bSpice = Math.round(agent.getWallet().getInitSpice() / 2 + neighborAgent.getWallet().getInitSpice() / 2);
             int bSuMetabolism = Math.round(agent.getSugarMetabolism() / 2 + neighborAgent.getSugarMetabolism() / 2);
             int bSpMetabolism = Math.round(agent.getSpiceMetabolism() / 2 + neighborAgent.getSpiceMetabolism() / 2);
             int bVision = Math.round(agent.getVision() / 2 + neighborAgent.getVision() / 2);

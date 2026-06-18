@@ -4,12 +4,15 @@ import Data.AgeType;
 import Data.Config;
 import Data.ResourceType;
 import Interfaces.*;
+import Interfaces.Agent.IAgent_Loan;
+import Interfaces.Patch.IPatch_Loan;
+import Interfaces.Rules.ILoan;
 import Models.*;
 
 import java.util.ArrayList;
 
-public class Loan {
-    public void loan(IAgent_Loan agent, IPatch_Loan[][] patches, int tick ) {
+public class Loan implements ILoan{
+    public void loan(IAgent_Loan agent, IPatch_Loan[][] patches, int tick) {
         debtPayment(tick, agent);
         if (agent.canBeLender()) {
             giveLoan(agent, patches, tick);
@@ -17,10 +20,10 @@ public class Loan {
     }
 
 
-    private static void giveLoan( IAgent_Loan a, IPatch_Loan[][] patches, int tick) {
+    private static void giveLoan( IAgent_Loan agent, IPatch_Loan[][] patches, int tick) {
         ArrayList<IAgent_Loan> neighbors = new ArrayList<>();
-        int x = a.getX();
-        int y = a.getY();
+        int x = agent.getPosition().getX();
+        int y = agent.getPosition().getY();
         //---[adding neighbors]---
         for (int i = x - 1; i <= x + 1; ++i) {
             //---[checking if we are in the space]---
@@ -68,33 +71,41 @@ public class Loan {
         IAgent_Loan neighbor = sameCondition.get(index);
 
         //---[checking status of resource for the payment for both agent and neighbor]---
-        if (a.getASpice() > a.getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
+        if (agent.getWallet().getASpice() > agent.getSpiceMetabolism() * 5 && neighbor.needsSpice()) {
+
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getASpice() - a.getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
+            amount = (int) Math.min(agent.getWallet().getASpice() - agent.getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
+
             //---[adding info to list]---
-            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount,tick));
+            agent.getLoanInfos().add(IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Spice, amount,tick));
+
             //---[payment]---
-            neighbor.setASpice(neighbor.getASpice() + amount);
-            a.setASpice(a.getASpice() - amount);
+            neighbor.getWallet().setASpice(neighbor.getWallet().getASpice() + amount);
+            agent.getWallet().setASpice(agent.getWallet().getASpice() - amount);
         }
         //---[checking status of resource for the payment for both agent and neighbor]---
-        if (a.getASugar() > a.getSugarMetabolism() * 5 && neighbor.needsSugar()) {
+        if (agent.getWallet().getASugar() > agent.getSugarMetabolism() * 5 && neighbor.needsSugar()) {
+
             //---[initializing amount by priority of need and can give]---
-            amount = (int) Math.min(a.getASugar() - a.getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
+            amount = (int) Math.min(agent.getWallet().getASugar() - agent.getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
+
             //---[adding info to list]---
-            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, tick));
+            agent.getLoanInfos().add(IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Sugar, amount, tick));
+
             //---[payment]---
-            neighbor.setASugar(neighbor.getASugar() + amount);
-            a.setASugar(a.getASugar() - amount);
+            neighbor.getWallet().setASugar(neighbor.getWallet().getASugar() + amount);
+            agent.getWallet().setASugar(agent.getWallet().getASugar() - amount);
         }
     }
 
     public static void debtPayment(int tick, IAgent_Loan agent) {
         int debtAmount = 0;
         for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
+
             //---[checking if our agent is in the borrowers and if we are in the payment tick]---
             if (agent.getLoanInfos().get(i).getBorrower() == agent && agent.getLoanInfos().get(i).getLoanTick() + Config.NumberTickLoan == tick) {
                 LoanInfo info = agent.getLoanInfos().get(i);
+
                 //---[initializing debt amount]---
                 debtAmount = info.getAmount();
 
@@ -119,16 +130,16 @@ public class Loan {
 
     public static int getResource(IAgent_Loan agent, ResourceType type) {
         if (ResourceType.Spice == type) {
-            return agent.getASpice();
+            return agent.getWallet().getASpice();
         }
-        return agent.getASugar();
+        return agent.getWallet().getASugar();
     }
 
     public static void setResource(IAgent_Loan agent, ResourceType type, int value) {
         if (ResourceType.Spice == type) {
-            agent.setASpice(value);
+            agent.getWallet().setASpice(value);
         } else {
-            agent.setASugar(value);
+            agent.getWallet().setASugar(value);
         }
     }
 }

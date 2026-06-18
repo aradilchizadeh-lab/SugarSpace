@@ -1,11 +1,11 @@
 package Models;
 import Data.AgeType;
-import Interfaces.*;
+import Interfaces.Agent.IBehavior;
 
 import java.util.ArrayList;
 
 
-public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
+public class NormalAgentBehavior implements IBehavior {
     private boolean CanEmigrate = true;
     private boolean CanTrade = true;
     private boolean CanLoan = true;
@@ -16,10 +16,10 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     @Override
     public void survival(Agent agent, ArrayList<Agent> agents, Patch[][] patches) {
 
-        agent.setASugar((int) (agent.getASugar() - agent.getSugarMetabolism()));
-        agent.setASpice((int) (agent.getASpice() - agent.getSpiceMetabolism()));
+        agent.getWallet().setASugar((int) (agent.getWallet().getASugar() - agent.getSugarMetabolism()));
+        agent.getWallet().setASpice((int) (agent.getWallet().getASpice() - agent.getSpiceMetabolism()));
 
-        if (agent.getASugar() <= 0 || agent.getASpice() <= 0) {
+        if (agent.getWallet().getASugar() <= 0 || agent.getWallet().getASpice() <= 0) {
             for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
                 if (agent.getLoanInfos().get(i).getLender() == this) {
                     agent.getLoanInfos().remove(i);
@@ -28,15 +28,15 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
                 }
             }
             agents.remove(agent);
-            patches[agent.getX()][agent.getY()].setPAgent(null);
+            patches[agent.getPosition().getX()][agent.getPosition().getY()].setPAgent(null);
         }
 
     }
 
     @Override
     public void reproductionInherit(Agent agent) {
-        agent.setASugar(Math.round(agent.getASugar() - agent.getInitSugar() / 2));
-        agent.setASpice(Math.round(agent.getASpice() - agent.getInitSpice() / 2));
+        agent.getWallet().setASugar(Math.round(agent.getWallet().getASugar() - agent.getWallet().getInitSugar() / 2));
+        agent.getWallet().setASpice(Math.round(agent.getWallet().getASpice() - agent.getWallet().getInitSpice() / 2));
     }
 
     //except gender
@@ -44,7 +44,7 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     public boolean canBeParent(Agent agent) {
         int randomNum = (int) ((Math.random() * 31) + 30);
         if (agent.getAge() > agent.getFertileLimitMin() && agent.getAge() < agent.getFertileLimitMax()
-                && agent.getASugar() + agent.getASpice() >= randomNum && !(agent.isParent()))
+                && agent.getWallet().getASugar() + agent.getWallet().getASpice() >= randomNum && !(agent.isParent()))
             return true;
 
         return false;
@@ -70,7 +70,7 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     @Override
     public boolean canBeLender(Agent agent) {
 
-        if (agent.getASugar() > 5 * agent.getSugarMetabolism() || agent.getASpice() > 5 * agent.getSpiceMetabolism())
+        if (agent.getWallet().getASugar() > 5 * agent.getSugarMetabolism() || agent.getWallet().getASpice() > 5 * agent.getSpiceMetabolism())
             return true;
 
         return false;
@@ -81,13 +81,13 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     public int requiredSpiceAmount(Agent agent) {
 
         if (agent.getAgeType() == AgeType.ReproductiveAdult)
-            return agent.getInitSpice() - agent.getASpice();
+            return agent.getWallet().getInitSpice() - agent.getWallet().getASpice();
 
         if (agent.getAgeType() == AgeType.Elderly)
             return (int) (agent.getSpiceMetabolism() * 2);
 
         if (agent.getAgeType() == AgeType.Child)
-            return agent.getInitSpice() - agent.getASpice();
+            return agent.getWallet().getInitSpice() - agent.getWallet().getASpice();
 
         return 0;
     }
@@ -96,13 +96,13 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     public int requiredSugarAmount(Agent agent) {
 
         if (agent.getAgeType() == AgeType.ReproductiveAdult)
-            return agent.getInitSugar() - agent.getASugar();
+            return agent.getWallet().getInitSugar() - agent.getWallet().getASugar();
 
         if (agent.getAgeType() == AgeType.Elderly)
             return (int) (agent.getSugarMetabolism() * 2);
 
         if (agent.getAgeType() == AgeType.Child)
-            return agent.getInitSugar() - agent.getASugar();
+            return agent.getWallet().getInitSugar() - agent.getWallet().getASugar();
 
         return 0;
     }
@@ -110,11 +110,11 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     @Override
     public boolean needsSpice(Agent agent) {
 
-        if (agent.getAgeType() == AgeType.ReproductiveAdult && (agent.getASpice() < agent.getInitSpice()))
+        if (agent.getAgeType() == AgeType.ReproductiveAdult && (agent.getWallet().getASpice() < agent.getWallet().getInitSpice()))
             return true;
-        if (agent.getAgeType() == AgeType.Elderly && (agent.getASpice() < agent.getSpiceMetabolism()))
+        if (agent.getAgeType() == AgeType.Elderly && (agent.getWallet().getASpice() < agent.getSpiceMetabolism()))
             return true;
-        if (agent.getAgeType() == AgeType.Child && (agent.getASpice() < agent.getInitSpice()))
+        if (agent.getAgeType() == AgeType.Child && (agent.getWallet().getASpice() < agent.getWallet().getInitSpice()))
             return true;
 
         return false;
@@ -123,11 +123,11 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     @Override
     public boolean needsSugar(Agent agent) {
 
-        if (agent.getAgeType() == AgeType.ReproductiveAdult && (agent.getASugar() < agent.getInitSugar()))
+        if (agent.getAgeType() == AgeType.ReproductiveAdult && (agent.getWallet().getASugar() < agent.getWallet().getInitSugar()))
             return true;
-        if (agent.getAgeType() == AgeType.Elderly && (agent.getASugar() <= agent.getSugarMetabolism()))
+        if (agent.getAgeType() == AgeType.Elderly && (agent.getWallet().getASugar() <= agent.getSugarMetabolism()))
             return true;
-        if (agent.getAgeType() == AgeType.Child && (agent.getASugar() < agent.getInitSugar()))
+        if (agent.getAgeType() == AgeType.Child && (agent.getWallet().getASugar() < agent.getWallet().getInitSugar()))
             return true;
 
         return false;

@@ -1,22 +1,32 @@
 package Models;
 import Data.Config;
 import Interfaces.*;
+import Interfaces.Patch.*;
 
 
 public class Patch implements IPatch_GrowBack, IPatch_Emigration, IPatch_Production, IPatch_Aging, IPatch_Paint, IPatch_Trade, IPatch_Loan, IPatch_Disease{
     
-    private PatchPosition Position;
+    private IPositionView Position;
     private PatchResources Resources;
     private Agent PAgent;
 
-    public Patch(PatchPosition patchPosition){
-        
-       int maxSugarCap = initializeMaxValues(Config.SugarHill_X1, Config.SugarHill_Y1, Config.SugarHill_X2, Config.SugarHill_Y2);
-       int maxSpiceCap = initializeMaxValues(Config.SpiceHill_X1, Config.SpiceHill_Y1, Config.SpiceHill_X2, Config.SpiceHill_Y2);
-       Resources = IFactoryModels.patchResourcesCreator(maxSugarCap, maxSpiceCap);
+    public Patch(Position patchPosition){
 
-       Position = patchPosition;
-       PAgent = null;
+        Position = patchPosition;
+        
+        int maxSugarCap = initializeMaxValues(Config.SugarHill_X1, Config.SugarHill_Y1, Config.SugarHill_X2, Config.SugarHill_Y2);
+        int maxSpiceCap = initializeMaxValues(Config.SpiceHill_X1, Config.SpiceHill_Y1, Config.SpiceHill_X2, Config.SpiceHill_Y2);
+        Resources = IFactoryModels.patchResourcesCreator(maxSugarCap, maxSpiceCap);
+
+        PAgent = null;
+    }
+
+    public IPositionView getPosition(){
+        return Position;
+    }
+
+    public PatchResources getResource(){
+        return Resources;
     }
 
     public Agent getPAgent() {

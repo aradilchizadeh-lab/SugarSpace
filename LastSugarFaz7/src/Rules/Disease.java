@@ -1,14 +1,15 @@
 package Rules;
 
-import Interfaces.IAgent_Disease;
-import Interfaces.IPatch_Disease;
+import Interfaces.Agent.IAgent_Disease;
+import Interfaces.Patch.IPatch_Disease;
+import Interfaces.Rules.IDisease;
 
 import java.util.ArrayList;
 
 import Data.AgeType;
 import Data.Config;
 
-public class Disease {
+public class Disease implements IDisease{
     private int[] SubImmuneSystem = new int[Config.ImmuneSystemSubsCount];
     private ArrayList<Integer> InfectedDiseases = new ArrayList<>();
     private ArrayList<Integer> PossibleDiseases = new ArrayList<>();
@@ -124,9 +125,9 @@ public class Disease {
         }
     }
 
-    private static void addNeighbor(IAgent_Disease a, IPatch_Disease[][] patches, ArrayList<IAgent_Disease> neighbor) {
-        int x = a.getX();
-        int y = a.getY();
+    private static void addNeighbor(IAgent_Disease agent, IPatch_Disease[][] patches, ArrayList<IAgent_Disease> neighbor) {
+        int x = agent.getPosition().getX();
+        int y = agent.getPosition().getY();
         for (int i = x - 1; i <= x + 1; ++i) {
             if (i < 0 || i > Config.SpaceRow - 1)
                 continue;

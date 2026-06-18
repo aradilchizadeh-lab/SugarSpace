@@ -1,12 +1,15 @@
-package Interfaces;
+package Interfaces.Agent;
 
-import Data.AgeType;
+import Interfaces.IPositionView;
 import Models.LoanInfo;
-
 import java.util.ArrayList;
 
-public interface IAgent_Loan extends IPositionView, IResourceUpdate, IBioView{
+public interface IAgent_Loan extends IBioView{
 
+    public IPositionView getPosition();
+
+    public IResourceUpdate getWallet();
+    
     public boolean canBeLender();
 
     public int requiredSpiceAmount();

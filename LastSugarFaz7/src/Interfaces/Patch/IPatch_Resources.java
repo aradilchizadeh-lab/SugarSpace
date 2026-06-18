@@ -1,4 +1,4 @@
-package Interfaces;
+package Interfaces.Patch;
 
 public interface IPatch_Resources {
     
