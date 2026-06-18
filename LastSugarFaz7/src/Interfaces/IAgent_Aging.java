@@ -1,16 +1,7 @@
 package Interfaces;
 
-public interface IAgent_Aging {
-
-    public int getX();
-
-    public int getY();
-
-    public int getAge();
+public interface IAgent_Aging extends IPositionView, IBioView, IParentageUpdate {
 
     public void changeAge();
 
-    public int getMaxAge();
-
-    public void setParent(boolean IsParent);
 }

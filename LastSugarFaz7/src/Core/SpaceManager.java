@@ -79,11 +79,9 @@ public class SpaceManager {
             executor.shutdown();
             executor.awaitTermination(1, TimeUnit.SECONDS);
 
-            Collections.shuffle(agents);
-
             runAgentsRules();
 
-            Paint.rePaint(patches, agents,tick);
+            Paint.rePaint(patches, agents, tick);
 
             if (agents.size() == 0) {
                 System.out.println(tick);
@@ -93,6 +91,7 @@ public class SpaceManager {
 
     private void runAgentsRules() {
 
+        Collections.shuffle(agents);
         ArrayList<Agent> updatedAgents;
 
         updatedAgents = new ArrayList<>(agents);
@@ -137,16 +136,8 @@ public class SpaceManager {
         agents = updatedAgents;
     }
 
-
-    public Patch[][] getPatches() {
-        return patches;
-    }
-
     public ArrayList<Agent> getAgents() {
         return agents;
     }
-
-    public int getTick() {
-        return tick;
-    }
 }
+

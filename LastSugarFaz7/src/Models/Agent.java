@@ -7,7 +7,7 @@ import Data.AgeType;
 import Interfaces.*;
 import Rules.*;
 
-public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, IAgent_Paint, IAgent_Prodution, IAgent_Trade,IAgent_Aging, IAgent_Disease {
+public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, IAgent_Paint, IAgent_Production, IAgent_Trade,IAgent_Aging, IAgent_Disease {
     private int Ax;
     private int Ay;
     private final int InitSugar;

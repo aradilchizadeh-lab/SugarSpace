@@ -1,0 +1,10 @@
+package Interfaces;
+
+public interface IFertilityView {
+
+    public int getFertileLimitMin();
+
+    public int getFertileLimitMax();
+
+    public int getGender();
+}
