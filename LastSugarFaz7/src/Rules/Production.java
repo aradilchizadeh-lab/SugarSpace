@@ -4,15 +4,12 @@ import Data.Config;
 import Interfaces.IAgent_Prodution;
 import Interfaces.IFactoryModels;
 import Interfaces.IPatch_Production;
-import Interfaces.ISpaceProvider;
 import Models.Agent;
 
 import java.util.ArrayList;
 
 public class Production {
-    public void production(IAgent_Prodution agent, ISpaceProvider space) {
-        IPatch_Production[][] patches = space.getPatches();
-        ArrayList<Agent> agents = space.getAgents();
+    public void production(IAgent_Prodution agent, IPatch_Production[][] patches, ArrayList<Agent> agents ) {
         if (!agent.canBeParent())
             return;
 

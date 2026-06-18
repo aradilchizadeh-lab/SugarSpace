@@ -7,7 +7,6 @@ import GUI.Paint;
 import GUI.StdDraw;
 import Interfaces.IFactoryModels;
 import Models.Agent;
-import Models.Space;
 import Rules.*;
 
 import java.util.ArrayList;

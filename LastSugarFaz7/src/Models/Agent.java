@@ -120,7 +120,7 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     public float getSpiceMetabolism(){
         return SpiceMetabolism;
     }
-    
+
     public void setSugarMetabolism(float sugar){
         SugarMetabolism = sugar;
     }
@@ -156,8 +156,9 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
     public IBehavior getBehavior(){
         return Behavior;
     }
-    public void survival(ISpaceProvider space){
-        Behavior.survival(this, space);
+
+    public void survival(ArrayList<Agent> agents, IPatch_Emigration[][] patches){
+        Behavior.survival(this, agents, patches);
     }
 
     public void changeAge(){
@@ -229,28 +230,28 @@ public class Agent implements IAgent_Emigration, IAgent_Histogram, IAgent_Loan, 
         return Behavior.needsSugar(this);
     }
 
-    public void emigration(ISpaceProvider space) {
+    public void emigration(IPatch_Emigration[][] patches, ArrayList<Agent> agents ) {
         if (Behavior.CanEmigrate())
-            Emigration.emigrate(this, space);
+            Emigration.emigrate(this, patches, agents);
     }
-    public void production(ISpaceProvider space) {
+    public void production(IPatch_Production[][] patches, ArrayList<Agent> agents) {
         if (Behavior.canProduce())
-            Production.production(this, space);
+            Production.production(this, patches, agents);
     }
-    public void aging(ISpaceProvider space) {
-        aging.ageRule(this, space);
+    public void aging(IPatch_Aging[][] patches, ArrayList<Agent> agents) {
+        aging.ageRule(this, patches, agents);
     }
-    public void loan(ISpaceWithTickProvider space) {
+    public void loan(IPatch_Loan[][] patches, int tick ) {
         if (Behavior.canLoan())
-            Loan.loan(this, space);
+            Loan.loan(this, patches, tick);
     }
-    public void trade(ISpaceProvider space) {
+    public void trade(IPatch_Trade[][] patches) {
         if (Behavior.canTrade())
-            Trade.trade(this, space);
+            Trade.trade(this, patches);
     }
-    public void disease(ISpace_Diseases space) {
+    public void disease(IPatch_Disease[][] patches, ArrayList<Integer> diseases) {
         if (Behavior.canBeInfected())
-            Disease.disease(this, space);
+            Disease.disease(this, patches, diseases);
     }
 
 

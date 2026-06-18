@@ -2,7 +2,6 @@ package GUI;
 
 import Interfaces.IAgent_Histogram;
 import Models.Agent;
-import Models.Space;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -3,7 +3,6 @@ import Data.Config;
 
 import Interfaces.IAgent_Trade;
 import Interfaces.IPatch_Trade;
-import Interfaces.ISpaceProvider;
 import Models.Agent;
 
 import java.util.ArrayList;

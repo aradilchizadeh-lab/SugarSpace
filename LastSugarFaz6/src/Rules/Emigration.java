@@ -4,7 +4,6 @@ import Data.Config;
 import Interfaces.*;
 import Models.Agent;
 import Models.NormalAgentBehavior;
-import Models.Space;
 
 import java.util.ArrayList;
 

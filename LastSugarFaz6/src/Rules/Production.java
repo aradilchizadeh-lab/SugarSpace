@@ -4,7 +4,6 @@ import Data.Config;
 import Interfaces.IAgent_Prodution;
 import Interfaces.IFactoryModels;
 import Interfaces.IPatch_Production;
-import Interfaces.ISpaceProvider;
 import Models.Agent;
 
 import java.util.ArrayList;

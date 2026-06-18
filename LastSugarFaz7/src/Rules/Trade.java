@@ -3,14 +3,12 @@ import Data.Config;
 
 import Interfaces.IAgent_Trade;
 import Interfaces.IPatch_Trade;
-import Interfaces.ISpaceProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Trade {
-    public  void trade(IAgent_Trade agent, ISpaceProvider space) {
-        IPatch_Trade[][] patches = space.getPatches();
+    public  void trade(IAgent_Trade agent, IPatch_Trade[][] patches) {
 
         ArrayList<IAgent_Trade> neighborAgents = new ArrayList<>();
         addNeighbor(agent, patches, neighborAgents);

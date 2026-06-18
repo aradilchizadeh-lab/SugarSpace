@@ -23,10 +23,6 @@ public interface IFactoryModels {
         return new Patch(x, y);
     }
 
-    public static Space spaceCreator(){
-        return new Space();
-    }
-
     public static SpaceManager spaceManagerCreator(){
         return new SpaceManager();
     }

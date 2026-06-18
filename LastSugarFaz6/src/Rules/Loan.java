@@ -6,7 +6,6 @@ import Data.ResourceType;
 import Interfaces.IAgent_Loan;
 import Interfaces.IFactoryModels;
 import Interfaces.IPatch_Loan;
-import Interfaces.ISpaceWithTickProvider;
 import Models.*;
 
 import java.util.ArrayList;

@@ -2,6 +2,8 @@ package Models;
 import Data.AgeType;
 import Interfaces.*;
 
+import java.util.ArrayList;
+
 
 public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
     private boolean CanEmigrate = true;
@@ -12,7 +14,7 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
 
 
     @Override
-    public void survival(Agent agent, ISpaceProvider space) {
+    public void survival(Agent agent, ArrayList<Agent> agents, IPatch_Emigration[][] patches) {
 
         agent.setASugar((int) (agent.getASugar() - agent.getSugarMetabolism()));
         agent.setASpice((int) (agent.getASpice() - agent.getSpiceMetabolism()));
@@ -25,8 +27,8 @@ public class NormalAgentBehavior implements IBehavior, IBehavior_Ability {
                     agent.getLoanInfos().remove(i);
                 }
             }
-            space.getAgents().remove(agent);
-            space.getPatches()[agent.getX()][agent.getY()].setPAgent(null);
+            agents.remove(agent);
+            patches[agent.getX()][agent.getY()].setPAgent(null);
         }
 
     }

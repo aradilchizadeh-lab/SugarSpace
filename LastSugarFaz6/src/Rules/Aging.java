@@ -2,7 +2,6 @@ package Rules;
 
 import Interfaces.IAgent_Aging;
 import Interfaces.IPatch_Aging;
-import Interfaces.ISpaceProvider;
 import Models.Agent;
 
 import java.util.ArrayList;

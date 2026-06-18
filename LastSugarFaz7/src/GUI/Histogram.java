@@ -2,9 +2,7 @@ package GUI;
 
 import Interfaces.IAgent_Histogram;
 import Models.Agent;
-import Models.Space;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -12,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Histogram {
-    public static void saveFileWealth(Space space) {
+    public static void saveFileWealth(ArrayList<Agent> agents) {
         try {
 
             FileWriter myfile = new FileWriter("wealth.txt");
-            for (Agent a : space.getAgents()) {
+            for (Agent a : agents) {
                 IAgent_Histogram a1 = (IAgent_Histogram)a;
                 myfile.write(a1.getMRS(a1.getASugar(), a1.getASpice()) + "\n");
             }

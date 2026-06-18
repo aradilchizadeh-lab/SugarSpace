@@ -1,10 +1,13 @@
 package Interfaces;
 
 import Models.Agent;
+import Models.Patch;
+
+import java.util.ArrayList;
 
 public interface IBehavior extends IBehavior_Ability{
 
-    public void survival(Agent agent, ISpaceProvider space);
+    public void survival(Agent agent, ArrayList<Agent> agents, IPatch_Emigration[][] patches);
 
     public void reproductionInherit(Agent agent);
 

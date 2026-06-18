@@ -2,8 +2,6 @@ package Rules;
 
 import Interfaces.IAgent_Disease;
 import Interfaces.IPatch_Disease;
-import Interfaces.IPatch_Trade;
-import Interfaces.ISpace_Diseases;
 
 import java.util.ArrayList;
 
@@ -27,16 +25,15 @@ public class Disease {
         }
     }
 
-    public void disease(IAgent_Disease agent, ISpace_Diseases space) {
+    public void disease(IAgent_Disease agent,IPatch_Disease[][] patches, ArrayList<Integer> diseases) {
 
-        improveImmunity(agent, space);
+        improveImmunity(agent, diseases);
         if (!InfectedDiseases.isEmpty())
-            infectOthers(agent, space);
+            infectOthers(agent, patches);
     }
 
-    private void improveImmunity(IAgent_Disease agent, ISpace_Diseases space) {
-        ArrayList<Integer> Diseases = space.getDiseases();
-        int randomDisease = Diseases.get((int) (Math.random() * Diseases.size()));
+    private void improveImmunity(IAgent_Disease agent, ArrayList<Integer> diseases) {
+        int randomDisease = diseases.get((int) (Math.random() * diseases.size()));
 
         int hamming = Integer.MAX_VALUE;
         int diff;
@@ -63,15 +60,15 @@ public class Disease {
             isImmune = false;
             for (int j = 0; j < Config.ImmuneSystemSubsCount; ++j) {
 
-                if (Diseases.get(i) == SubImmuneSystem[j]) {
+                if (diseases.get(i) == SubImmuneSystem[j]) {
                     isImmune = true;
                     break;
                 }
             }
-            //removing diseases from infected list that agent is ammune against them
+            //removing diseases from infected list that agent is immune against them
             if (isImmune) {
                 for (int k = InfectedDiseases.size() - 1; k >= 0; --k) {
-                    if (InfectedDiseases.get(k) / 10 == Diseases.get(i)) {
+                    if (InfectedDiseases.get(k) / 10 == diseases.get(i)) {
 
                         int effect = InfectedDiseases.get(k) % 10;
                         diseaseSideEffects(agent, -effect);
@@ -80,7 +77,7 @@ public class Disease {
                     }
                 }
             } else {
-                PossibleDiseases.add(Diseases.get(i));
+                PossibleDiseases.add(diseases.get(i));
             }
         }
     }
@@ -91,8 +88,7 @@ public class Disease {
     }
 
 
-    private void infectOthers(IAgent_Disease agent, ISpace_Diseases space) {
-        IPatch_Disease[][] patches = space.getPatches();
+    private void infectOthers(IAgent_Disease agent, IPatch_Disease[][] patches ) {
         ArrayList<IAgent_Disease> neighbors = new ArrayList<>();
         addNeighbor(agent, patches, neighbors);
         if (neighbors.isEmpty())

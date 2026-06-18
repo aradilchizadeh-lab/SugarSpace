@@ -9,16 +9,15 @@ import Models.*;
 import java.util.ArrayList;
 
 public class Loan {
-    public void loan(IAgent_Loan agent, ISpaceWithTickProvider space) {
-        IPatch_Loan[][] patches = space.getPatches();
-        debtPayment(space, agent);
+    public void loan(IAgent_Loan agent, IPatch_Loan[][] patches, int tick ) {
+        debtPayment(tick, agent);
         if (agent.canBeLender()) {
-            giveLoan(space, agent, patches);
+            giveLoan(agent, patches, tick);
         }
     }
 
 
-    private static void giveLoan(ISpaceWithTickProvider space, IAgent_Loan a, IPatch_Loan[][] patches) {
+    private static void giveLoan( IAgent_Loan a, IPatch_Loan[][] patches, int tick) {
         ArrayList<IAgent_Loan> neighbors = new ArrayList<>();
         int x = a.getX();
         int y = a.getY();
@@ -73,7 +72,7 @@ public class Loan {
             //---[initializing amount by priority of need and can give]---
             amount = (int) Math.min(a.getASpice() - a.getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
             //---[adding info to list]---
-            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount, space.getTick()));
+            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Spice, amount,tick));
             //---[payment]---
             neighbor.setASpice(neighbor.getASpice() + amount);
             a.setASpice(a.getASpice() - amount);
@@ -83,18 +82,18 @@ public class Loan {
             //---[initializing amount by priority of need and can give]---
             amount = (int) Math.min(a.getASugar() - a.getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
             //---[adding info to list]---
-            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, space.getTick()));
+            a.getLoanInfos().add(IFactoryModels.loanInfoCreator(a, neighbor, ResourceType.Sugar, amount, tick));
             //---[payment]---
             neighbor.setASugar(neighbor.getASugar() + amount);
             a.setASugar(a.getASugar() - amount);
         }
     }
 
-    public static void debtPayment(ISpaceWithTickProvider space, IAgent_Loan agent) {
+    public static void debtPayment(int tick, IAgent_Loan agent) {
         int debtAmount = 0;
         for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
             //---[checking if our agent is in the borrowers and if we are in the payment tick]---
-            if (agent.getLoanInfos().get(i).getBorrower() == agent && agent.getLoanInfos().get(i).getLoanTick() + Config.NumberTickLoan == space.getTick()) {
+            if (agent.getLoanInfos().get(i).getBorrower() == agent && agent.getLoanInfos().get(i).getLoanTick() + Config.NumberTickLoan == tick) {
                 LoanInfo info = agent.getLoanInfos().get(i);
                 //---[initializing debt amount]---
                 debtAmount = info.getAmount();

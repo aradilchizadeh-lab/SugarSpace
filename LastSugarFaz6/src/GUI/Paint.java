@@ -4,7 +4,6 @@ package GUI;
 import Data.Config;
 import Interfaces.IAgent_Paint;
 import Interfaces.IPatch_Paint;
-import Interfaces.ISpaceWithTickProvider;
 
 public class Paint {
     

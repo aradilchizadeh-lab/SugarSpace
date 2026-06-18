@@ -4,13 +4,14 @@ package GUI;
 import Data.Config;
 import Interfaces.IAgent_Paint;
 import Interfaces.IPatch_Paint;
-import Interfaces.ISpaceWithTickProvider;
+import Models.Agent;
+
+import java.util.ArrayList;
 
 public class Paint {
     
-    public static void rePaint(ISpaceWithTickProvider space)
+    public static void rePaint(IPatch_Paint[][] patches, ArrayList<Agent> agents, int tick)
     {
-        IPatch_Paint[][] patches = space.getPatches();
         IAgent_Paint patchAgent;
         StdDraw.clear();
         
@@ -63,15 +64,15 @@ public class Paint {
                 
             }
         }
-        String ticks= String.valueOf(space.getTick());
+        String ticks= String.valueOf(tick);
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.text(5, Config.SpaceRow + 1, "Tick: ");
         StdDraw.text(7.5, Config.SpaceRow + 1, ticks);
 
-        String agents= String.valueOf(space.getAgents().size());
+        String agentsAmount= String.valueOf(agents.size());
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.text(14, Config.SpaceRow + 1, "Agents: ");
-        StdDraw.text(17.5, Config.SpaceRow + 1, agents);
+        StdDraw.text(17.5, Config.SpaceRow + 1, agentsAmount);
 
         StdDraw.show();
         StdDraw.pause(1);

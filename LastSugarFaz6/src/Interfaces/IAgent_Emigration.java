@@ -1,7 +1,5 @@
 package Interfaces;
 
-import Models.Space;
-
 public interface IAgent_Emigration {
 
     public void setX(int x);

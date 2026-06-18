@@ -1,14 +1,11 @@
 package Core;
 
 import Data.Config;
-import GUI.Ending;
-import GUI.Histogram;
 import GUI.Paint;
-import GUI.StdDraw;
+import Interfaces.IAgent_Prodution;
 import Interfaces.IFactoryModels;
 import Models.Agent;
 import Models.Patch;
-import Models.Space;
 import Rules.GrowBack;
 
 import java.util.ArrayList;
@@ -19,48 +16,50 @@ import java.util.concurrent.TimeUnit;
 
 public class SpaceManager {
 
-    private Space space;
     private Patch[][] patches;
     private ArrayList<Agent> agents;
     private ArrayList<Integer> diseases;
+    private int tick;
 
-    public SpaceManager(){
-        space = IFactoryModels.spaceCreator();
-        patches = space.getPatches();
-        agents = space.getAgents();
-        diseases = space.getDiseases();
+    public SpaceManager() {
+        patches = new Patch[Config.SpaceRow][Config.SpaceCol];
+        agents = new ArrayList<>();
+        diseases = new ArrayList<>();
+        tick = 0;
 
         initializePatches();
         initializeDiseases();
         initializeAgents();
     }
 
-    //-----------------------[creating Patches]--------------------------
     private void initializePatches() {
-        for (int i = 0; i < Config.SpaceRow; ++i) {
-            for (int j = 0; j < Config.SpaceCol; ++j) {
+        for (int i = 0; i < Config.SpaceRow; i++) {
+            for (int j = 0; j < Config.SpaceCol; j++) {
                 patches[i][j] = IFactoryModels.patchCreator(i, j);
             }
         }
     }
-    //------------------------[creating diseases]--------------------------
+
     private void initializeDiseases() {
         for (int i = 0; i < Config.diseaseNum; ) {
             int disease = (int) ((Math.random() * Math.pow(2, 9)) + Math.pow(2, 9));
+
             if (!diseases.contains(disease)) {
                 diseases.add(disease);
                 i++;
             }
         }
     }
-    //------------------------[creating agents]--------------------------
+
     private void initializeAgents() {
         for (int i = 0; i < Config.InitializeAgentNum; ) {
             int x = (int) (Math.random() * Config.SpaceRow);
             int y = (int) (Math.random() * Config.SpaceCol);
+
             if (patches[x][y].getPAgent() == null) {
                 int randomIndex = (int) (Math.random() * diseases.size());
                 Agent agent = IFactoryModels.NormalAgentCreator(x, y, diseases.get(randomIndex));
+
                 agents.add(agent);
                 patches[x][y].setPAgent(agent);
                 i++;
@@ -68,20 +67,15 @@ public class SpaceManager {
         }
     }
 
-    //------------------------[start the main Simulation loop ]--------------------------
     public void runSimulation() throws InterruptedException {
-        int tick = 0;
-
         while (tick < Config.Tick) {
+            tick++;
 
-            ++tick;
-            int finalTick = tick;
-            //---[grow back with threads]---
             ExecutorService executor = Executors.newFixedThreadPool(4);
-            executor.submit(() -> GrowBack.growBack(space, 0, 13, finalTick));
-            executor.submit(() -> GrowBack.growBack(space, 13, 26, finalTick));
-            executor.submit(() -> GrowBack.growBack(space, 26, 39, finalTick));
-            executor.submit(() -> GrowBack.growBack(space, 39, 51, finalTick));
+            executor.submit(() -> GrowBack.growBack(patches, 0, 13, tick));
+            executor.submit(() -> GrowBack.growBack(patches, 13, 26, tick));
+            executor.submit(() -> GrowBack.growBack(patches, 26, 39, tick));
+            executor.submit(() -> GrowBack.growBack(patches, 39, 51, tick));
 
             executor.shutdown();
             executor.awaitTermination(1, TimeUnit.SECONDS);
@@ -90,46 +84,53 @@ public class SpaceManager {
 
             runAgentsRules();
 
-            space.setTick();
-            Paint.rePaint(space);
+            Paint.rePaint(patches, agents,tick);
+
             if (agents.size() == 0) {
                 System.out.println(tick);
             }
         }
-
     }
 
     private void runAgentsRules() {
         for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).emigration(space);
+            agents.get(i).emigration(patches, agents);
         }
 
         for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).production(space);
+            agents.get(i).production(patches, agents);
         }
 
         for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).trade(space);
+            agents.get(i).trade(patches);
         }
 
         for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).loan(space);
+            agents.get(i).loan(patches, tick);
         }
 
         for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).disease(space);
+            agents.get(i).disease(patches, diseases);
         }
 
         for (int i = agents.size() - 1; i >= 0; i--) {
-            agents.get(i).aging(space);
+            agents.get(i).aging(patches, agents);
         }
     }
 
-    public Space getSpace() {
-        return space;
+    public Patch[][] getPatches() {
+        return patches;
     }
 
     public ArrayList<Agent> getAgents() {
         return agents;
+    }
+
+    public ArrayList<Integer> getDiseases() {
+        return diseases;
+    }
+
+    public int getTick() {
+        return tick;
     }
 }

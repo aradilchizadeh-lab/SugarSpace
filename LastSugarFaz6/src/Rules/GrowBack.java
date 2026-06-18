@@ -1,7 +1,6 @@
 package Rules;
 import Data.Config;
 import Interfaces.IPatch_GrowBack;
-import Interfaces.ISpaceProvider;
 
 public class GrowBack {
     public static void growBack(ISpaceProvider space, int x1, int x2, int tick) {

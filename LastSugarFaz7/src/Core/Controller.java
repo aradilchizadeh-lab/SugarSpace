@@ -3,17 +3,8 @@ package Core;
 import Data.Config;
 import GUI.Ending;
 import GUI.Histogram;
-import GUI.Paint;
 import GUI.StdDraw;
 import Interfaces.IFactoryModels;
-import Models.Agent;
-import Models.Space;
-import Rules.*;
-
-import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class Controller{
 
@@ -31,7 +22,7 @@ public class Controller{
 
         //---[drawing histogram]---
         StdDraw.clear(StdDraw.BLACK);
-        Histogram.saveFileWealth(spaceManager.getSpace());
+        Histogram.saveFileWealth(spaceManager.getAgents());
         Histogram.processAndDraw();
         StdDraw.show();
 

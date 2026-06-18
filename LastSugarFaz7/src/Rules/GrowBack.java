@@ -1,11 +1,10 @@
 package Rules;
 import Data.Config;
 import Interfaces.IPatch_GrowBack;
-import Interfaces.ISpaceProvider;
 
 public class GrowBack {
-    public static void growBack(ISpaceProvider space, int x1, int x2, int tick) {
-        IPatch_GrowBack[][] patches = space.getPatches();
+    public static void growBack(IPatch_GrowBack[][] patches, int x1, int x2, int tick) {
+
         for (int i = x1; i < x2; i++) {
             for (int j = 0; j < Config.SpaceCol; j++) {
                 //---[checking status of tick and interval then sugar and spice grow back]---

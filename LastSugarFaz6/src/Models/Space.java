@@ -2,8 +2,6 @@ package Models;
 import java.util.ArrayList;
 import Data.Config;
 import Interfaces.IFactoryModels;
-import Interfaces.ISpaceProvider;
-import Interfaces.ISpaceWithTickProvider;
 
 public class Space implements ISpaceProvider, ISpaceWithTickProvider {
     Patch[][] patches = new Patch[Config.SpaceRow][Config.SpaceCol];

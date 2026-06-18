@@ -2,16 +2,12 @@ package Rules;
 
 import Interfaces.IAgent_Aging;
 import Interfaces.IPatch_Aging;
-import Interfaces.ISpaceProvider;
 import Models.Agent;
 
 import java.util.ArrayList;
 
 public class Aging {
-    public void ageRule(IAgent_Aging agent, ISpaceProvider space) {
-        IPatch_Aging[][] patches = space.getPatches();
-        ArrayList<Agent> agents = space.getAgents();
-            
+    public void ageRule(IAgent_Aging agent, IPatch_Aging[][] patches, ArrayList<Agent> agents) {
         agent.changeAge();
         //---[reset parent status and checking age status]---
         if (agent.getAge() < agent.getMaxAge()) {

@@ -3,14 +3,12 @@ package Rules;
 import Data.Config;
 import Interfaces.*;
 import Models.Agent;
-import Models.NormalAgentBehavior;
-import Models.Space;
+import Models.Patch;
 
 import java.util.ArrayList;
 
 public class Emigration {
-    public void emigrate(IAgent_Emigration agent, ISpaceProvider space) {
-        IPatch_Emigration[][] patches = space.getPatches();
+    public void emigrate(IAgent_Emigration agent, IPatch_Emigration[][] patches, ArrayList<Agent> agents ) {
 
         int x = agent.getX();
         int y = agent.getY();
@@ -79,7 +77,7 @@ public class Emigration {
         }
         //---[if agent doesn't emigrate]---
         if ((bestX == x && bestY == y) || maxWelfare <= 0) {
-            agent.survival(space);
+            agent.survival(agents, patches);
             return;
         }
         //---[if we have same condition patches]---
@@ -100,7 +98,7 @@ public class Emigration {
         patches[bestX][bestY].setPAgent((Agent) agent);
         patches[x][y].setPAgent(null);
         //---[agent survival after emigration]---
-        agent.survival(space);
+        agent.survival(agents, patches);
 
     }
 
