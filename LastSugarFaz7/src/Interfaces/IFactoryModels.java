@@ -20,7 +20,12 @@ public interface IFactoryModels {
     }
 
     public static Patch patchCreator(int x, int y){
-        return new Patch(x, y);
+        PatchPosition p = new PatchPosition(x, y);
+        return new Patch(p);
+    }
+
+    public static PatchResources patchResourcesCreator(int maxSug, int maxSpi){
+        return new PatchResources(maxSug, maxSpi);
     }
 
     public static SpaceManager spaceManagerCreator(){
