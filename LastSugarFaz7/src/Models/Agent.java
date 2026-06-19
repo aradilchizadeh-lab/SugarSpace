@@ -1,17 +1,13 @@
 package Models;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 import Data.AgeType;
 
 import Interfaces.*;
 import Interfaces.Agent.*;
-import Interfaces.Patch.IPatch_Aging;
-import Interfaces.Patch.IPatch_Disease;
-import Interfaces.Patch.IPatch_Emigration;
-import Interfaces.Patch.IPatch_Loan;
-import Interfaces.Patch.IPatch_Production;
-import Interfaces.Patch.IPatch_Trade;
+import Interfaces.Patch.*;
 import Interfaces.Rules.*;
 
 
@@ -19,15 +15,8 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
     
     private Position Aposition;
     private Wallet Awallet;
-    private final int Vision;
-    private float SugarMetabolism;
-    private float SpiceMetabolism;
-    private final int Gender;
-    private final int MaxAge;
-    private int Age;
-    private final int[] FertileLimits;
-    private boolean IsParent;
-    private AgeType ageType;
+    private Physiology Aphysiology;
+    private FertilityInfo AfertilityInfo;
     private IBehavior Behavior;
     private IEmigration Emigration;
     private IProduction Production;
@@ -37,21 +26,12 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
     private IDisease Disease;
     private ArrayList<LoanInfo> LoanInfos;
     
-    public Agent(Position position, Wallet wallet, int vision, float sugarMetabolism, float spiceMetabolism, IBehavior behavior){
+    public Agent(Position position, Wallet wallet, Physiology physiology, FertilityInfo fertilityInfo, IBehavior behavior){
         
         Aposition = position;
         Awallet = wallet;
-        Vision = vision;
-        SugarMetabolism = sugarMetabolism;
-        SpiceMetabolism = spiceMetabolism;
-        Age = 0;
-        MaxAge = (int)(Math.random()*41) + 60;
-        Gender = (int)(Math.random()*2);
-        IsParent = false;
-        FertileLimits = new int[2];
-        FertileLimits[0] = (int)(Math.random() * 16) + 45; //max
-        FertileLimits[1] = (int)(Math.random() * 3) + 15; //min
-        ageType = AgeType.Child;
+        Aphysiology = physiology;
+        AfertilityInfo = fertilityInfo;
         Behavior = behavior;
         Emigration = IFactoryRules.createEmigration();
         Production = IFactoryRules.createProduction();
@@ -69,61 +49,17 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
     public Position getPosition(){
         return Aposition;
     }
-    
-    public int getVision(){
-        return Vision;
-    }
-
-    public int getMaxAge(){
-        return MaxAge;
-    }
-
-    public int getGender(){
-        return Gender;
-    }
-
-    public float getSugarMetabolism(){
-        return SugarMetabolism;
-    }
-
-    public float getSpiceMetabolism(){
-        return SpiceMetabolism;
-    }
-
-    public void setSugarMetabolism(float sugar){
-        SugarMetabolism = sugar;
-    }
-
-    public void setSpiceMetabolism(float spice){
-        SpiceMetabolism = spice;
-    }
-
-    public AgeType getAgeType() {
-         return ageType;
-    }
-
-     public void setAgeType(AgeType ageType){
-        this.ageType = ageType;
-    }
-     
-     public int getFertileLimitMin(){
-        return FertileLimits[1];
-    }
-
-     public int getFertileLimitMax(){
-        return FertileLimits[0];
-    }
-
-     public boolean isParent(){
-        return IsParent;
-    }
-
-     public void setParent(boolean parent){
-        IsParent = parent;
-    }
 
     public IBehavior getBehavior(){
         return Behavior;
+    }
+
+    public Physiology getPhysiology(){
+        return Aphysiology;
+    }
+
+    public FertilityInfo getFertilityInfo(){
+        return AfertilityInfo;
     }
 
     public void survival(ArrayList<Agent> agents, Patch[][] patches){
@@ -131,13 +67,23 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
     }
 
     public void changeAge(){
-        Age++;
+        Aphysiology.setAge(Aphysiology.getAge() +1);
         updateAgeType();
     }
-    
-    public int getAge(){
-        return Age;
+
+    private void updateAgeType() {
+        if ((Aphysiology.getAge() >= AfertilityInfo.getFertileLimitMin()) && (Aphysiology.getAge() >= AfertilityInfo.getFertileLimitMax())) {
+            Aphysiology.setAgeType(AgeType.ReproductiveAdult);
+
+        } else if (Aphysiology.getAge() >= AfertilityInfo.getFertileLimitMax()) {
+            Aphysiology.setAgeType(AgeType.Elderly);
+        }
+
+        else {
+            Aphysiology.setAgeType(AgeType.Child);
+        }
     }
+
 
     public ArrayList<Integer> getPossibleDiseases(){
         return Disease.getPossibleDiseases();
@@ -145,18 +91,6 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
 
     public ArrayList<Integer> getInfectedDiseases(){
         return Disease.getInfectedDiseases();
-    }
-    
-    private void updateAgeType() {
-        if ((Age >= FertileLimits[1]) && (Age < FertileLimits[0])) {
-            ageType = AgeType.ReproductiveAdult;
-
-        } else if (Age >= FertileLimits[0]) {
-            ageType = AgeType.Elderly;}
-
-        else {
-             ageType = AgeType.Child;
-        }
     }
 
     public double getWelfare(double w1, double w2){

@@ -2,7 +2,7 @@ package Interfaces.Agent;
 
 import Data.AgeType;
 
-public interface IBioView {
+public interface IPhysiologyView {
 
     public float getSugarMetabolism();
 

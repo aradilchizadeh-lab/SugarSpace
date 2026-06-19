@@ -23,11 +23,11 @@ public class Emigration implements IEmigration{
         ArrayList<IPatch_Emigration> sameCondition = new ArrayList<>();
         int distance = Integer.MAX_VALUE;
 
-        for (int i = x - agent.getVision(); i <= x + agent.getVision(); i++) {
+        for (int i = x - agent.getPhysiology().getVision(); i <= x + agent.getPhysiology().getVision(); i++) {
             if (i >= 0 && i < Config.SpaceRow && (patches[i][y].getPAgent() == null)) {
                 //---[initializing vars]---
-                w1 = agent.getWallet().getASugar() + patches[i][y].getResource().getPSugar() - agent.getSugarMetabolism();
-                w2 = agent.getWallet().getASpice() + patches[i][y].getResource().getPSpice() - agent.getSpiceMetabolism();
+                w1 = agent.getWallet().getASugar() + patches[i][y].getResource().getPSugar() - agent.getPhysiology().getSugarMetabolism();
+                w2 = agent.getWallet().getASpice() + patches[i][y].getResource().getPSpice() - agent.getPhysiology().getSpiceMetabolism();
                 welfare = agent.getWelfare(w1, w2);
                 //---[finding best patch]---
                 if (welfare > maxWelfare) {
@@ -51,11 +51,11 @@ public class Emigration implements IEmigration{
             }
         }
 
-        for (int j = y - agent.getVision(); j <= y + agent.getVision(); j++) {
+        for (int j = y - agent.getPhysiology().getVision(); j <= y + agent.getPhysiology().getVision(); j++) {
             if (j >= 0 && j < patches.length && (patches[x][j].getPAgent() == null)) {
                 //---[initializing vars]---
-                w1 = agent.getWallet().getASugar() + patches[x][j].getResource().getPSugar() - agent.getSugarMetabolism();
-                w2 = agent.getWallet().getASpice() + patches[x][j].getResource().getPSpice() - agent.getSpiceMetabolism();
+                w1 = agent.getWallet().getASugar() + patches[x][j].getResource().getPSugar() - agent.getPhysiology().getSugarMetabolism();
+                w2 = agent.getWallet().getASpice() + patches[x][j].getResource().getPSpice() - agent.getPhysiology().getSpiceMetabolism();
                 welfare = agent.getWelfare(w1, w2);
                 //---[finding best patch]---
                 if (welfare > maxWelfare) {

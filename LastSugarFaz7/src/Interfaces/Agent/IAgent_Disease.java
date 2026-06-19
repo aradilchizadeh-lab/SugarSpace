@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Interfaces.IPositionView;
 
-public interface IAgent_Disease extends IMetabolismUpdate{
+public interface IAgent_Disease{
 
     public IPositionView getPosition();
 
@@ -13,4 +13,6 @@ public interface IAgent_Disease extends IMetabolismUpdate{
     public ArrayList<Integer> getPossibleDiseases();
 
     public IBehavior_Ability getBehavior();
+
+    public IMetabolismUpdate getPhysiology();
 }

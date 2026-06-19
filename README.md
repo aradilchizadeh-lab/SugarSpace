@@ -1,10 +1,5 @@
 # SugarSpace Simulation
 
 ## Overview
-SugarSpace is an agent-based simulation where agents live in a 2D grid world and compete for resources.  
-Agents move to collect sugar, consume it to survive, and interact with both the environment and other agents.
-
-Over time, the model evolves from simple resource gathering to more complex social and economic behaviors.  
-Agents can age, reproduce, manage multiple resources (sugar and spice), trade with neighbors, and participate in a basic loan system with interest and repayment.
-
-This project demonstrates how complex population dynamics, market behavior, and financial interactions can emerge from simple local rules in a decentralized artificial society.
+A very passionate Pyramid enthusiast, haunted by Sphinx, witnessed the structure of this project, challenged the Pharao's chosen team get to build pyramids inside the structure, each class being a brick for the Great Pyramid; Inheriting from a single mother Array.
+The challenge was accepted by the young warriors and miracles were wrought and a great pyramidal structure was born; Always protected by the sacred soul of group2.

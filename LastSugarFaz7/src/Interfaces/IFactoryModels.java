@@ -12,8 +12,10 @@ public interface IFactoryModels {
         IBehavior behavior = new NormalAgentBehavior();
         Wallet wallet = new Wallet(bSugar, bSpice);
         Position position = new Position(babyX, babyY);
+        Physiology physiology = new Physiology(bVision, bSuMetabolism, bSpMetabolism);
+        FertilityInfo fertilityInfo = new FertilityInfo();
 
-        Agent baby = new Agent(position, wallet, bVision, bSuMetabolism, bSpMetabolism, behavior);
+        Agent baby = new Agent(position, wallet, physiology, fertilityInfo, behavior);
         return baby;
     }
 //---------------------------------------------------------------------------------------
@@ -22,9 +24,10 @@ public interface IFactoryModels {
         IBehavior behavior = new NormalAgentBehavior();
         Wallet wallet = new Wallet((int)(Math.random() * 21) + 5, (int)(Math.random() * 21) + 5);
         Position position = new Position(x, y);
+        Physiology physiology = new Physiology((int)(Math.random() * 10) + 1, (int)(Math.random() * 4) + 1, (int)(Math.random() * 4) + 1);
+        FertilityInfo fertilityInfo = new FertilityInfo();
 
-        Agent agent = new Agent(position, wallet,
-                (int)(Math.random() * 10) + 1, (int)(Math.random() * 4) + 1, (int)(Math.random() * 4) + 1,behavior );
+        Agent agent = new Agent(position, wallet, physiology, fertilityInfo, behavior );
         agent.addInfectedDiseases(disease);
         return agent;
     }

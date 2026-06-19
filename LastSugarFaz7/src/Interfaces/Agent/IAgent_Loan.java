@@ -4,7 +4,7 @@ import Interfaces.IPositionView;
 import Models.LoanInfo;
 import java.util.ArrayList;
 
-public interface IAgent_Loan extends IBioView{
+public interface IAgent_Loan{
 
     public IPositionView getPosition();
 
@@ -24,4 +24,5 @@ public interface IAgent_Loan extends IBioView{
 
     public IBehavior_Ability getBehavior();
 
+    public IPhysiologyView getPhysiology();
 }

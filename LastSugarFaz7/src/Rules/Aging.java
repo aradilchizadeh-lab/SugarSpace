@@ -11,8 +11,8 @@ public class Aging implements IAging{
     public void ageRule(IAgent_Aging agent, IPatch_Aging[][] patches, ArrayList<Agent> agents) {
         agent.changeAge();
         //---[reset parent status and checking age status]---
-        if (agent.getAge() < agent.getMaxAge()) {
-            agent.setParent(false);
+        if (agent.getPhysiology().getAge() < agent.getPhysiology().getMaxAge()) {
+            agent.getFertilityInfo().setParent(false);
         } else {
             agents.remove((Agent)agent);
             patches[agent.getPosition().getX()][agent.getPosition().getY()].setPAgent(null);
