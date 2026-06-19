@@ -92,49 +92,30 @@ public class SpaceManager {
     private void runAgentsRules() {
 
         Collections.shuffle(agents);
-        ArrayList<Agent> updatedAgents;
 
-        updatedAgents = new ArrayList<>(agents);
+        ArrayList<Agent> updatedAgents = new ArrayList<>(agents);
+
         for (int i = updatedAgents.size() - 1; i >= 0; i--) {
-            updatedAgents.get(i).emigration(patches, updatedAgents);
+
+            Agent agent = updatedAgents.get(i);
+
+            agent.emigration(patches, updatedAgents);
+            if (!updatedAgents.contains(agent)) continue;
+
+            agent.production(patches, updatedAgents);
+
+            agent.trade(patches);
+
+            agent.loan(patches, tick);
+
+            agent.disease(patches, diseases);
+
+            agent.aging(patches, updatedAgents);
         }
-        agents = updatedAgents;
 
-
-        updatedAgents = new ArrayList<>(agents);
-        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
-            updatedAgents.get(i).production(patches, updatedAgents);
-        }
-        agents = updatedAgents;
-
-
-        updatedAgents = new ArrayList<>(agents);
-        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
-            updatedAgents.get(i).trade(patches);
-        }
-        agents = updatedAgents;
-
-
-        updatedAgents = new ArrayList<>(agents);
-        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
-            updatedAgents.get(i).loan(patches, tick);
-        }
-        agents = updatedAgents;
-
-
-        updatedAgents = new ArrayList<>(agents);
-        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
-            updatedAgents.get(i).disease(patches, diseases);
-        }
-        agents = updatedAgents;
-
-
-        updatedAgents = new ArrayList<>(agents);
-        for (int i = updatedAgents.size() - 1; i >= 0; i--) {
-            updatedAgents.get(i).aging(patches, updatedAgents);
-        }
         agents = updatedAgents;
     }
+
 
     public ArrayList<Agent> getAgents() {
         return agents;
