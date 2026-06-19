@@ -1,6 +1,5 @@
 package Models;
 
-import Data.AgeType;
 import Interfaces.Agent.IParentageUpdate;
 
 public class FertilityInfo implements IParentageUpdate {

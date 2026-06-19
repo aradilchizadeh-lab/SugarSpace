@@ -2,7 +2,6 @@ package Models;
 
 import Data.AgeType;
 import Interfaces.Agent.IMetabolismUpdate;
-import Interfaces.Agent.IPhysiologyView;
 
 public class Physiology implements IMetabolismUpdate{
     private final int Vision;

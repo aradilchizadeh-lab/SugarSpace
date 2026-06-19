@@ -18,8 +18,8 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
     private Physiology Aphysiology;
     private FertilityInfo AfertilityInfo;
     private IBehavior Behavior;
-    private IEmigration Emigration;
-    private IProduction Production;
+    private IEmigration Emigrate;
+    private IProduction Produce;
     private ITrade Trade;
     private ILoan Loan;
     private IAging aging;
@@ -33,8 +33,8 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
         Aphysiology = physiology;
         AfertilityInfo = fertilityInfo;
         Behavior = behavior;
-        Emigration = IFactoryRules.createEmigration();
-        Production = IFactoryRules.createProduction();
+        Emigrate = IFactoryRules.createEmigration();
+        Produce = IFactoryRules.createProduction();
         Loan = IFactoryRules.createLoan();
         Trade = IFactoryRules.createTrade();
         aging = IFactoryRules.createAging();
@@ -135,11 +135,11 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
 
     public void emigration(IPatch_Emigration[][] patches, ArrayList<Agent> agents ) {
         if (Behavior.CanEmigrate())
-            Emigration.emigrate(this, patches, agents);
+            Emigrate.emigrate(this, patches, agents);
     }
     public void production(IPatch_Production[][] patches, ArrayList<Agent> agents) {
         if (Behavior.canProduce())
-            Production.production(this, patches, agents);
+            Produce.production(this, patches, agents);
     }
     public void aging(IPatch_Aging[][] patches, ArrayList<Agent> agents) {
         aging.ageRule(this, patches, agents);
