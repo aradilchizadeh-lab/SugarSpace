@@ -1,6 +1,9 @@
 package Interfaces.Agent;
 
+import java.util.ArrayList;
+
 import Interfaces.IPositionView;
+import Models.LoanInfo;
 
 public interface IAgent_Aging{
 
@@ -12,5 +15,6 @@ public interface IAgent_Aging{
 
     public IParentageUpdate getFertilityInfo();
 
+    public ArrayList<LoanInfo> getLoanInfos();
 
 }

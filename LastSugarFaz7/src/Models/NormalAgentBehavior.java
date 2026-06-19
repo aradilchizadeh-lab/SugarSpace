@@ -21,10 +21,11 @@ public class NormalAgentBehavior implements IBehavior {
 
         if (agent.getWallet().getASugar() <= 0 || agent.getWallet().getASpice() <= 0) {
             for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
-                if (agent.getLoanInfos().get(i).getLender() == this) {
-                    agent.getLoanInfos().remove(i);
-                } else if (agent.getLoanInfos().get(i).getBorrower() == this) {
-                    agent.getLoanInfos().remove(i);
+                if (agent.getLoanInfos().get(i).getLender() == agent) {
+                    agent.getLoanInfos().get(i).setStatus(false);
+                    
+                } else if (agent.getLoanInfos().get(i).getBorrower() == agent) {
+                    agent.getLoanInfos().get(i).setStatus(false);
                 }
             }
             agents.remove(agent);

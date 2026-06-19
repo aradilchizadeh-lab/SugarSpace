@@ -77,7 +77,9 @@ public class Loan implements ILoan{
             amount = (int) Math.min(agent.getWallet().getASpice() - agent.getPhysiology().getSpiceMetabolism() * 5, neighbor.requiredSpiceAmount());
 
             //---[adding info to list]---
-            agent.getLoanInfos().add(IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Spice, amount,tick));
+            LoanInfo info = IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Spice, amount,tick);
+            agent.getLoanInfos().add(info);
+            neighbor.getLoanInfos().add(info);
 
             //---[payment]---
             neighbor.getWallet().setASpice(neighbor.getWallet().getASpice() + amount);
@@ -90,7 +92,9 @@ public class Loan implements ILoan{
             amount = (int) Math.min(agent.getWallet().getASugar() - agent.getPhysiology().getSugarMetabolism() * 5, neighbor.requiredSugarAmount());
 
             //---[adding info to list]---
-            agent.getLoanInfos().add(IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Sugar, amount, tick));
+            LoanInfo info = IFactoryModels.loanInfoCreator(agent, neighbor, ResourceType.Sugar, amount, tick);
+            agent.getLoanInfos().add(info);
+            neighbor.getLoanInfos().add(info);
 
             //---[payment]---
             neighbor.getWallet().setASugar(neighbor.getWallet().getASugar() + amount);
@@ -103,23 +107,28 @@ public class Loan implements ILoan{
         for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
 
             //---[checking if our agent is in the borrowers and if we are in the payment tick]---
-            if (agent.getLoanInfos().get(i).getBorrower() == agent && agent.getLoanInfos().get(i).getLoanTick() + Config.NumberTickLoan == tick) {
-                LoanInfo info = agent.getLoanInfos().get(i);
+            LoanInfo info = agent.getLoanInfos().get(i);
+            if(!info.isActive())
+                continue;
+
+            if (info.getBorrower() == agent && info.getLoanTick() + Config.NumberTickLoan == tick) {
+                
 
                 //---[initializing debt amount]---
                 debtAmount = info.getAmount();
-
+                IAgent_Loan lender = info.getLender();
                 int borrowerWealth = getResource(info.getBorrower(), info.getResourceType());
-                int lenderWealth = getResource(info.getLender(), info.getResourceType());
+                int lenderWealth = getResource(lender, info.getResourceType());
                 if (borrowerWealth > debtAmount) {
                     setResource(info.getBorrower(), info.getResourceType(), borrowerWealth - debtAmount);
-                    setResource(info.getLender(), info.getResourceType(), lenderWealth + debtAmount);
-                    agent.getLoanInfos().remove(i);
+                    setResource(lender, info.getResourceType(), lenderWealth + debtAmount);
+                    agent.getLoanInfos().get(i).setStatus(false);
+                    
                 } else {
 
                     int halfWealth = borrowerWealth / 2;
                     setResource(info.getBorrower(), info.getResourceType(), halfWealth);
-                    setResource(info.getLender(), info.getResourceType(), lenderWealth + halfWealth);
+                    setResource(lender, info.getResourceType(), lenderWealth + halfWealth);
                     info.setAmount((debtAmount - halfWealth));
                     info.setLoanTick(info.getLoanTick() + Config.NumberTickLoan);
                 }
