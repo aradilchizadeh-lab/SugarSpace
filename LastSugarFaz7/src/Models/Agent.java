@@ -72,7 +72,7 @@ public class Agent implements IAgent_Emigration, IAgent_Loan, IAgent_Paint, IAge
     }
 
     private void updateAgeType() {
-        if ((Aphysiology.getAge() >= AfertilityInfo.getFertileLimitMin()) && (Aphysiology.getAge() >= AfertilityInfo.getFertileLimitMax())) {
+        if ((Aphysiology.getAge() >= AfertilityInfo.getFertileLimitMin()) && (Aphysiology.getAge() < AfertilityInfo.getFertileLimitMax())) {
             Aphysiology.setAgeType(AgeType.ReproductiveAdult);
 
         } else if (Aphysiology.getAge() >= AfertilityInfo.getFertileLimitMax()) {

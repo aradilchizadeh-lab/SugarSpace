@@ -43,7 +43,7 @@ public class NormalAgentBehavior implements IBehavior {
     @Override
     public boolean canBeParent(Agent agent) {
         int randomNum = (int) ((Math.random() * 31) + 30);
-        if (agent.getPhysiology().getAge() > agent.getFertilityInfo().getFertileLimitMin() && agent.getPhysiology().getAge() < agent.getFertilityInfo().getFertileLimitMax()
+        if (agent.getPhysiology().getAge() >= agent.getFertilityInfo().getFertileLimitMin() && agent.getPhysiology().getAge() < agent.getFertilityInfo().getFertileLimitMax()
                 && agent.getWallet().getASugar() + agent.getWallet().getASpice() >= randomNum && !(agent.getFertilityInfo().isParent()))
             return true;
 
