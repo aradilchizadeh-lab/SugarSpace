@@ -64,13 +64,13 @@ public class Production implements IProduction{
             int babyX = babyPatch.getPosition().getX();
             int babyY = babyPatch.getPosition().getY();
 
-            int bSuger = Math.round(agent.getWallet().getInitSugar() / 2 + neighborAgent.getWallet().getInitSugar() / 2);
+            int bSugar = Math.round(agent.getWallet().getInitSugar() / 2 + neighborAgent.getWallet().getInitSugar() / 2);
             int bSpice = Math.round(agent.getWallet().getInitSpice() / 2 + neighborAgent.getWallet().getInitSpice() / 2);
             int bSuMetabolism = Math.round(agent.getPhysiology().getSugarMetabolism() / 2 + neighborAgent.getPhysiology().getSugarMetabolism() / 2);
             int bSpMetabolism = Math.round(agent.getPhysiology().getSpiceMetabolism() / 2 + neighborAgent.getPhysiology().getSpiceMetabolism() / 2);
             int bVision = Math.round(agent.getPhysiology().getVision() / 2 + neighborAgent.getPhysiology().getVision() / 2);
             //---[creating baby]---
-            Agent baby = IFactoryModels.childCreator(babyX, babyY, bSuger, bSpice, bVision, bSuMetabolism, bSpMetabolism);
+            Agent baby = IFactoryModels.childCreator(babyX, babyY, bSugar, bSpice, bVision, bSuMetabolism, bSpMetabolism);
             agents.add(baby);
             //---[parents status initializing]---
             agent.getFertilityInfo().setParent(true);

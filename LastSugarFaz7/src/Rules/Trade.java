@@ -7,8 +7,8 @@ import Interfaces.Rules.ITrade;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Trade implements ITrade{
-    public  void trade(IAgent_Trade agent, IPatch_Trade[][] patches) {
+public class Trade implements ITrade {
+    public void trade(IAgent_Trade agent, IPatch_Trade[][] patches) {
 
         ArrayList<IAgent_Trade> neighborAgents = new ArrayList<>();
         addNeighbor(agent, patches, neighborAgents);
@@ -16,7 +16,7 @@ public class Trade implements ITrade{
             trading(agent, neighborAgents);
     }
 
-    private static void addNeighbor(IAgent_Trade agent, IPatch_Trade[][] patches, ArrayList<IAgent_Trade> neighbor) {
+    private void addNeighbor(IAgent_Trade agent, IPatch_Trade[][] patches, ArrayList<IAgent_Trade> neighbor) {
         int x = agent.getPosition().getX();
         int y = agent.getPosition().getY();
         for (int i = x - 1; i <= x + 1; ++i) {
@@ -32,15 +32,16 @@ public class Trade implements ITrade{
         }
     }
 
-    private static void trading(IAgent_Trade agent, ArrayList<IAgent_Trade> neighbors){
+    private void trading(IAgent_Trade agent, ArrayList<IAgent_Trade> neighbors) {
         //---[MRS calc]---
         double MRS_Agent, MRS_Neighbor, newSugarAgentHigh = 0, newSugarAgentLow = 0, newSpiceAgentHigh = 0, newSpiceAgentLow = 0;
         IAgent_Trade AgentMRS_High, AgentMRS_Low;
         float P;
 
         boolean tradeOccurred = true;
+        int count = 0;
 
-        while (tradeOccurred) {
+        while (tradeOccurred || count < 10000) {
             tradeOccurred = false;
             //---[randomizing neighbor]---
             Collections.shuffle(neighbors);
@@ -67,26 +68,28 @@ public class Trade implements ITrade{
                 //---[status of P]---
                 if (P >= 1) {
                     newSugarAgentHigh = AgentMRS_High.getWallet().getASugar() + 1;
-                    newSpiceAgentHigh = AgentMRS_High.getWallet().getASpice() - P;
+                    newSpiceAgentHigh = Math.round(AgentMRS_High.getWallet().getASpice() - P);
                     newSugarAgentLow = AgentMRS_Low.getWallet().getASugar() - 1;
-                    newSpiceAgentLow = AgentMRS_Low.getWallet().getASpice() + P;
-
-                    valid = isValid(
-                            AgentMRS_High, AgentMRS_Low,
-                            newSugarAgentHigh, newSugarAgentLow,
-                            newSpiceAgentHigh, newSpiceAgentLow
-                    );
+                    newSpiceAgentLow = Math.round(AgentMRS_Low.getWallet().getASpice() + P);
+                    if( newSugarAgentHigh > 0 && newSpiceAgentHigh > 0 &&  newSugarAgentLow  > 0 &&  newSpiceAgentLow > 0 ) {
+                        valid = isValid(
+                                AgentMRS_High, AgentMRS_Low,
+                                newSugarAgentHigh, newSugarAgentLow,
+                                newSpiceAgentHigh, newSpiceAgentLow
+                        );
+                    }
                 } else if (P > 0) {
-                    newSugarAgentHigh = AgentMRS_High.getWallet().getASugar() + 1 / P;
+                    newSugarAgentHigh = Math.round(AgentMRS_High.getWallet().getASugar() + 1 / P);
                     newSpiceAgentHigh = AgentMRS_High.getWallet().getASpice() - 1;
-                    newSugarAgentLow = AgentMRS_Low.getWallet().getASugar() - 1 / P;
+                    newSugarAgentLow = Math.round(AgentMRS_Low.getWallet().getASugar() - 1 / P);
                     newSpiceAgentLow = AgentMRS_Low.getWallet().getASpice() + 1;
-
-                    valid = isValid(
-                            AgentMRS_High, AgentMRS_Low,
-                            newSugarAgentHigh, newSugarAgentLow,
-                            newSpiceAgentHigh, newSpiceAgentLow
-                    );
+                    if( newSugarAgentHigh > 0 && newSpiceAgentHigh > 0 &&  newSugarAgentLow  > 0 &&  newSpiceAgentLow > 0 ) {
+                        valid = isValid(
+                                AgentMRS_High, AgentMRS_Low,
+                                newSugarAgentHigh, newSugarAgentLow,
+                                newSpiceAgentHigh, newSpiceAgentLow
+                        );
+                    }
                 }
                 //---[trading if the trade is valid]---
                 if (valid) {
@@ -96,25 +99,26 @@ public class Trade implements ITrade{
                     AgentMRS_Low.getWallet().setASpice((int) newSpiceAgentLow);
 
                     tradeOccurred = true;
+                    count++;
                 }
             }
         }
     }
 
 
-    private static boolean isValid(IAgent_Trade AgentMRS_High, IAgent_Trade AgentMRS_Low, double newSugarAgentHigh, double newSugarAgentLow, double newSpiceAgentHigh, double newSpiceAgentLow){
-        double WelfareAgentHigh_Old, WelfareAgentHigh_New, WelfareAgentLow_Old, WelfareAgentLow_New ,AgentHigh_NewMRS, AgentLow_NewMRS;
+    private boolean isValid(IAgent_Trade AgentMRS_High, IAgent_Trade AgentMRS_Low, double newSugarAgentHigh, double newSugarAgentLow, double newSpiceAgentHigh, double newSpiceAgentLow) {
+        double WelfareAgentHigh_Old, WelfareAgentHigh_New, WelfareAgentLow_Old, WelfareAgentLow_New, AgentHigh_NewMRS, AgentLow_NewMRS;
 
         WelfareAgentHigh_Old = AgentMRS_High.getWelfare(AgentMRS_High.getWallet().getASugar(), AgentMRS_High.getWallet().getASpice());
         WelfareAgentLow_Old = AgentMRS_Low.getWelfare(AgentMRS_Low.getWallet().getASugar(), AgentMRS_Low.getWallet().getASpice());
         WelfareAgentHigh_New = AgentMRS_High.getWelfare(newSugarAgentHigh, newSpiceAgentHigh);
         WelfareAgentLow_New = AgentMRS_Low.getWelfare(newSugarAgentLow, newSpiceAgentLow);
 
-        if(WelfareAgentHigh_Old < WelfareAgentHigh_New && WelfareAgentLow_Old < WelfareAgentLow_New){
+        if (WelfareAgentHigh_Old < WelfareAgentHigh_New && WelfareAgentLow_Old < WelfareAgentLow_New) {
             AgentHigh_NewMRS = AgentMRS_High.getMRS(newSugarAgentHigh, newSpiceAgentHigh);
             AgentLow_NewMRS = AgentMRS_Low.getMRS(newSugarAgentLow, newSpiceAgentLow);
 
-            if(AgentLow_NewMRS < AgentHigh_NewMRS)
+            if (AgentLow_NewMRS < AgentHigh_NewMRS)
                 return true;
         }
         return false;

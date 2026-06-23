@@ -20,14 +20,9 @@ public class NormalAgentBehavior implements IBehavior {
         agent.getWallet().setASpice((int) (agent.getWallet().getASpice() - agent.getPhysiology().getSpiceMetabolism()));
 
         if (agent.getWallet().getASugar() <= 0 || agent.getWallet().getASpice() <= 0) {
-            for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
-                if (agent.getLoanInfos().get(i).getLender() == agent) {
-                    agent.getLoanInfos().get(i).setStatus(false);
-                    
-                } else if (agent.getLoanInfos().get(i).getBorrower() == agent) {
-                    agent.getLoanInfos().get(i).setStatus(false);
-                }
-            }
+           for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
+               agent.getLoanInfos().get(i).setStatus(false);
+           }
             agents.remove(agent);
             patches[agent.getPosition().getX()][agent.getPosition().getY()].setPAgent(null);
         }

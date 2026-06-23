@@ -15,12 +15,7 @@ public class Aging implements IAging{
             agent.getFertilityInfo().setParent(false);
         } else {
             for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
-                if (agent.getLoanInfos().get(i).getLender() == agent) {
-                    agent.getLoanInfos().get(i).setStatus(false);
-
-                } else if (agent.getLoanInfos().get(i).getBorrower() == agent) {
-                    agent.getLoanInfos().get(i).setStatus(false);
-                }
+                agent.getLoanInfos().get(i).setStatus(false);
             }
             agents.remove((Agent)agent);
             patches[agent.getPosition().getX()][agent.getPosition().getY()].setPAgent(null);

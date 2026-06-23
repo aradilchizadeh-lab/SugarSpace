@@ -20,7 +20,7 @@ public class Loan implements ILoan{
     }
 
 
-    private static void giveLoan( IAgent_Loan agent, IPatch_Loan[][] patches, int tick) {
+    private void giveLoan( IAgent_Loan agent, IPatch_Loan[][] patches, int tick) {
         ArrayList<IAgent_Loan> neighbors = new ArrayList<>();
         int x = agent.getPosition().getX();
         int y = agent.getPosition().getY();
@@ -102,7 +102,7 @@ public class Loan implements ILoan{
         }
     }
 
-    public static void debtPayment(int tick, IAgent_Loan agent) {
+    public void debtPayment(int tick, IAgent_Loan agent) {
         int debtAmount = 0;
         for (int i = agent.getLoanInfos().size() - 1; i >= 0; i--) {
 
